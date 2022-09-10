@@ -35,7 +35,7 @@ public final class Config {
                 .define("closePromptQuitButton", true);
         quitOnEscInTitle = builder
                 .comment("Show close prompt when pressing escape in title screen.")
-                .define("closePromptQuitButton", true);
+                .define("closePromptTitleEsc", true);
         clientSpec = builder.build();
     }
 
