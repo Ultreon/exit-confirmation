@@ -6,7 +6,7 @@ import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public final class WorldUtils {
     public static void saveWorldThenOpenTitle() {
@@ -16,7 +16,7 @@ public final class WorldUtils {
             boolean flag1 = mc.isConnectedToRealms();
             mc.level.disconnect();
             if (flag) {
-                mc.clearLevel(new GenericDirtMessageScreen(new TranslatableComponent("menu.savingLevel")));
+                mc.clearLevel(new GenericDirtMessageScreen(Component.translatable("menu.savingLevel")));
             } else {
                 mc.clearLevel();
             }
@@ -38,7 +38,7 @@ public final class WorldUtils {
             boolean flag = mc.isLocalServer();
             mc.level.disconnect();
             if (flag) {
-                mc.clearLevel(new GenericDirtMessageScreen(new TranslatableComponent("menu.savingLevel")));
+                mc.clearLevel(new GenericDirtMessageScreen(Component.translatable("menu.savingLevel")));
             } else {
                 mc.clearLevel();
             }
@@ -53,7 +53,7 @@ public final class WorldUtils {
             boolean flag = mc.isLocalServer();
             mc.level.disconnect();
             if (flag) {
-                mc.clearLevel(new GenericDirtMessageScreen(new TranslatableComponent("menu.savingLevel")));
+                mc.clearLevel(new GenericDirtMessageScreen(Component.translatable("menu.savingLevel")));
             } else {
                 mc.clearLevel();
             }

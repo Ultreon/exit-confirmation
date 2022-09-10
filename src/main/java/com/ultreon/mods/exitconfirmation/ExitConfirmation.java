@@ -9,7 +9,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -114,7 +114,7 @@ public class ExitConfirmation implements ClientModInitializer {
         List<? extends GuiEventListener> buttons = titleScreen.children();
 
         // Intercepting close button.
-        Optional<? extends Button> quitButton = buttons.stream().filter(listener -> listener instanceof Button button && button.getMessage().equals(new TranslatableComponent("menu.quit"))).map(listener -> (Button) listener).findFirst();
+        Optional<? extends Button> quitButton = buttons.stream().filter(listener -> listener instanceof Button button && button.getMessage().equals(Component.translatable("menu.quit"))).map(listener -> (Button) listener).findFirst();
 
         // Only override if the quit button is found.
         quitButton.ifPresent(widget -> {

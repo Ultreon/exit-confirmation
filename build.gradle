@@ -38,7 +38,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:3.2.4"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:4.2.6"
 }
 
 processResources {

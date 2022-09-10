@@ -9,15 +9,14 @@ import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class ConfirmExitScreen extends Screen {
-    private static final Component DESCRIPTION = new TranslatableComponent("screen.exit_confirm.description");
-    private static final Component TITLE = new TranslatableComponent("screen.exit_confirm.title");
+    private static final Component DESCRIPTION = Component.translatable("screen.exit_confirm.description");
+    private static final Component TITLE = Component.translatable("screen.exit_confirm.title");
     private final MultiLineLabel label = MultiLineLabel.EMPTY;
     private final Component yesButtonText;
     private final Component noButtonText;
@@ -34,7 +33,7 @@ public class ConfirmExitScreen extends Screen {
     protected void init() {
         super.init();
 
-        NarratorStatus narratorStatus = Objects.requireNonNull(this.minecraft).options.narratorStatus;
+        NarratorStatus narratorStatus = Objects.requireNonNull(this.minecraft).options.narrator().get();
 
         if (narratorStatus == NarratorStatus.SYSTEM || narratorStatus == NarratorStatus.ALL) {
             Narrator.getNarrator().say("Are you sure you want to exit Minecraft?", true);
