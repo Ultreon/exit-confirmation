@@ -9,10 +9,9 @@ import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent.BackgroundDrawnEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +22,8 @@ import java.util.Objects;
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = ExitConfirmation.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ConfirmExitScreen extends Screen {
-    private static final Component DESCRIPTION = new TranslatableComponent("screen.exit_confirm.description");
-    private static final Component TITLE = new TranslatableComponent("screen.exit_confirm.title");
+    private static final Component DESCRIPTION = Component.translatable("screen.exit_confirm.description");
+    private static final Component TITLE = Component.translatable("screen.exit_confirm.title");
     private final MultiLineLabel label = MultiLineLabel.EMPTY;
     private final Component yesButtonText;
     private final Component noButtonText;
@@ -38,7 +37,7 @@ public class ConfirmExitScreen extends Screen {
     protected void init() {
         super.init();
 
-        NarratorStatus narratorStatus = Objects.requireNonNull(this.minecraft).options.narratorStatus;
+        NarratorStatus narratorStatus = Objects.requireNonNull(this.minecraft).options.narrator().get();
 
         if (narratorStatus == NarratorStatus.SYSTEM || narratorStatus == NarratorStatus.ALL) {
             Narrator.getNarrator().say("Are you sure you want to exit Minecraft?", true);
@@ -67,10 +66,11 @@ public class ConfirmExitScreen extends Screen {
         setButtonDelay(10);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         pose.translate(0f, 0f, 400f);
+        MinecraftForge.EVENT_BUS.post(new ScreenEvent.BackgroundRendered(this, pose));
         this.fillGradient(pose, 0, 0, this.width, this.height, -1072689136, -804253680);
-        MinecraftForge.EVENT_BUS.post(new BackgroundDrawnEvent(this, pose));
 
         drawCenteredString(pose, this.font, this.title, this.width / 2, 70, 0xffffff);
         drawCenteredString(pose, this.font, DESCRIPTION, this.width / 2, 90, 0xbfbfbf);

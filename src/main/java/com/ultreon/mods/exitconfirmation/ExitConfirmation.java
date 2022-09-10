@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,12 +17,13 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mod(ExitConfirmation.MOD_ID)
 public class ExitConfirmation {
 
     public static final String MOD_ID = "exit_confirm";
-    private static boolean callbackSetup;
+    private static boolean callbackSetup = false;
     private boolean escPress = false;
 
     // Directly reference a log4j logger.
@@ -36,7 +38,7 @@ public class ExitConfirmation {
     }
 
     @SubscribeEvent
-    public synchronized void onKeyInput(InputEvent.KeyInputEvent event) {
+    public synchronized void onKeyInput(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
 
         if (event.getAction() == GLFW.GLFW_PRESS) {
@@ -83,12 +85,13 @@ public class ExitConfirmation {
         } else if (event.getSource() == WindowCloseEvent.Source.QUIT_BUTTON) {
             if (Config.closePrompt.get() && Config.closePromptQuitButton.get() && !(mc.screen instanceof ConfirmExitScreen)) {
                 mc.pushGuiLayer(new ConfirmExitScreen());
+                event.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent
-    public static void onTitleScreenInit(ScreenEvent.InitScreenEvent.Post event) {
+    public void onTitleScreenInit(ScreenEvent.Init.Post event) {
         Minecraft mc = Minecraft.getInstance();
         Screen screen = event.getScreen();
         if (screen instanceof TitleScreen titleScreen) {
@@ -97,22 +100,19 @@ public class ExitConfirmation {
         }
     }
 
-    private static void overrideQuitButton(Minecraft mc, TitleScreen titleScreen) {
+    private void overrideQuitButton(Minecraft mc, TitleScreen titleScreen) {
         List<? extends GuiEventListener> buttons = titleScreen.children();
-        if (buttons.size() >= 2) {
-            if (buttons.get(buttons.size() - 2) instanceof Button widget) {
-                widget.onPress = (button) -> {
-                    boolean flag = MinecraftForge.EVENT_BUS.post(new WindowCloseEvent(WindowCloseEvent.Source.QUIT_BUTTON));
-                    if (!flag) {
-                        mc.stop();
-                    }
-                };
+        Optional<Button> quitButton = buttons.stream().filter(listener -> listener instanceof Button button && button.getMessage().equals(Component.translatable("menu.quit"))).map(listener -> (Button) listener).findFirst();
+        quitButton.ifPresent(widget -> widget.onPress = (button) -> {
+            boolean flag = MinecraftForge.EVENT_BUS.post(new WindowCloseEvent(WindowCloseEvent.Source.QUIT_BUTTON));
+            if (!flag) {
+                mc.stop();
             }
-        }
+        });
     }
 
     @SuppressWarnings("resource")
-    private static void setupGLFWCallback(Minecraft mc) {
+    private void setupGLFWCallback(Minecraft mc) {
         if (!callbackSetup) {
             long handle = mc.getWindow().getWindow();
             GLFW.glfwSetWindowCloseCallback(handle, window -> {
