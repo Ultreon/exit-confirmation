@@ -4,10 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.text2speech.Narrator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.NarratorStatus;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineLabel;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -30,7 +28,6 @@ public class ConfirmExitScreen extends Screen {
     private final MultiLineLabel label = MultiLineLabel.EMPTY;
     private final Component yesButtonText;
     private final Component noButtonText;
-    private int ticksUntilEnable;
 
     public ConfirmExitScreen() {
         super(TITLE);

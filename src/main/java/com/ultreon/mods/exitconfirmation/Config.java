@@ -10,7 +10,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Map;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -23,10 +22,6 @@ public final class Config {
     public static final ForgeConfigSpec.BooleanValue quitOnEscInTitle;
 
     private static final ForgeConfigSpec clientSpec;
-
-    @Deprecated
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static final Map<Module, ForgeConfigSpec.BooleanValue> modules = new OrderedHashMap<>();
 
     private static final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
@@ -43,7 +38,7 @@ public final class Config {
                 .define("closePromptQuitButton", true);
         quitOnEscInTitle = builder
                 .comment("Show close prompt when pressing escape in title screen.")
-                .define("closePromptQuitButton", true);
+                .define("closePromptTitleEsc", true);
         clientSpec = builder.build();
     }
 
@@ -71,9 +66,5 @@ public final class Config {
 
     public static void save() {
         clientSpec.save();
-    }
-
-    public static ForgeConfigSpec.BooleanValue getModuleSpec(Module module) {
-        return modules.get(module);
     }
 }
