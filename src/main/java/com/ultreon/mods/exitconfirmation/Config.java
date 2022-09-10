@@ -2,20 +2,16 @@ package com.ultreon.mods.exitconfirmation;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraftforge.api.ModLoadingContext;
+import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Map;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-@Mod.EventBusSubscriber(modid = ExitConfirmation.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class Config {
     public static final ForgeConfigSpec.BooleanValue closePrompt;
     public static final ForgeConfigSpec.BooleanValue closePromptInGame;
@@ -23,10 +19,6 @@ public final class Config {
     public static final ForgeConfigSpec.BooleanValue quitOnEscInTitle;
 
     private static final ForgeConfigSpec clientSpec;
-
-    @Deprecated
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static final Map<Module, ForgeConfigSpec.BooleanValue> modules = new OrderedHashMap<>();
 
     private static final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
@@ -52,28 +44,24 @@ public final class Config {
     }
 
     public static void initialize() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, clientSpec);
+        ModLoadingContext.registerConfig(ExitConfirmation.MOD_ID, ModConfig.Type.CLIENT, clientSpec);
+        ModConfigEvent.LOADING.register(Config::load);
+        ModConfigEvent.RELOADING.register(Config::reload);
     }
 
     public static void sync() {
 
     }
 
-    @SubscribeEvent
-    public static void sync(ModConfigEvent.Loading event) {
+    public static void load(ModConfig event) {
         sync();
     }
 
-    @SubscribeEvent
-    public static void sync(ModConfigEvent.Reloading event) {
+    public static void reload(ModConfig event) {
         sync();
     }
 
     public static void save() {
         clientSpec.save();
-    }
-
-    public static ForgeConfigSpec.BooleanValue getModuleSpec(Module module) {
-        return modules.get(module);
     }
 }
