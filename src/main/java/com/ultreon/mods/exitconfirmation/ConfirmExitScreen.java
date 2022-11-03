@@ -64,10 +64,12 @@ public class ConfirmExitScreen extends Screen {
     }
 
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        pose.pushPose();
-        pose.translate(0f, 0f, -10f);
-        background.render(pose, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
-        pose.popPose();
+        if (background != null) {
+            pose.pushPose();
+            pose.translate(0f, 0f, -10f);
+            background.render(pose, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
+            pose.popPose();
+        }
 
         pose.pushPose();
         this.fillGradient(pose, 0, 0, this.width, this.height, -1072689136, -804253680);
