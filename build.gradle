@@ -7,7 +7,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = 'exit-confirmation'
-version = '2.0.0'
+version = '2.0.1'
 group = 'com.ultreon.mods'
 
 repositories {
