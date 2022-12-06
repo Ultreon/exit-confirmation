@@ -3,7 +3,7 @@ package com.ultreon.mods.exitconfirmation;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraftforge.api.ModLoadingContext;
-import net.minecraftforge.api.fml.event.config.ModConfigEvent;
+import net.minecraftforge.api.fml.event.config.ModConfigEvents;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -45,8 +45,8 @@ public final class Config {
 
     public static void initialize() {
         ModLoadingContext.registerConfig(ExitConfirmation.MOD_ID, ModConfig.Type.CLIENT, clientSpec);
-        ModConfigEvent.LOADING.register(Config::load);
-        ModConfigEvent.RELOADING.register(Config::reload);
+        ModConfigEvents.loading(ExitConfirmation.MOD_ID).register(Config::load);
+        ModConfigEvents.reloading(ExitConfirmation.MOD_ID).register(Config::reload);
     }
 
     public static void sync() {
