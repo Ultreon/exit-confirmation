@@ -1,67 +1,84 @@
 package com.ultreon.mods.exitconfirmation;
 
-import net.minecraft.FieldsAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraftforge.api.ModLoadingContext;
-import net.minecraftforge.api.fml.event.config.ModConfigEvent;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
+import io.github.minecraftcursedlegacy.api.config.Configs;
+import net.fabricmc.loader.api.FabricLoader;
+import tk.valoeghese.zoesteriaconfig.api.container.WritableConfig;
+import tk.valoeghese.zoesteriaconfig.api.deserialiser.Comment;
+import tk.valoeghese.zoesteriaconfig.api.template.ConfigTemplate;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import java.io.File;
+import java.io.IOException;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-@FieldsAreNonnullByDefault
 public final class Config {
-    public static final ForgeConfigSpec.BooleanValue closePrompt;
-    public static final ForgeConfigSpec.BooleanValue closePromptInGame;
-    public static final ForgeConfigSpec.BooleanValue closePromptQuitButton;
-    public static final ForgeConfigSpec.BooleanValue quitOnEscInTitle;
+    private static WritableConfig config;
 
-    private static final ForgeConfigSpec clientSpec;
-
-    private static final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-
-    static {
-        // Updates
-        closePrompt = builder
-                .comment("Show close prompt.")
-                .define("closePrompt", true);
-        closePromptInGame = builder
-                .comment("Show close prompt in-game.")
-                .define("closePromptInGame", true);
-        closePromptQuitButton = builder
-                .comment("Show close prompt when pressing quit button.")
-                .define("closePromptQuitButton", true);
-        quitOnEscInTitle = builder
-                .comment("Show close prompt when pressing escape in title screen.")
-                .define("closePromptTitleEsc", true);
-        clientSpec = builder.build();
-    }
+    private static File directory;
+    private static File configFile;
 
     private Config() {
-
     }
 
-    public static void initialize() {
-        ModLoadingContext.registerConfig(ExitConfirmation.MOD_ID, ModConfig.Type.CLIENT, clientSpec);
-        ModConfigEvent.LOADING.register(Config::load);
-        ModConfigEvent.RELOADING.register(Config::reload);
+    public static void initialize() throws IOException {
+        directory = new File(FabricLoader.getInstance().getConfigDir().toFile(), ExitConfirmation.MOD_ID);
+        configFile = new File(directory, "client.cfg");
+        config = Configs.loadOrCreate(ExitConfirmation.id("client"),
+                ConfigTemplate.builder()
+                        .addComment(new Comment("Show close prompt."))
+                        .addDataEntry("closePrompt", true)
+                        .addComment(new Comment("Show close prompt in-game."))
+                        .addDataEntry("closePromptInGame", true)
+                        .addComment(new Comment("Show close prompt when pressing quit button."))
+                        .addDataEntry("closePromptQuitButton", true)
+                        .addComment(new Comment("Show close prompt when pressing escape in title screen."))
+                        .addDataEntry("closePromptTitleEsc", true)
+                        .build());
     }
 
-    public static void sync() {
-
+    public static WritableConfig getConfig() {
+        return config;
     }
 
-    public static void load(ModConfig event) {
-        sync();
+    public static boolean getClosePrompt() {
+        return config.getBooleanValue("closePrompt");
     }
 
-    public static void reload(ModConfig event) {
-        sync();
+    public static void setClosePrompt(boolean enabled) {
+        config.putBooleanValue("closePrompt", enabled);
+    }
+
+    public static boolean getClosePromptInGame() {
+        return config.getBooleanValue("closePromptInGame");
+    }
+
+    public static void setClosePromptInGame(boolean enabled) {
+        config.putBooleanValue("closePromptInGame", enabled);
+    }
+
+    public static boolean getClosePromptQuitButton() {
+        return config.getBooleanValue("closePromptQuitButton");
+    }
+
+    public static void setClosePromptQuitButton(boolean enabled) {
+        config.putBooleanValue("closePromptQuitButton", enabled);
+    }
+
+    public static boolean getQuitOnEscInTitle() {
+        return config.getBooleanValue("closePromptTitleEsc");
+    }
+
+    public static void setQuitOnEscInTitle(boolean enabled) {
+        config.putBooleanValue("closePromptTitleEsc", enabled);
     }
 
     public static void save() {
-        clientSpec.save();
+        config.writeToFile(configFile);
+    }
+
+    public static File getDirectory() {
+        return directory;
+    }
+
+    public static File getConfigFile() {
+        return configFile;
     }
 }

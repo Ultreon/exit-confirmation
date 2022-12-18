@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "exit_confirm",
   "version": "${version}",
-
+  "accessWidener": "exit-confirmation.accesswidener",
   "name": "Exit Confirmation",
   "description": "Shows a exit confirmation screen when trying to close Minecraft.",
   "authors": [
@@ -28,9 +28,10 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.6",
-    "fabric": "*",
-    "minecraft": "~1.18.2",
-    "java": ">=17"
+    "minecraft": "1.0.0-beta.7.3",
+    "api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
   }
 }

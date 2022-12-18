@@ -42,7 +42,7 @@ package com.ultreon.mods.exitconfirmation;
  *    nor may "Apache" appear in their names without prior written
  *    permission of the Apache Group.
  *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * THIS SOFTWARE IS PROVIDED ‘‘AS IS’’ AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
@@ -64,7 +64,7 @@ package com.ultreon.mods.exitconfirmation;
  * This was edited by Qboi123
  */
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -499,10 +499,10 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
     /**
      * Implements {@link Map#keySet()}.
      */
-    public @NotNull Set<K> keySet() {
+    public @NonNull Set<K> keySet() {
         return new AbstractSet<K>() {
             // required impls
-            public @NotNull Iterator<K> iterator() {
+            public @NonNull Iterator<K> iterator() {
                 return new OrderedIterator<>(KEY);
             }
 
@@ -534,10 +534,10 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
     /**
      * Implements {@link Map#values()}.
      */
-    public @NotNull Collection<V> values() {
+    public @NonNull Collection<V> values() {
         return new AbstractCollection<V>() {
             // required impl
-            public @NotNull Iterator<V> iterator() {
+            public @NonNull Iterator<V> iterator() {
                 return new OrderedIterator<>(VALUE);
             }
 
@@ -587,7 +587,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
      *
      * @return
      */
-    public @NotNull Set<Map.Entry<K, V>> entrySet() {
+    public @NonNull Set<Map.Entry<K, V>> entrySet() {
         return new AbstractSet<Map.Entry<K, V>>() {
             // helper
             private Entry<K, V> findEntry(Map.Entry<K, V> o) {
@@ -603,7 +603,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
             }
 
             // required impl
-            public @NotNull Iterator<Map.Entry<K, V>> iterator() {
+            public @NonNull Iterator<Map.Entry<K, V>> iterator() {
                 return new OrderedIterator<>(ENTRY);
             }
 
@@ -896,6 +896,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
         }
     }
 
+    @SuppressWarnings("GrazieInspection")
     private class OrderedIterator<T> implements Iterator<T> {
         /**
          * Holds the type that should be returned from the iterator. The value should be either {@link #KEY},

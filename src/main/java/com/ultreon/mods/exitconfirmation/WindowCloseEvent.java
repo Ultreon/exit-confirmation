@@ -1,8 +1,9 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.mojang.blaze3d.platform.Window;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+
+import java.awt.*;
 
 public interface WindowCloseEvent {
     Event<WindowCloseEvent> EVENT = EventFactory.createArrayBacked(WindowCloseEvent.class,
@@ -18,7 +19,7 @@ public interface WindowCloseEvent {
         return ActionResult.PASS;
     });
  
-    ActionResult closing(Window window, Source source);
+    ActionResult closing(Frame window, Source source);
 
     enum Source {
         GENERIC,
