@@ -27,9 +27,6 @@ public class ConfirmExitScreen extends Screen {
     private final MultiLineLabel label = MultiLineLabel.EMPTY;
     private final Component yesButtonText;
     private final Component noButtonText;
-    private Button yesButton;
-    private Button noButton;
-    private int activateDelay;
 
     public ConfirmExitScreen() {
         super(TITLE);
@@ -48,7 +45,7 @@ public class ConfirmExitScreen extends Screen {
 
         this.clearWidgets();
 
-        yesButton = this.addRenderableWidget(Button.builder(this.yesButtonText, (btn) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 if (this.minecraft.level != null && this.minecraft.isLocalServer()) {
@@ -58,17 +55,15 @@ public class ConfirmExitScreen extends Screen {
 
                 this.minecraft.stop();
             }
-        }).bounds(this.width / 2 - 105, this.height / 6 + 96, 100, 20).build());
-        noButton = this.addRenderableWidget(Button.builder(this.noButtonText, (btn) -> {
+        }));
+        this.addRenderableWidget(new Button(this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 this.minecraft.popGuiLayer();
             }
-        }).bounds(this.width / 2 + 5, this.height / 6 + 96, 100, 20).build());
+        }));
 
-        yesButton.active = false;
-
-        setButtonDelay(40);
+        setButtonDelay(10);
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -86,19 +81,12 @@ public class ConfirmExitScreen extends Screen {
     /**
      * Sets the number of ticks to wait before enabling the buttons.
      */
-    public void setButtonDelay(int activateDelay) {
-        this.activateDelay = activateDelay;
+    public void setButtonDelay(int ticksUntilEnableIn) {
+
     }
 
     public void tick() {
-        if (--activateDelay <= 0) {
-            activateDelay = 0;
-            activate();
-        }
-    }
 
-    public void activate() {
-        yesButton.active = true;
     }
 
     public void back() {
