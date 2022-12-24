@@ -28,7 +28,6 @@ public class ConfirmExitScreen extends Screen {
     private final Component yesButtonText;
     private final Component noButtonText;
     private Button yesButton;
-    private Button noButton;
     private int activateDelay;
 
     public ConfirmExitScreen() {
@@ -59,7 +58,7 @@ public class ConfirmExitScreen extends Screen {
                 this.minecraft.stop();
             }
         }).bounds(this.width / 2 - 105, this.height / 6 + 96, 100, 20).build());
-        noButton = this.addRenderableWidget(Button.builder(this.noButtonText, (btn) -> {
+        this.addRenderableWidget(Button.builder(this.noButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 this.minecraft.popGuiLayer();
