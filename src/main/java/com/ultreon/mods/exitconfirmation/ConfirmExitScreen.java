@@ -41,7 +41,7 @@ public class ConfirmExitScreen extends Screen {
 
         this.clearWidgets();
 
-        this.addRenderableWidget(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
+        this.addRenderableWidget(Button.builder(this.yesButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 if (this.minecraft.level != null && this.minecraft.isLocalServer()) {
@@ -51,13 +51,13 @@ public class ConfirmExitScreen extends Screen {
 
                 this.minecraft.stop();
             }
-        }));
-        this.addRenderableWidget(new Button(this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText, (btn) -> {
+        }).bounds(this.width / 2 - 105, this.height / 6 + 96, 100, 20).build());
+        this.addRenderableWidget(Button.builder(this.noButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 this.minecraft.setScreen(background);
             }
-        }));
+        }).bounds(this.width / 2 + 5, this.height / 6 + 96, 100, 20).build());
 
         setButtonDelay(10);
     }
