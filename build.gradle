@@ -13,12 +13,15 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'java'
 
-group = 'com.ultreon.mods'
-version = '2.0.1'
+group = maven_group
+version = mod_version
+archivesBaseName = archives_base_name
 
 java {
-    archivesBaseName = 'exit-confirmation'
+    withSourcesJar()
+
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
@@ -142,7 +145,7 @@ minecraft {
 }
 
 mixin {
-    add sourceSets.main, "exit-confirmation.refmap.json"
+    add sourceSets.main, "exit-confirmation-refmap.json"
 
     config "exit-confirmation.mixins.json"
 }
@@ -164,7 +167,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19.3-44.0.37'
+    minecraft 'net.minecraftforge:forge:1.19.3-44.1.23'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
