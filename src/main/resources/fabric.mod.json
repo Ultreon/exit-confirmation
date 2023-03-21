@@ -16,7 +16,7 @@
 
   "license": "All Rights Reserved",
   "icon": "assets/exit_confirm/icon.png",
-
+  "accessWidener": "exit-confirmation.accesswidener",
   "environment": "client",
   "entrypoints": {
     "client": [

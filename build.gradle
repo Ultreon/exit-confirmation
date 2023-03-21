@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 plugins {
 	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
@@ -6,8 +7,8 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-archivesBaseName = 'exit-confirmation'
-version = '2.0.1'
+archivesBaseName = 'exit-confirmation-fabric'
+version = '2.0.2'
 group = 'com.ultreon.mods'
 
 repositories {
@@ -57,7 +58,7 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
 	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 17
+	it.options.release.set(17)
 }
 
 java {
