@@ -21,6 +21,8 @@ public class ConfirmExitScreen extends Screen {
     private final Component yesButtonText;
     private final Component noButtonText;
     private final Screen background;
+    private Button yesButton;
+    private int activateDelay;
 
     public ConfirmExitScreen(Screen background) {
         super(TITLE);
@@ -41,7 +43,7 @@ public class ConfirmExitScreen extends Screen {
 
         this.clearWidgets();
 
-        this.addRenderableWidget(Button.builder(this.yesButtonText, (btn) -> {
+        yesButton = this.addRenderableWidget(Button.builder(this.yesButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 if (this.minecraft.level != null && this.minecraft.isLocalServer()) {
@@ -59,7 +61,9 @@ public class ConfirmExitScreen extends Screen {
             }
         }).bounds(this.width / 2 + 5, this.height / 6 + 96, 100, 20).build());
 
-        setButtonDelay(10);
+        yesButton.active = false;
+
+        setButtonDelay(40);
     }
 
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
@@ -83,12 +87,19 @@ public class ConfirmExitScreen extends Screen {
     /**
      * Sets the number of ticks to wait before enabling the buttons.
      */
-    public void setButtonDelay(int ticksUntilEnableIn) {
-
+    public void setButtonDelay(int activateDelay) {
+        this.activateDelay = activateDelay;
     }
 
     public void tick() {
+        if (--activateDelay <= 0) {
+            activateDelay = 0;
+            activate();
+        }
+    }
 
+    public void activate() {
+        yesButton.active = true;
     }
 
     public void back() {
