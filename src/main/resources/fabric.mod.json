@@ -16,7 +16,7 @@
 
   "license": "All Rights Reserved",
   "icon": "assets/exit_confirm/icon.png",
-
+  "accessWidener": "exit-confirmation.accesswidener",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -30,8 +30,8 @@
   "depends": {
     "fabricloader": ">=0.14.6",
     "fabric": "*",
-    "minecraft": ">=1.19.3 <1.20",
+    "minecraft": ">=1.19.3 <1.19.4",
     "java": ">=17",
-    "forgeconfigapiport": ">=4 <5"
+    "forgeconfigapiport": ">=5 <6"
   }
 }
