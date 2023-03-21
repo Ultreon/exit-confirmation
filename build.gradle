@@ -6,9 +6,9 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName = 'exit-confirmation'
-version = '1.0.1'
-group = 'com.ultreon.mods'
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -24,24 +24,33 @@ repositories {
 		name 'HalfOf2'
 		url 'https://storage.googleapis.com/devan-maven/'
 	}
+	maven {
+		name 'Modmuss50'
+		url 'https://maven.modmuss50.me'
+	}
+	flatDir {
+		dir "$projectDir/libs/"
+	}
 }
 
 minecraft {
 	// Skip old versions of libraries which Mojang use but we don't need
-	addLibraryFilter {library ->
-		return !(library.startsWith('net.minecraft:launchwrapper:') ||
-					library.startsWith('net.sf.jopt-simple:jopt-simple:') ||
-					library.startsWith('org.ow2.asm:asm-all:'))
-	}
+//	addLibraryFilter {library ->
+//		return !(library.startsWith('net.minecraft:launchwrapper:') ||
+//				library.startsWith('net.sf.jopt-simple:jopt-simple:') ||
+//				library.startsWith('org.ow2.asm:asm-all:'))
+//	}
 
 	refmapName = "exit-confirmation.refmap.json"
+
+	setAT("$projectDir/src/main/resources/accesstransformer.cfg")
 }
 
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "io.github.minecraft-cursed-legacy:plasma:b1.7.3-build.${project.plasma_build}"
-	modImplementation("io.github.minecraft-cursed-legacy:cursed-fabric-loader:${project.loader_version}") {
+	mappings "com.github.minecraft-cursed-legacy:plasma:build.${project.plasma_build}"
+	modImplementation("com.github.minecraft-cursed-legacy:cursed-fabric-loader:${project.loader_version}") {
 		transitive false
 	}
 

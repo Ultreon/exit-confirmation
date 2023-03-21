@@ -1,6 +1,5 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.ultreon.mods.exitconfirmation.mixin.MinecraftAccessor;
 import io.github.minecraftcursedlegacy.api.registry.Id;
 import io.github.minecraftcursedlegacy.api.registry.Translations;
 import net.fabricmc.api.ClientModInitializer;
@@ -28,6 +27,7 @@ public class ExitConfirmation implements ClientModInitializer {
     // Directly reference a log4j logger.
     @SuppressWarnings("unused")
     static final Logger LOGGER = LogManager.getLogger();
+    public static Minecraft minecraft;
     private static ExitConfirmation instance;
     private boolean windowListenerSetup = false;
     private AppletFrame window;
@@ -43,7 +43,7 @@ public class ExitConfirmation implements ClientModInitializer {
     }
 
     public static void handleTitleScreenInit(Minecraft client, TitleScreen titleScreen) {
-        instance.onTitleScreenInit(MinecraftAccessor.getInstance(), titleScreen);
+        instance.onTitleScreenInit(ExitConfirmation.minecraft, titleScreen);
     }
 
     public static Frame getGameWindow() {
@@ -51,7 +51,7 @@ public class ExitConfirmation implements ClientModInitializer {
     }
 
     public ActionResult onWindowClose(Window window, WindowCloseEvent.Source source) {
-        Minecraft mc = MinecraftAccessor.getInstance();
+        Minecraft mc = ExitConfirmation.minecraft;
 
         // Check close source.
         if (source == WindowCloseEvent.Source.GENERIC) {
@@ -119,7 +119,7 @@ public class ExitConfirmation implements ClientModInitializer {
         // Register ourselves for server and other game events we are interested in
         WindowCloseEvent.EVENT.register(this::onWindowClose);
 
-        window = (AppletFrame) (MinecraftAccessor.getInstance().canvas.getParent().getParent().getParent());
+        window = (AppletFrame) (ExitConfirmation.minecraft.canvas.getParent().getParent().getParent());
 
         // Only if it's the title screen.
         if (screen instanceof TitleScreen) {

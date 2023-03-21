@@ -1,6 +1,5 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.ultreon.mods.exitconfirmation.mixin.MinecraftAccessor;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widgets.Button;
 import net.minecraft.client.resource.language.I18n;
@@ -16,6 +15,7 @@ public class ConfirmExitScreen extends Screen {
     private final String noButtonText;
     private final Screen background;
     private int ticksUntilEnableIn;
+    public boolean passStop;
 
     public ConfirmExitScreen(Screen background) {
         super();
@@ -105,7 +105,7 @@ public class ConfirmExitScreen extends Screen {
     }
 
     public void back() {
-        MinecraftAccessor.getInstance().openScreen(background);
+        ExitConfirmation.minecraft.openScreen(background);
     }
 
     @Override

@@ -41,7 +41,7 @@ public abstract class TitleScreenMixin extends Screen {
         if (i == 1 && Config.getClosePrompt() && Config.getQuitOnEscInTitle()) {
             if (!exitConfirmation$escPress) {
                 exitConfirmation$escPress = true;
-                Minecraft minecraft = MinecraftAccessor.getInstance();
+                Minecraft minecraft = ExitConfirmation.minecraft;
                 if (minecraft.currentScreen == this) {
                     minecraft.openScreen(new ConfirmExitScreen(minecraft.currentScreen));
                     return;
@@ -61,7 +61,7 @@ public abstract class TitleScreenMixin extends Screen {
     }
 
     public void keyReleased(int keyCode) {
-        Minecraft minecraft = MinecraftAccessor.getInstance();
+        Minecraft minecraft = ExitConfirmation.minecraft;
         if (keyCode == 1 && exitConfirmation$escPress && Config.getClosePrompt() && Config.getQuitOnEscInTitle() && minecraft.currentScreen == this) {
             exitConfirmation$escPress = false;
         }

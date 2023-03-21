@@ -8,29 +8,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MinecraftApplet;
 import net.minecraft.client.gui.Screen;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.swing.*;
-import java.awt.*;
+@Mixin(MinecraftApplet.class)
+public class MinecraftAppletMixin {
 
-@Mixin(Minecraft.class)
-public abstract class MinecraftMixin {
-    @Shadow private static Minecraft instance;
-
-    @Redirect(at = @At(value = "NEW", target = "Ljava/awt/Frame;"), method = "start(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")
-    private static Frame start(String title) {
-        return new JFrame(title);
-    }
-
-    @Inject(at = @At(value = "RETURN"), method = "<init>")
-    private void exitConfirm$constructorInject(Component canvas, Canvas minecraftApplet, MinecraftApplet i, int j, int flag, boolean par6, CallbackInfo ci) {
-        ExitConfirmation.minecraft = instance;
-    }
-    @Inject(at = @At(value = "HEAD"), method = "scheduleStop", cancellable = true)
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;scheduleStop()V"), method = "onRemoveNotify", cancellable = true)
     private void exitConfirm$injectScheduleStop(CallbackInfo ci) {
         Minecraft minecraft = ExitConfirmation.minecraft;
         if (minecraft == null) return;
