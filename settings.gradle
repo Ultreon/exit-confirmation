@@ -9,4 +9,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'exit-confirmation'
+rootProject.name = 'exit-confirmation-fabric'
