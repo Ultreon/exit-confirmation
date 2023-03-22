@@ -14,12 +14,9 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - chmod:
-            name: "Make gradlew executable"
-            command: "chmod +x gradlew"
       - build:
             name: "Build Project"
-            command: "./gradle build"
+            command: "./gradlew build"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
