@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Exit Confirmation",
-  "description": "Shows a exit confirmation screen when trying to close Minecraft.",
+  "description": "Shows an exit confirmation screen when trying to close Minecraft.",
   "authors": [
     "Qboi"
   ],
