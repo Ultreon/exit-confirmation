@@ -3,14 +3,24 @@
   "id": "exit_confirm",
   "version": "${version}",
   "name": "Exit Confirmation",
-  "description": "Shows a exit confirmation screen when trying to close Minecraft.",
+  "description": "Shows an exit confirmation screen when trying to close Minecraft.",
   "authors": [
-    "Qboi123"
+    "Ultreon Team"
+  ],
+  "contributors": [
+    {
+      "name": "Qboi",
+      "contact": {
+        "sources": "https://github.com/Qboi123",
+        "homepage": "https://qboi.tk"
+      }
+    }
   ],
   "contact": {
     "homepage": "https://ultreon.github.io/web/",
     "sources": "https://github.com/Ultreon/exit-confirmation",
-    "issues": "https://github.com/Ultreon/exit-confirmation/issues"
+    "issues": "https://github.com/Ultreon/exit-confirmation/issues",
+    "email": "contact.ultreon@gmail.com"
   },
 
   "license": "All Rights Reserved",
@@ -27,10 +37,7 @@
   ],
 
   "depends": {
-    "minecraft": "1.0.0-beta.7.3",
-    "api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "fabricloader": ">=0.13.3",
+    "minecraft": "1.0.0-beta.7.3"
   }
 }

@@ -1,8 +1,8 @@
 package com.ultreon.mods.exitconfirmation;
 
-import net.minecraft.client.gui.Screen;
-import net.minecraft.client.gui.widgets.Button;
-import net.minecraft.client.resource.language.I18n;
+import com.sun.org.apache.xml.internal.security.utils.I18n;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
@@ -29,16 +29,16 @@ public class ConfirmExitScreen extends Screen {
     public void init() {
         super.init();
 
-        this.buttons.add(new Button(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText));
-        this.buttons.add(new Button(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText));
+        this.buttons.add(new ButtonWidget(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText));
+        this.buttons.add(new ButtonWidget(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText));
 
         setButtonDelay(10);
     }
 
-    private void yesClick(Button btn) {
+    private void yesClick(ButtonWidget btn) {
         if (this.minecraft != null) {
             btn.active = false;
-            if (this.minecraft.level != null && !this.minecraft.isConnectedToServer()) {
+            if (this.minecraft.world != null && !this.minecraft.player) {
                 WorldUtils.saveWorldThenQuitGame();
                 return;
             }

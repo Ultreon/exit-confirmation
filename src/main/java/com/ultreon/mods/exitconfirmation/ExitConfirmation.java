@@ -4,11 +4,13 @@ import io.github.minecraftcursedlegacy.api.registry.Id;
 import io.github.minecraftcursedlegacy.api.registry.Translations;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.entrypoint.applet.AppletFrame;
+import net.fabricmc.loader.impl.game.minecraft.applet.AppletFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.ServerConnectingScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.resource.language.TranslationStorage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,9 +73,9 @@ public class ExitConfirmation implements ClientModInitializer {
             }
 
             // Otherwise only cancel when the close prompt is enabled.
-            if (Config.getClosePrompt()) {
+//            if (Config.getClosePrompt()) {
                 // Allow closing ingame if enabled in config.
-                if (mc.level != null && !Config.getClosePromptInGame()) {
+                if (mc.level != null/* && !Config.getClosePromptInGame()*/) {
                     return ActionResult.PASS;
                 }
 
@@ -85,10 +87,10 @@ public class ExitConfirmation implements ClientModInitializer {
 
                 // Cancel the event.
                 return ActionResult.CANCEL;
-            }
+//            }
         } else if (source == WindowCloseEvent.Source.QUIT_BUTTON) {
             // Cancel quit button when set in config, and screen isn't currently the confirmation screen already.
-            if (Config.getClosePrompt() && Config.getClosePromptQuitButton() && !(mc.currentScreen instanceof ConfirmExitScreen)) {
+            if (/*Config.getClosePrompt() && Config.getClosePromptQuitButton() && */!(mc.currentScreen instanceof ConfirmExitScreen)) {
                 mc.openScreen(new ConfirmExitScreen(mc.currentScreen));
                 return ActionResult.CANCEL;
             }
@@ -110,11 +112,11 @@ public class ExitConfirmation implements ClientModInitializer {
      */
     private void onTitleScreenInit(Minecraft client, Screen screen) {
         // Initialize config.
-        try {
-            Config.initialize();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Config.initialize();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         // Register ourselves for server and other game events we are interested in
         WindowCloseEvent.EVENT.register(this::onWindowClose);

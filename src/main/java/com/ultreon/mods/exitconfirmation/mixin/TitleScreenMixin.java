@@ -38,7 +38,7 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Override
     public void keyPressed(char c, int i) {
-        if (i == 1 && Config.getClosePrompt() && Config.getQuitOnEscInTitle()) {
+        if (i == 1/* && Config.getClosePrompt() && Config.getQuitOnEscInTitle()*/) {
             if (!exitConfirmation$escPress) {
                 exitConfirmation$escPress = true;
                 Minecraft minecraft = ExitConfirmation.minecraft;
@@ -62,7 +62,7 @@ public abstract class TitleScreenMixin extends Screen {
 
     public void keyReleased(int keyCode) {
         Minecraft minecraft = ExitConfirmation.minecraft;
-        if (keyCode == 1 && exitConfirmation$escPress && Config.getClosePrompt() && Config.getQuitOnEscInTitle() && minecraft.currentScreen == this) {
+        if (keyCode == 1 && exitConfirmation$escPress/* && Config.getClosePrompt() && Config.getQuitOnEscInTitle()*/ && minecraft.currentScreen == this) {
             exitConfirmation$escPress = false;
         }
     }
