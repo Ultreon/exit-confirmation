@@ -10,3 +10,6 @@ pluginManagement {
 }
 
 rootProject.name = 'exit-confirmation'
+
+include "fabric"
+include "forge"

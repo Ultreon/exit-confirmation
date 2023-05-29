@@ -109,7 +109,10 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-**/build/
+fabric/build/
+forge/build/
+fabric/.gradle/
+forge/.gradle/
 
 # Common working directory
 run/
