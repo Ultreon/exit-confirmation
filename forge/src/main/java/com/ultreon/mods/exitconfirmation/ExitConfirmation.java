@@ -6,8 +6,8 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -88,9 +88,9 @@ public class ExitConfirmation {
     }
 
     @SubscribeEvent
-    public static void onTitleScreenInit(ScreenEvent.InitScreenEvent.Post event) {
+    public static void onTitleScreenInit(GuiScreenEvent.InitGuiEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
-        Screen screen = event.getScreen();
+        Screen screen = event.getGui();
         if (screen instanceof TitleScreen titleScreen) {
             setupGLFWCallback(mc);
             overrideQuitButton(mc, titleScreen);

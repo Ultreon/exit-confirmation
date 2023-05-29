@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent.BackgroundDrawnEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +70,7 @@ public class ConfirmExitScreen extends Screen {
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         pose.translate(0f, 0f, 400f);
         this.fillGradient(pose, 0, 0, this.width, this.height, -1072689136, -804253680);
-        MinecraftForge.EVENT_BUS.post(new BackgroundDrawnEvent(this, pose));
+        MinecraftForge.EVENT_BUS.post(new GuiScreenEvent.BackgroundDrawnEvent(this, pose));
 
         drawCenteredString(pose, this.font, this.title, this.width / 2, 70, 0xffffff);
         drawCenteredString(pose, this.font, DESCRIPTION, this.width / 2, 90, 0xbfbfbf);
