@@ -9,4 +9,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'exit-confirmation-fabric'
+rootProject.name = 'exit-confirmation'
+
+//include "forge"
+include "fabric"
