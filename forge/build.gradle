@@ -16,6 +16,10 @@ apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = "$rootProject.name-$project.name"
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(16))
+}
+
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
@@ -28,7 +32,7 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: minecraft_version
+    mappings channel: 'official', version: project.minecraft_version
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
