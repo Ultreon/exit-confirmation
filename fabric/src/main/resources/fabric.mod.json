@@ -15,7 +15,6 @@
     "sources": "https://github.com/Ultreon/exit-confirmation",
     "issues": "https://github.com/Ultreon/exit-confirmation/issues"
   },
-
   "license": "All Rights Reserved",
   "icon": "assets/exit_confirm/icon.png",
   "environment": "client",
@@ -30,7 +29,6 @@
   "mixins": [
     "exit-confirmation.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.14.21",
     "fabric": "*",
@@ -38,6 +36,6 @@
     "java": ">=17"
   },
   "recommends": {
-    "forgeconfigapiport": ">=7 <8"
+    "modmenu": "*"
   }
 }
