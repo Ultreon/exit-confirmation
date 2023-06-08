@@ -1,7 +1,7 @@
 package com.ultreon.mods.exitconfirmation.mixin;
 
-import com.ultreon.mods.exitconfirmation.Config;
 import com.ultreon.mods.exitconfirmation.ConfirmExitScreen;
+import com.ultreon.mods.exitconfirmation.ExitConfirmation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -21,7 +21,7 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Inject(at = @At("HEAD"), method = "init")
     public void exitConfirmation$init(CallbackInfo ci) {
-        exitConfirmation$escPress = false;
+        this.exitConfirmation$escPress = false;
     }
 
     @Override
@@ -29,8 +29,8 @@ public abstract class TitleScreenMixin extends Screen {
         // TODO Add config support back again.
 //        if (keyCode == 256 && Config.closePrompt.get() && Config.quitOnEscInTitle.get()) {
         if (keyCode == 256) {
-            if (!exitConfirmation$escPress) {
-                exitConfirmation$escPress = true;
+            if (!this.exitConfirmation$escPress) {
+                this.exitConfirmation$escPress = true;
                 var minecraft = Minecraft.getInstance();
                 if (minecraft.screen == this) {
                     minecraft.setScreen(new ConfirmExitScreen(minecraft.screen));
@@ -46,8 +46,8 @@ public abstract class TitleScreenMixin extends Screen {
         var minecraft = Minecraft.getInstance();
 
         // TODO Add config support back again.
-        if (keyCode == 256 && exitConfirmation$escPress && Config.closePrompt && Config.quitOnEscInTitle && minecraft.screen == this) {
-            exitConfirmation$escPress = false;
+        if (keyCode == 256 && this.exitConfirmation$escPress && ExitConfirmation.CONFIG.closePrompt.get() && ExitConfirmation.CONFIG.quitOnEscInTitle.get() && minecraft.screen == this) {
+            this.exitConfirmation$escPress = false;
             return true;
         }
         return super.keyReleased(keyCode, scanCode, modifiers);

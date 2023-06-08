@@ -1,6 +1,6 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.mojang.blaze3d.platform.Window;
+import com.ultreon.mods.exitconfirmation.config.Config;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -17,14 +17,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class ExitConfirmation {
+    public static final Config CONFIG = new Config();
     private boolean callbackSetUp;
 
+    @ApiStatus.Internal
     public ExitConfirmation() {
 
     }
 
     @ApiStatus.Internal
-    public ActionResult onWindowClose(Window window, CloseSource source) {
+    public ActionResult onWindowClose(CloseSource source) {
         Minecraft mc = Minecraft.getInstance();
 
         // Check close source.
@@ -40,9 +42,9 @@ public class ExitConfirmation {
             }
 
             // Otherwise only cancel when the close prompt is enabled. TODO Add config support back again.
-            if (Config.closePrompt) {
+            if (CONFIG.closePrompt.get()) {
                 // Allow closing ingame if enabled in config. TODO Add config support back again.
-                if (mc.level != null && !Config.closePromptInGame) {
+                if (mc.level != null && !CONFIG.closePromptInGame.get()) {
                     return ActionResult.PASS;
                 }
 
@@ -57,7 +59,7 @@ public class ExitConfirmation {
             }
         } else if (source == CloseSource.QUIT_BUTTON) {
             // Cancel quit button when set in config, and screen isn't currently the confirmation screen already. TODO Add config support back again.
-            if (Config.closePrompt && Config.closePromptQuitButton && !(mc.screen instanceof ConfirmExitScreen)) {
+            if (CONFIG.closePrompt.get() && CONFIG.closePromptQuitButton.get() && !(mc.screen instanceof ConfirmExitScreen)) {
                 mc.setScreen(new ConfirmExitScreen(mc.screen));
                 return ActionResult.CANCEL;
             }
@@ -78,8 +80,8 @@ public class ExitConfirmation {
         // Only if it's the title screen.
         if (screen instanceof TitleScreen titleScreen) {
             // Set everything up.
-            setupGLFWCallback(client);
-            overrideQuitButton(client, titleScreen);
+            this.setupGLFWCallback(client);
+            this.overrideQuitButton(client, titleScreen);
         }
     }
 
@@ -99,9 +101,7 @@ public class ExitConfirmation {
         // Only override if the quit button is found.
         quitButton.ifPresent(widget -> {
             // Override on press field. (Requires access widener)
-            widget.onPress = (button) -> {
-                ExitConfirmation.onQuitButtonClick(client, titleScreen, widget);
-            };
+            widget.onPress = (button) -> ExitConfirmation.onQuitButtonClick(client, titleScreen, widget);
         });
     }
 
@@ -117,15 +117,13 @@ public class ExitConfirmation {
      */
     @SuppressWarnings("resource")
     private void setupGLFWCallback(Minecraft client) {
-        if (!callbackSetUp) {
+        if (!this.callbackSetUp) {
             // Intercepting close button / ALT+F4 (on Windows and Ubuntu)
             long handle = client.getWindow().getWindow();
 
             // Set the callback.
-            GLFW.glfwSetWindowCloseCallback(handle, window -> {
-                ExitConfirmation.onCloseCallback(client, handle, window);
-            });
-            callbackSetUp = true;
+            GLFW.glfwSetWindowCloseCallback(handle, window -> ExitConfirmation.onCloseCallback(client, handle, window));
+            this.callbackSetUp = true;
         }
     }
 

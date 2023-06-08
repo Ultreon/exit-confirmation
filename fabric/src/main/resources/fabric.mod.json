@@ -2,25 +2,29 @@
   "schemaVersion": 1,
   "id": "exit_confirm",
   "version": "${version}",
-
   "name": "Exit Confirmation",
   "description": "Shows an exit confirmation screen when trying to close Minecraft.",
   "authors": [
+    "Ultreon Team"
+  ],
+  "contributors": [
     "Qboi"
   ],
   "contact": {
-    "homepage": "https://ultreon.github.io/web/",
+    "homepage": "https://ultreon.github.io",
     "sources": "https://github.com/Ultreon/exit-confirmation",
     "issues": "https://github.com/Ultreon/exit-confirmation/issues"
   },
 
   "license": "All Rights Reserved",
   "icon": "assets/exit_confirm/icon.png",
-  "accessWidener": "exit-confirmation.accesswidener",
   "environment": "client",
   "entrypoints": {
     "client": [
       "com.ultreon.mods.exitconfirmation.fabric.ExitConfirmationFabric"
+    ],
+    "modmenu": [
+      "com.ultreon.mods.exitconfirmation.fabric.ExitConfirmationModMenu"
     ]
   },
   "mixins": [

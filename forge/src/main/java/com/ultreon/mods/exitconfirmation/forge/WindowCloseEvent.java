@@ -25,7 +25,7 @@ public class WindowCloseEvent extends Event {
     }
 
     public CloseSource getSource() {
-        return source;
+        return this.source;
     }
 
     public static boolean isInitialized() {
