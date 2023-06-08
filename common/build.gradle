@@ -1,0 +1,47 @@
+//file:noinspection GradlePackageUpdate
+architectury {
+    common()
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/exit-confirmation.accesswidener")
+}
+
+repositories {
+    maven { url = "https://cursemaven.com" }
+}
+
+dependencies {
+    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
+    // Do NOT use other classes from fabric loader
+    modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
+
+//    modCompileOnly "curse.maven:forgeapiportfabric-547434:3671141"
+//    modCompileOnly 'com.electronwill.night-config:core:3.6.3'
+//    modCompileOnly 'com.electronwill.night-config:toml:3.6.3'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs += [
+                    "src/main/generated/resources"
+            ]
+            System.out.println(srcDirs)
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            artifactId = rootProject.archives_base_name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
+}

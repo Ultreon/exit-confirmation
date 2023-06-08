@@ -20,7 +20,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.ultreon.mods.exitconfirmation.ExitConfirmation"
+      "com.ultreon.mods.exitconfirmation.fabric.ExitConfirmationFabric"
     ]
   },
   "mixins": [

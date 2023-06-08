@@ -19,7 +19,7 @@ modId = "exit_confirm" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version = "${file.jarVersion}" #mandatory
+version = "${version}" #mandatory
 # A display name for the mod
 displayName = "Exit Confirmation" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
@@ -33,7 +33,7 @@ logoFile="exit-confirmation.png" #optional
 # A text field displayed in the mod UI
 authors = "Qboi123" #optional
 # The description text for the mod (multi line!) (#mandatory)
-description = "Shows an exit confirmation screen when trying to close Minecraft."
+description = "$[mod_description"
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.exit_confirm]] #optional
 # the modid of the dependency

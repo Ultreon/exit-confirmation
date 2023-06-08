@@ -1,5 +1,6 @@
 package com.ultreon.mods.exitconfirmation.mixin;
 
+import com.ultreon.mods.exitconfirmation.Config;
 import com.ultreon.mods.exitconfirmation.ConfirmExitScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -45,8 +46,7 @@ public abstract class TitleScreenMixin extends Screen {
         var minecraft = Minecraft.getInstance();
 
         // TODO Add config support back again.
-//        if (keyCode == 256 && exitConfirmation$escPress && Config.closePrompt.get() && Config.quitOnEscInTitle.get() && minecraft.screen == this) {
-        if (keyCode == 256 && exitConfirmation$escPress && minecraft.screen == this) {
+        if (keyCode == 256 && exitConfirmation$escPress && Config.closePrompt && Config.quitOnEscInTitle && minecraft.screen == this) {
             exitConfirmation$escPress = false;
             return true;
         }

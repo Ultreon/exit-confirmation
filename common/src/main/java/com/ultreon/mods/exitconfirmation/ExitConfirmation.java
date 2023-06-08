@@ -1,8 +1,7 @@
 package com.ultreon.mods.exitconfirmation;
 
 import com.mojang.blaze3d.platform.Window;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -10,32 +9,26 @@ import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
 
 import java.util.List;
 import java.util.Optional;
 
-
-public class ExitConfirmation implements ClientModInitializer {
-
-    public static final String MOD_ID = "exit_confirm";
-
-    // Directly reference a log4j logger.
-    @SuppressWarnings("unused")
-    static final Logger LOGGER = LogManager.getLogger();
-    private boolean callbackSetUp = false;
+public class ExitConfirmation {
+    private boolean callbackSetUp;
 
     public ExitConfirmation() {
+
     }
 
-    public ActionResult onWindowClose(Window window, WindowCloseEvent.Source source) {
+    @ApiStatus.Internal
+    public ActionResult onWindowClose(Window window, CloseSource source) {
         Minecraft mc = Minecraft.getInstance();
 
         // Check close source.
-        if (source == WindowCloseEvent.Source.GENERIC) {
+        if (source == CloseSource.GENERIC) {
             // Always cancel if the world isn't loaded but also being ingame. (Fixes bug)
             if (mc.level == null && mc.screen == null) {
                 return ActionResult.CANCEL;
@@ -47,12 +40,11 @@ public class ExitConfirmation implements ClientModInitializer {
             }
 
             // Otherwise only cancel when the close prompt is enabled. TODO Add config support back again.
-//            if (Config.closePrompt.get()) {
-            if (true) {
+            if (Config.closePrompt) {
                 // Allow closing ingame if enabled in config. TODO Add config support back again.
-//                if (mc.level != null && !Config.closePromptInGame.get()) {
-//                    return ActionResult.PASS;
-//                }
+                if (mc.level != null && !Config.closePromptInGame) {
+                    return ActionResult.PASS;
+                }
 
                 // Only show screen, when the screen isn't the confirmation screen already.
                 if (!(mc.screen instanceof ConfirmExitScreen)) {
@@ -63,10 +55,9 @@ public class ExitConfirmation implements ClientModInitializer {
                 // Cancel the event.
                 return ActionResult.CANCEL;
             }
-        } else if (source == WindowCloseEvent.Source.QUIT_BUTTON) {
+        } else if (source == CloseSource.QUIT_BUTTON) {
             // Cancel quit button when set in config, and screen isn't currently the confirmation screen already. TODO Add config support back again.
-//            if (Config.closePrompt.get() && Config.closePromptQuitButton.get() && !(mc.screen instanceof ConfirmExitScreen)) {
-            if (true) {
+            if (Config.closePrompt && Config.closePromptQuitButton && !(mc.screen instanceof ConfirmExitScreen)) {
                 mc.setScreen(new ConfirmExitScreen(mc.screen));
                 return ActionResult.CANCEL;
             }
@@ -76,27 +67,14 @@ public class ExitConfirmation implements ClientModInitializer {
         return ActionResult.PASS;
     }
 
-    @Override
-    public void onInitializeClient() {
-        // Initialize config. TODO Add config support back again.
-//        Config.initialize();
-
-        // Register ourselves for server and other game events we are interested in
-        WindowCloseEvent.EVENT.register(this::onWindowClose);
-
-        // Intercept things when the title screen opened.
-        ScreenEvents.AFTER_INIT.register(this::onTitleScreenInit);
-    }
-
     /**
      * Sets everything up when the title screen is shown.
      *
      * @param client the minecraft client.
      * @param screen the initialized screen. (Only used if it's the title screen)
-     * @param scaledWidth scaled width of the screen.
-     * @param scaledHeight scaled height of the screen.
      */
-    private void onTitleScreenInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
+    @ApiStatus.Internal
+    public void onTitleScreenInit(Minecraft client, Screen screen) {
         // Only if it's the title screen.
         if (screen instanceof TitleScreen titleScreen) {
             // Set everything up.
@@ -122,12 +100,14 @@ public class ExitConfirmation implements ClientModInitializer {
         quitButton.ifPresent(widget -> {
             // Override on press field. (Requires access widener)
             widget.onPress = (button) -> {
-                ActionResult result = WindowCloseEvent.EVENT.invoker().closing(client.getWindow(), WindowCloseEvent.Source.GENERIC);
-                if (result != ActionResult.CANCEL) {
-                    client.stop();
-                }
+                ExitConfirmation.onQuitButtonClick(client, titleScreen, widget);
             };
         });
+    }
+
+    @ExpectPlatform
+    public static void onQuitButtonClick(Minecraft client, TitleScreen titleScreen, Button widget) {
+        throw new AssertionError("Not implemented");
     }
 
     /**
@@ -143,12 +123,14 @@ public class ExitConfirmation implements ClientModInitializer {
 
             // Set the callback.
             GLFW.glfwSetWindowCloseCallback(handle, window -> {
-                ActionResult result = WindowCloseEvent.EVENT.invoker().closing(client.getWindow(), WindowCloseEvent.Source.GENERIC);
-                if (result == ActionResult.CANCEL) {
-                    GLFW.glfwSetWindowShouldClose(window, false);
-                }
+                ExitConfirmation.onCloseCallback(client, handle, window);
             });
             callbackSetUp = true;
         }
+    }
+
+    @ExpectPlatform
+    public static void onCloseCallback(Minecraft client, long handle, long window) {
+        throw new AssertionError("Not implemented");
     }
 }

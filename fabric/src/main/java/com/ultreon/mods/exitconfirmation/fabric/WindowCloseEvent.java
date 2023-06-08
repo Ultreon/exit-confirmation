@@ -1,6 +1,8 @@
-package com.ultreon.mods.exitconfirmation;
+package com.ultreon.mods.exitconfirmation.fabric;
 
 import com.mojang.blaze3d.platform.Window;
+import com.ultreon.mods.exitconfirmation.ActionResult;
+import com.ultreon.mods.exitconfirmation.CloseSource;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
@@ -18,10 +20,5 @@ public interface WindowCloseEvent {
         return ActionResult.PASS;
     });
  
-    ActionResult closing(Window window, Source source);
-
-    enum Source {
-        GENERIC,
-        QUIT_BUTTON
-    }
+    ActionResult closing(Window window, CloseSource source);
 }

@@ -1,90 +1,115 @@
 //file:noinspection GroovyAssignabilityCheck
+//file:noinspection GrDeprecatedAPIUsage
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
-	id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+version rootProject.version
 
-archivesBaseName = archives_base_name
-
-repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
-
-	maven {
-		name "Fuzs Mod Resources"
-		url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-	}
-	maven {
-		url "https://cursemaven.com"
-		content {
-			includeGroup "curse.maven"
-		}
-	}
+architectury {
+    platformSetupLoomIde()
+    fabric()
 }
 
 loom {
-	accessWidenerPath = file("$projectDir/src/main/resources/exit-confirmation.accesswidener")
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+    runs {
+        data {
+            inherit client
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("../common/src/main/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.modid=tuem"
+   //         vmArg "-Dfabric-api.datagen.strict-validation"
+            runDir "build/datagen"
+        }
+    }
+}
+
+repositories {
+    maven { url = "https://cursemaven.com" }
+    maven { url "https://maven.terraformersmc.com/releases" }
+    mavenCentral()
+}
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:$project.minecraft_version"
-	modImplementation "net.fabricmc:fabric-loader:$project.loader_version"
+    modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
+    modApi "net.fabricmc.fabric-api:fabric-api:$fabric_api_version+$minecraft_version"
 
-//	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	mappings loom.officialMojangMappings()
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}+$minecraft_version"
+//    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forge_config_api_port_version"
+//    modImplementation "com.electronwill.night-config:core:$nightconfig_version"
+//    modImplementation "com.electronwill.night-config:toml:$nightconfig_version"
 
-	modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forge_config_api_port_version"
+    modImplementation "com.terraformersmc:modmenu:$modmenu_version", {
+        exclude module: "fabric-api"
+    }
 }
 
 processResources {
-	inputs.property "version", project.version
+    inputs.property "version", rootProject.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
+    filesMatching("fabric.mod.json") {
+        HashMap<String, ?> p = new HashMap<>()
+        p.put("version", rootProject.version)
+        p.put("description", rootProject.getModDescription())
+        p.put("loaderVersion", rootProject.fabric_loader_version)
+        p.put("minecraftVersion", rootProject.architectury.minecraft)
+        expand(p)
+    }
+
+    from "$rootProject.projectDir/LICENSE"
+    from project(":forge").file("src/generated")
 }
 
-tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release.set(17)
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier.set("dev-shadow")
 }
 
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
+remapJar {
+    injectAccessWidener = true
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier.set(null)
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
-	}
+    archiveClassifier.set("dev")
 }
 
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenFabric(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
 }
