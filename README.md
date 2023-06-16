@@ -9,3 +9,6 @@ Discord: https://discord.gg/dtdc46g6ry
 
 ## Want to translate?
 You can do that at https://crowdin.com/project/ultreon-team
+
+## Want to test the mod early?
+The latest builds are available at https://app.circleci.com/pipelines/github/Ultreon/exit-confirmation
