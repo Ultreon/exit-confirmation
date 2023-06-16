@@ -4,7 +4,7 @@
   "screen.exit_confirm.config": "Exit Confirmation Config",
   "exit_confirm.config.prompt.enable": "Enable Close Prompt",
   "exit_confirm.config.prompt.inGame": "In-Game Close Prompt",
-  "exit_confirm.config.prompt.quitButton": "Quit Buttom Close Prompt",
+  "exit_confirm.config.prompt.quitButton": "Quit Button Close Prompt",
   "exit_confirm.config.prompt.escInTitle": "Escape in Title Screen Shows Close Prompt",
   "exit_confirm.config.screen.forceDirtBackground": "Force Dirt Background in Close Prompt",
   "exit_confirm.config.screen.forceTransparentBackground": "Force Transparent Background in Close Prompt",
