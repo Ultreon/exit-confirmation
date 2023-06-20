@@ -1,29 +1,46 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version "1.2-SNAPSHOT"
+	id 'legacy-looming' version "1.2-SNAPSHOT" // Version must be the same as fabric-loom's
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+version = project.mod_version
+group = project.maven_group
 
-archivesBaseName = "$rootProject.name-$project.name"
+repositories {
+}
 
 loom {
-	accessWidenerPath = file("$projectDir/src/main/resources/exit-confirmation.accesswidener")
+	// Only needed for versions not available from vanilla launcher by default.
+	// customMinecraftManifest.set("https://meta.legacyfabric.net/v2/manifest/${minecraft_version}")
+
+	// Required by 1.7.x
+	// runs {
+	// 	client {
+	// 		programArgs "--userProperties", "{}"
+	// 	}
+	// }
+}
+
+legacy {
+
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings(legacy.yarn(project.minecraft_version, project.yarn_build))
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-//	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	mappings loom.officialMojangMappings()
+	// Fabric API provides hooks for events, item registration, and more. As most mods will need this, it's included by default. 
+	// If you know for a fact you don't, it's not required and can be safely removed.
+	modImplementation ("net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${project.fabric_version}")
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	// You can retrieve a specific api module using this notation.
+//	modImplementation(legacy.apiModule("legacy-fabric-item-groups-v1", project.fabric_version))
+}
 
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:$forge_config_api_port"
+base {
+	archivesName = project.archives_base_name
 }
 
 processResources {
@@ -34,9 +51,15 @@ processResources {
 	}
 }
 
+// ensure that the encoding is set to UTF-8, no matter what the system default is
+// this fixes some edge cases with special characters not displaying correctly
+// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.17.x uses Java 16.
-	it.options.release = 16
+	it.options.encoding = "UTF-8"
+	if (JavaVersion.current().isJava9Compatible()) it.options.release = 8
+
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 java {
@@ -48,7 +71,7 @@ java {
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${base.archivesName.get()}" }
 	}
 }
 
@@ -60,11 +83,9 @@ publishing {
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	// select the repositories you want to publish to
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+		// uncomment to publish to the local maven
+		// mavenLocal()
 	}
 }

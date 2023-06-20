@@ -1,11 +1,10 @@
 package com.ultreon.mods.exitconfirmation.mixin;
 
-import com.ultreon.mods.exitconfirmation.Config;
 import com.ultreon.mods.exitconfirmation.ConfirmExitScreen;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.network.chat.Component;
+import com.ultreon.mods.exitconfirmation.ExitConfirmation;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,39 +12,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen {
-    private boolean exitConfirmation$escPress;
+//    @Inject(method = "buttonClicked", at = @At("HEAD"), cancellable = true)
+//    public void exitConfirm$injectButtonClick(ButtonWidget button, CallbackInfo ci) {
+//        if (button.id == 4) {
+//            ActionResult result = WindowCloseEvent.EVENT.invoker().closing(WindowCloseEvent.Source.GENERIC);
+//            if (result != ActionResult.CANCEL) {
+//                ExitConfirmation.allowExit = true;
+//                client.scheduleStop();
+//            }
+//            ci.cancel();
+//        }
+//    }
 
-    protected TitleScreenMixin(Component component) {
-        super(component);
-    }
-
-    @Inject(at = @At("HEAD"), method = "init")
-    public void exitConfirmation$init(CallbackInfo ci) {
-        exitConfirmation$escPress = false;
-    }
-
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == 256 && Config.closePrompt.get() && Config.quitOnEscInTitle.get()) {
-            if (!exitConfirmation$escPress) {
-                exitConfirmation$escPress = true;
-                var minecraft = Minecraft.getInstance();
-                if (minecraft.screen == this) {
-                    minecraft.setScreen(new ConfirmExitScreen(minecraft.screen));
-                    return true;
-                }
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    public void exitConfirm$injectEscapePrompt(char id, int code, CallbackInfo ci) {
+        if (code == Keyboard.KEY_ESCAPE && ExitConfirmation.CONFIG.closePrompt.get() && ExitConfirmation.CONFIG.quitOnEscInTitle.get()) {
+            if (this.client.currentScreen == this) {
+                this.client.setScreen(new ConfirmExitScreen(this.client.currentScreen));
+                ci.cancel();
             }
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-
-    @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        var minecraft = Minecraft.getInstance();
-        if (keyCode == 256 && exitConfirmation$escPress && Config.closePrompt.get() && Config.quitOnEscInTitle.get() && minecraft.screen == this) {
-            exitConfirmation$escPress = false;
-            return true;
-        }
-        return super.keyReleased(keyCode, scanCode, modifiers);
     }
 }

@@ -1,96 +1,86 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.text2speech.Narrator;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.NarratorStatus;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.MultiLineLabel;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
-@OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = ExitConfirmation.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class ConfirmExitScreen extends Screen {
-    private static final Component DESCRIPTION = new TranslatableComponent("screen.exit_confirm.description");
-    private static final Component TITLE = new TranslatableComponent("screen.exit_confirm.title");
-    private final MultiLineLabel label = MultiLineLabel.EMPTY;
-    private final Component yesButtonText;
-    private final Component noButtonText;
+@SideOnly(Side.CLIENT)
+public class ConfirmExitScreen extends GuiScreen {
+    private final String description = I18n.format("screen.exit_confirm.description");
+    private final String title = I18n.format("screen.exit_confirm.title");
+    private GuiScreen previousScreen;
+    private int ticksUntilEnableIn;
 
-    public ConfirmExitScreen() {
-        super(TITLE);
-        this.yesButtonText = CommonComponents.GUI_YES;
-        this.noButtonText = CommonComponents.GUI_NO;
+    public ConfirmExitScreen(GuiScreen previousScreen) {
+        super();
     }
 
-    protected void init() {
-        super.init();
+    @Override
+    public void initGui() {
+        super.initGui();
 
-        NarratorStatus narratorStatus = Objects.requireNonNull(this.minecraft).options.narratorStatus;
+        this.buttonList.clear();
 
-        if (narratorStatus == NarratorStatus.SYSTEM || narratorStatus == NarratorStatus.ALL) {
-            Narrator.getNarrator().say("Are you sure you want to exit Minecraft?", true);
-        }
+        GuiButton yesButton;
+        this.buttonList.add(yesButton = new GuiButton(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, I18n.format("misc.yes")));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, I18n.format("misc.no")));
 
-        this.clearWidgets();
+        yesButton.enabled = false;
 
-        this.addRenderableWidget(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
-            if (this.minecraft != null) {
-                btn.active = false;
-                if (this.minecraft.level != null && this.minecraft.isLocalServer()) {
+        this.setButtonDelay(10);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        if (button.id == 0) {
+            if (this.mc != null) {
+                button.enabled = false;
+                if (this.mc.theWorld != null && this.mc.isIntegratedServerRunning()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;
                 }
 
-                this.minecraft.stop();
+                this.mc.shutdown();
             }
-        }));
-        this.addRenderableWidget(new Button(this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText, (btn) -> {
-            if (this.minecraft != null) {
-                btn.active = false;
-                this.minecraft.popGuiLayer();
+        } else if (button.id == 1) {
+            if (this.mc != null) {
+                button.enabled = false;
+                this.mc.displayGuiScreen(this.previousScreen);
             }
-        }));
-
-        setButtonDelay(10);
+        }
     }
 
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        pose.translate(0f, 0f, 400f);
-        this.fillGradient(pose, 0, 0, this.width, this.height, -1072689136, -804253680);
-        MinecraftForge.EVENT_BUS.post(new GuiScreenEvent.BackgroundDrawnEvent(this, pose));
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
 
-        drawCenteredString(pose, this.font, this.title, this.width / 2, 70, 0xffffff);
-        drawCenteredString(pose, this.font, DESCRIPTION, this.width / 2, 90, 0xbfbfbf);
-        this.label.renderCentered(pose, this.width / 2, 90);
-        super.render(pose, mouseX, mouseY, partialTicks);
+        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 70, 0xffffff);
+        this.drawCenteredString(this.fontRendererObj, this.description, this.width / 2, 90, 0xbfbfbf);
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
+
     }
 
     /**
      * Sets the number of ticks to wait before enabling the buttons.
      */
-    public void setButtonDelay(int ticksUntilEnableIn) {
-
+    public void setButtonDelay(int ticksUntilEnable) {
+        this.ticksUntilEnableIn = ticksUntilEnable;
     }
 
     public void tick() {
-
+        if (--this.ticksUntilEnableIn == 0) {
+            for (GuiButton guiButton : this.buttonList) {
+                guiButton.enabled = true;
+            }
+        }
     }
 
     public void back() {
-        Minecraft.getInstance().popGuiLayer();
+        this.mc.displayGuiScreen(this.previousScreen);
     }
 
     public boolean shouldCloseOnEsc() {
@@ -98,7 +88,7 @@ public class ConfirmExitScreen extends Screen {
     }
 
     @Override
-    public void onClose() {
-        back();
+    protected void keyTyped(char typedChar, int keyCode) {
+        // Don't allow closing the GUI
     }
 }

@@ -1,99 +1,87 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.text2speech.Narrator;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.NarratorStatus;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.MultiLineLabel;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
+@Environment(EnvType.CLIENT)
 public class ConfirmExitScreen extends Screen {
-    private static final Component DESCRIPTION = new TranslatableComponent("screen.exit_confirm.description");
-    private static final Component TITLE = new TranslatableComponent("screen.exit_confirm.title");
-    private final MultiLineLabel label = MultiLineLabel.EMPTY;
-    private final Component yesButtonText;
-    private final Component noButtonText;
-    private final Screen background;
+    private final String description = I18n.translate("screen.exit_confirm.description");
+    private final String title = I18n.translate("screen.exit_confirm.title");
+    private Screen previousScreen;
+    private int ticksUntilEnableIn;
 
-    public ConfirmExitScreen(Screen background) {
-        super(TITLE);
-        this.yesButtonText = CommonComponents.GUI_YES;
-        this.noButtonText = CommonComponents.GUI_NO;
-
-        this.background = background;
+    public ConfirmExitScreen(Screen previousScreen) {
+        super();
     }
 
-    protected void init() {
+    @Override
+    public void init() {
         super.init();
 
-        NarratorStatus narratorStatus = Objects.requireNonNull(this.minecraft).options.narratorStatus;
+        this.buttons.clear();
 
-        if (narratorStatus == NarratorStatus.SYSTEM || narratorStatus == NarratorStatus.ALL) {
-            Narrator.getNarrator().say("Are you sure you want to exit Minecraft?", true);
-        }
+        ButtonWidget yesButton;
+        this.buttons.add(yesButton = new ButtonWidget(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, I18n.translate("gui.yes")));
+        this.buttons.add(new ButtonWidget(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, I18n.translate("gui.no")));
 
-        this.clearWidgets();
+        yesButton.active = false;
 
-        this.addRenderableWidget(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
-            if (this.minecraft != null) {
-                btn.active = false;
-                if (this.minecraft.level != null && this.minecraft.isLocalServer()) {
+        this.setButtonDelay(ExitConfirmation.CONFIG.confirmDelay.get());
+    }
+
+    @Override
+    protected void buttonClicked(ButtonWidget button) {
+        if (button.id == 0) {
+            if (this.client != null) {
+                button.active = false;
+                ExitConfirmation.allowExit = true;
+                if (this.client.world != null && this.client.isIntegratedServerRunning()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;
                 }
 
-                this.minecraft.stop();
+                this.client.scheduleStop();
             }
-        }));
-        this.addRenderableWidget(new Button(this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText, (btn) -> {
-            if (this.minecraft != null) {
-                btn.active = false;
-                this.minecraft.setScreen(background);
+        } else if (button.id == 1) {
+            if (this.client != null) {
+                button.active = false;
+                this.client.setScreen(this.previousScreen);
             }
-        }));
-
-        setButtonDelay(10);
+        }
     }
 
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        if (background != null) {
-            pose.pushPose();
-            pose.translate(0f, 0f, -10f);
-            background.render(pose, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
-            pose.popPose();
-        }
+    @Override
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground();
 
-        pose.pushPose();
-        this.fillGradient(pose, 0, 0, this.width, this.height, -1072689136, -804253680);
+        this.drawCenteredString(this.textRenderer, this.title, this.width / 2, 70, 0xffffff);
+        this.drawCenteredString(this.textRenderer, this.description, this.width / 2, 90, 0xbfbfbf);
 
-        drawCenteredString(pose, this.font, this.title, this.width / 2, 70, 0xffffff);
-        drawCenteredString(pose, this.font, DESCRIPTION, this.width / 2, 90, 0xbfbfbf);
-        this.label.renderCentered(pose, this.width / 2, 90);
-        super.render(pose, mouseX, mouseY, partialTicks);
-        pose.popPose();
+        super.render(mouseX, mouseY, partialTicks);
+
     }
 
     /**
      * Sets the number of ticks to wait before enabling the buttons.
      */
-    public void setButtonDelay(int ticksUntilEnableIn) {
-
+    public void setButtonDelay(int ticksUntilEnable) {
+        this.ticksUntilEnableIn = ticksUntilEnable;
     }
 
     public void tick() {
-
+        if (--this.ticksUntilEnableIn == 0) {
+            for (ButtonWidget guiButton : this.buttons) {
+                guiButton.active = true;
+            }
+        }
     }
 
     public void back() {
-        Minecraft.getInstance().setScreen(background);
+        this.client.setScreen(this.previousScreen);
     }
 
     public boolean shouldCloseOnEsc() {
@@ -101,7 +89,7 @@ public class ConfirmExitScreen extends Screen {
     }
 
     @Override
-    public void onClose() {
-        back();
+    protected void keyPressed(char id, int code) {
+
     }
 }
