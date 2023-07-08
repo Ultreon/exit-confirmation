@@ -7,6 +7,7 @@
   "mixins": [
   ],
   "client": [
+    "PauseScreenMixin",
     "TitleScreenMixin"
   ],
   "injectors": {
