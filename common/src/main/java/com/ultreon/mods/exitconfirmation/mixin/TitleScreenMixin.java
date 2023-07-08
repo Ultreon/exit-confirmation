@@ -26,9 +26,7 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // TODO Add config support back again.
-//        if (keyCode == 256 && Config.closePrompt.get() && Config.quitOnEscInTitle.get()) {
-        if (keyCode == 256) {
+        if (keyCode == 256 && ExitConfirmation.CONFIG.closePrompt.get() && ExitConfirmation.CONFIG.quitOnEscInTitle.get()) {
             if (!this.exitConfirmation$escPress) {
                 this.exitConfirmation$escPress = true;
                 var minecraft = Minecraft.getInstance();
