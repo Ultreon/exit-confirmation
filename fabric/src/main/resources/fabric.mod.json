@@ -27,7 +27,7 @@
     ]
   },
   "mixins": [
-    "exit-confirmation.mixins.json"
+    "exit-confirmation-common.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.21",
