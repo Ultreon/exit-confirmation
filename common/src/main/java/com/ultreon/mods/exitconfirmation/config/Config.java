@@ -32,7 +32,7 @@ public class Config {
         this.forceTransparentBackground = this.add("screen.forceTransparentBackground", true, "Make the background of the close prompt always transparent.");
         this.allowNarrator = this.add("screen.allowNarrator", false, "Enable the narrator in the close prompt.");
         this.confirmDelay = this.add("screen.confirmDelay", 40, 5, 100, "Confirmation delay in ticks.");
-        this.disconnectPrompt = this.add("prompt.disconnect", true, "Show disconnect prompt when quitting from world or server.");
+        this.disconnectPrompt = this.add("prompt.disconnect", false, "Show disconnect prompt when quitting from world or server.");
     }
 
     private ConfigEntry<Boolean> add(String key, boolean defaultValue, String comment) {
