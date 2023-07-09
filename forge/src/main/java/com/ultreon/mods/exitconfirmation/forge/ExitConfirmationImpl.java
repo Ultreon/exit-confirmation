@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.glfw.GLFW;
 
 public class ExitConfirmationImpl {
     public static void onQuitButtonClick(Minecraft mc, TitleScreen titleScreen, Button widget) {
@@ -16,8 +17,8 @@ public class ExitConfirmationImpl {
 
     public static void onCloseCallback(Minecraft mc, long handle, long window) {
         boolean flag = MinecraftForge.EVENT_BUS.post(new WindowCloseEvent(CloseSource.GENERIC));
-        if (!flag) {
-            mc.stop();
+        if (flag) {
+            GLFW.glfwSetWindowShouldClose(window, false);
         }
     }
 }

@@ -27,17 +27,22 @@ public class ExitConfirmation {
 
     @ApiStatus.Internal
     public ActionResult onWindowClose(CloseSource source) {
-        Minecraft mc = Minecraft.getInstance();
+        final Minecraft mc = Minecraft.getInstance();
+
+        final Screen screen = mc.screen;
+        if (screen instanceof ConfirmExitScreen) {
+            return ActionResult.CANCEL;
+        }
 
         // Check close source.
         if (source == CloseSource.GENERIC) {
             // Always cancel if the world isn't loaded but also being ingame. (Fixes bug)
-            if (mc.level == null && mc.screen == null) {
+            if (mc.level == null && screen == null) {
                 return ActionResult.CANCEL;
             }
 
             // Always cancel when loading the world.
-            if (mc.screen instanceof LevelLoadingScreen) {
+            if (screen instanceof LevelLoadingScreen) {
                 return ActionResult.CANCEL;
             }
 
@@ -49,9 +54,9 @@ public class ExitConfirmation {
                 }
 
                 // Only show screen, when the screen isn't the confirmation screen already.
-                if (!(mc.screen instanceof ConfirmExitScreen)) {
+                if (!(screen instanceof ConfirmExitScreen)) {
                     // Set the screen.
-                    mc.setScreen(new ConfirmExitScreen(mc.screen));
+                    mc.setScreen(new ConfirmExitScreen(screen));
                 }
 
                 // Cancel the event.
@@ -59,8 +64,8 @@ public class ExitConfirmation {
             }
         } else if (source == CloseSource.QUIT_BUTTON) {
             // Cancel quit button when set in config, and screen isn't currently the confirmation screen already. TODO Add config support back again.
-            if (CONFIG.closePrompt.get() && CONFIG.closePromptQuitButton.get() && !(mc.screen instanceof ConfirmExitScreen)) {
-                mc.setScreen(new ConfirmExitScreen(mc.screen));
+            if (CONFIG.closePrompt.get() && CONFIG.closePromptQuitButton.get() && !(screen instanceof ConfirmExitScreen)) {
+                mc.setScreen(new ConfirmExitScreen(screen));
                 return ActionResult.CANCEL;
             }
         }

@@ -1,5 +1,6 @@
 package com.ultreon.mods.exitconfirmation.forge;
 
+import com.ultreon.mods.exitconfirmation.ActionResult;
 import com.ultreon.mods.exitconfirmation.CloseSource;
 import com.ultreon.mods.exitconfirmation.config.Config;
 import com.ultreon.mods.exitconfirmation.ExitConfirmation;
@@ -42,7 +43,7 @@ public class ExitConfirmationForge {
     public void onWindowClose(WindowCloseEvent event) {
         CloseSource source = event.getSource();
 
-        this.common.onWindowClose(source);
+        event.setCanceled(this.common.onWindowClose(source) == ActionResult.CANCEL);
     }
 
     @SubscribeEvent
