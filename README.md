@@ -1,5 +1,5 @@
 # Exit Confirmation
-Exit Confirmation mod for Minecraft (Forge / Fabric).
+Exit Confirmation mod for Minecraft (NeoForged / Fabric).
 
 ## Links
 Curseforge: https://curseforge.com/minecraft/mc-mods/exit-confirmation  
