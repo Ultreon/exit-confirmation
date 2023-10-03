@@ -1,0 +1,13 @@
+{
+  "screen.exit_confirm.title": "Afsluit bevestiging",
+  "screen.exit_confirm.description": "Weet je zeker dat je Bubble Blaster wilt afsluiten?",
+  "screen.exit_confirm.config": "Exit Confirmation configuratie",
+  "exit_confirm.config.prompt.enable": "Schakel sluit prompt in",
+  "exit_confirm.config.prompt.inGame": "Sluit prompt in-game",
+  "exit_confirm.config.prompt.quitButton": "Afsluit knop in titel sluit prompt",
+  "exit_confirm.config.prompt.escInTitle": "Escape in titel scherm geeft sluit prompt weer",
+  "exit_confirm.config.screen.forceDirtBackground": "Forceer aarde achtergrond in sluit prompt",
+  "exit_confirm.config.screen.forceTransparentBackground": "Forceer doorzichtig achtergrond in sluit prompt",
+  "exit_confirm.config.screen.allowNarrator": "Sta narrator toe in sluit prompt",
+  "exit_confirm.config.screen.confirmDelay": "Sluit bevestiging vertraging in ticks"
+}

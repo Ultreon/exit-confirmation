@@ -1,0 +1,15 @@
+{
+  "screen.exit_confirm.title": "Подтверждение выхода",
+  "screen.exit_confirm.description": "Вы действительно хотите выйти из Bubble Blaster?",
+  "screen.exit_confirm.config": "Настройки Exit Confirmation",
+  "exit_confirm.config.prompt.enable": "Запрашивать подтверждение выхода",
+  "exit_confirm.config.prompt.inGame": "Запрос подтверждения во время игры",
+  "exit_confirm.config.prompt.quitButton": "Запрос подтверждения по кнопке выхода",
+  "exit_confirm.config.prompt.escInTitle": "Выход в главном меню по нажатию «Esc»",
+  "exit_confirm.config.screen.forceDirtBackground": "Всегда показывать сплошной фон",
+  "exit_confirm.config.screen.forceTransparentBackground": "Всегда показывать прозрачный фон",
+  "exit_confirm.config.screen.allowNarrator": "Диктор на экране подтверждения",
+  "exit_confirm.config.screen.confirmDelay": "Задержка безопасного закрытия (в тактах)",
+  "modmenu.summaryTranslation.exit_confirm": "Запрос подтверждения при выходе из Bubble Blaster.",
+  "modmenu.descriptionTranslation.exit_confirm": "При попытке закрыть Bubble Blaster будет показываться экран с подтверждением действия."
+}

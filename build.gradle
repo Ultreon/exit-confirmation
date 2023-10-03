@@ -1,77 +1,132 @@
-//file:noinspection GroovyAssignabilityCheck
-//file:noinspection GroovyAccessibility
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
+
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.2-SNAPSHOT" apply false
+    id "java"
+    id "java-library"
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
 }
+
+group 'xypercode'
+version '1.0.2'
+
 repositories {
-    gradlePluginPortal()
-}
-
-architectury {
-    minecraft = minecraft_version
-}
-
-version = mod_version
-
-@SuppressWarnings('unused')
-Object getModDescription() {
-    return "${mod_description}"
-}
-
-subprojects {
-    apply plugin: "dev.architectury.loom"
-
-    loom {
-        silentMojangMappingsLicense()
+    mavenCentral()
+    mavenLocal()
+    google()
+    maven {
+        name "Atlassian"
+        url "https://maven.atlassian.com/3rdparty/"
     }
-
-    dependencies {
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // The following line declares the mojmap mappings, you may use other mappings as well
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-1.19.3:2023.03.12@zip")
-        }
+    maven {
+        name "Maven Central"
+        url "https://repo1.maven.org/maven2/"
+    }
+    maven {
+        name "Jitpack"
+        url "https://jitpack.io/"
+    }
+    maven {
+        name "FabricMC"
+        url "https://maven.fabricmc.net/"
     }
 }
 
-allprojects {
-    apply plugin: "java"
-    apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
+configurations {
 
-    archivesBaseName = archives_base_name
-    version = "$mod_version-mc.$minecraft_version"
-    group = maven_group
+}
 
-    repositories {
-        // Add repositories to retrieve artifacts from in here.
-        // You should only use this when depending on other mods because
-        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-        // for more information about repositories.
-        maven { "https://maven.neoforged.net/" }
-        maven { url = "https://maven.parchmentmc.org" }
+dependencies {
+    implementation "com.github.Ultreon.bubble-blaster-2:core:libgdx-SNAPSHOT"
+    implementation "com.github.Ultreon.bubble-blaster-2:desktop:libgdx-SNAPSHOT"
+    implementation "com.github.Ultreon.bubble-blaster-2:desktop-merge:libgdx-SNAPSHOT"
+    implementation "com.github.Ultreon.bubble-blaster-2:gameprovider:libgdx-SNAPSHOT"
+    implementation "com.github.Ultreon.bubble-blaster-2:minimal:libgdx-SNAPSHOT"
 
-        maven {
-            name "Fuzs Mod Resources"
-            url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-        }
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
 
-        flatDir {
-            dir "${rootProject.projectDir}/libs"
-        }
+    // SLF4J
+    api "org.slf4j:slf4j-api:$slf4j_version"
+
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-bullet-platform:$gdx_version:natives-desktop"
+    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdx_controllers_version"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-desktop"
+
+    // fabric-loader dependencies
+    implementation "org.ow2.asm:asm:$asm_version"
+    implementation "org.ow2.asm:asm-analysis:$asm_version"
+    implementation "org.ow2.asm:asm-commons:$asm_version"
+    implementation "org.ow2.asm:asm-tree:$asm_version"
+    implementation "org.ow2.asm:asm-util:$asm_version"
+
+    implementation("net.fabricmc:sponge-mixin:$mixin_version") {
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
     }
 
-    tasks.withType(JavaCompile).tap {
-        configureEach {
-            options.encoding = "UTF-8"
-            options.release = 17
-        }
-    }
+    implementation 'net.fabricmc:tiny-mappings-parser:0.3.0+build.17'
+    implementation 'net.fabricmc:tiny-remapper:0.8.5'
+    implementation 'net.fabricmc:dev-launch-injector:0.2.1+build.8'
+    implementation 'net.fabricmc:access-widener:2.1.0'
 
-    java {
-        withSourcesJar()
+    compileOnly "net.fabricmc:fabric-loader:$fabric_version"
+}
+
+compileJava {
+    doFirst {
+        mkdir "${projectDir}/run/"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+mkdir("$buildDir/bubbles")
+
+def ps = System.getProperty("path.separator")
+def files = configurations.runtimeClasspath
+def strm = (files.toList()).stream()
+def rcl = String.join(ps, strm.map {
+    it.path
+}.filter{it != null }.toList())
+//\tfabric.remapClasspathFile=$buildDir/bubbles/classpath.txt
+//\tfabric.classPathGroups=$buildDir/classes/java/main/$ps$buildDir/resources/main/$ps${project(":core").buildDir}/classes/java/main/$ps${project(":core").buildDir}/resources/main/$ps${project(":desktop").buildDir}/classes/java/main/$ps${project(":desktop").buildDir}/resources/main/$ps${project(":gameprovider").buildDir}/classes/java/main/$ps${project(":gameprovider").buildDir}/resources/main/$ps$rcl
+def conf = """
+commonProperties
+\tfabric.development=true
+\tlog4j2.formatMsgNoLookups=true
+\tfabric.log.disableAnsi=false
+\tlog4j.configurationFile=$projectDir/log4j.xml
+"""
+
+def launchFile = file("$buildDir/bubbles/launch.cfg")
+Files.writeString(launchFile.toPath(), conf, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)
+
+def cp = "$rcl"
+
+def cpFile = file("$buildDir.absolutePath/bubbles/classpath.txt")
+Files.writeString(cpFile.toPath(), cp, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)
+
+idea{
+    project{
+        settings {
+            withIDEADir { File dir ->
+                println("Callback 1 executed with: " + dir.absolutePath)
+            }
+
+            runConfigurations {
+                "Bubble Blaster"(org.jetbrains.gradle.ext.Application) {                       // Create new run configuration "MyApp" that will run class foo.App
+                    jvmArgs = "-Xmx2g -Dfabric.dli.config=$launchFile.path -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
+                    mainClass = 'net.fabricmc.devlaunchinjector.Main'
+                    moduleName = idea.module.name + ".main"
+                    workingDirectory = "$projectDir/run/"
+                    programParameters = "--gameDir=."
+                }
+            }
+        }
     }
 }

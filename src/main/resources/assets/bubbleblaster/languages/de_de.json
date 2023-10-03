@@ -1,0 +1,16 @@
+{
+  "screen.exit_confirm.title": "Bubble Blaster schließen",
+  "screen.exit_confirm.description": "Bist du dir sicher, dass du Bubble Blaster verlassen willst?",
+  "screen.exit_confirm.config": "Bestätigungsdialog Schließen",
+  "exit_confirm.config.prompt.enable": "Schließbestätigung einschalten",
+  "exit_confirm.config.prompt.inGame": "Schließbestätigung im Spiel",
+  "exit_confirm.config.prompt.quitButton": "Schließbestätigung bei \"Spiel Beenden\" Knopf",
+  "exit_confirm.config.prompt.escInTitle": "Schließbestätigung bei drücken der ESC-Taste im Hauptmenü",
+  "exit_confirm.config.screen.forceDirtBackground": "Erdiger Hintergrund in der Schließbestätigung",
+  "exit_confirm.config.screen.forceTransparentBackground": "Erzwinge durchsichtigen Hintergrund in der Schließbestätigung",
+  "exit_confirm.config.screen.allowNarrator": "Sprachausgabe in der Schließbestätigung",
+  "exit_confirm.config.screen.confirmDelay": "Freigabe bis zur Bestätigung in Ticks",
+  "exit_confirm.config.prompt.disconnect": "Bestätigung bei verlassen einer Welt",
+  "screen.disconnect_confirm.title": "Welt verlassen",
+  "screen.disconnect_confirm.description": "Bist du dir sicher, dass du die Welt verlassen willst?"
+}
