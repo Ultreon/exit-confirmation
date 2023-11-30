@@ -3,10 +3,11 @@
   "minVersion": "0.8",
   "package": "com.ultreon.mods.exitconfirmation.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "exitconfirmation.refmap.json",
+  "refmap": "exit-confirmation.refmap.json",
   "mixins": [
   ],
   "client": [
+    "MinecraftMixin",
     "TitleScreenMixin"
   ],
   "injectors": {

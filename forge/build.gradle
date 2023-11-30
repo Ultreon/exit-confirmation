@@ -16,9 +16,6 @@ apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = "$rootProject.name-$project.name"
 
-group = 'com.ultreon.mods'
-version = '1.0.1'
-
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
@@ -26,7 +23,7 @@ minecraft {
     // stable     #          Stables are built at the discretion of the MCP team.
     // official   MCVersion  Official field/method names from Mojang mapping files
     //
-    // You must be aware of the Mojang license when using the 'official' mappings.
+    // You must be aware of the Mojang license when  using the 'official' mappings.
     // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
     //
     // Use non-default mappings at your own risk. They may not always work.
@@ -54,6 +51,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             property 'forge.enabledGameTestNamespaces', 'exit-confirmation'
+
+            ideaModule(rootProject.name + ".forge")
 
             mods {
                 exitconfirmation {

@@ -23,7 +23,10 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:$forge_config_api_port"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:$forge_config_api_port", {
+		exclude group: "net.fabricmc"
+		exclude group: "net.fabricmc.fabric-api"
+	}
 }
 
 processResources {

@@ -21,7 +21,7 @@ import java.util.List;
 public class ExitConfirmation {
 
     public static final String MOD_ID = "exit_confirm";
-    private static boolean callbackSetup;
+    static boolean didAccept;
     private boolean escPress = false;
 
     // Directly reference a log4j logger.
@@ -33,6 +33,10 @@ public class ExitConfirmation {
         MinecraftForge.EVENT_BUS.register(this);
 
         Config.initialize();
+    }
+
+    public static boolean didAccept() {
+        return didAccept;
     }
 
     @SubscribeEvent
@@ -59,6 +63,8 @@ public class ExitConfirmation {
     @SubscribeEvent
     public void onWindowClose(WindowCloseEvent event) {
         Minecraft mc = Minecraft.getInstance();
+
+        if (didAccept) return;
 
         if (event.getSource() == WindowCloseEvent.Source.GENERIC) {
             if (mc.level == null && mc.screen == null) {
@@ -92,7 +98,6 @@ public class ExitConfirmation {
         Minecraft mc = Minecraft.getInstance();
         Screen screen = event.getScreen();
         if (screen instanceof TitleScreen titleScreen) {
-            setupGLFWCallback(mc);
             overrideQuitButton(mc, titleScreen);
         }
     }
@@ -102,26 +107,12 @@ public class ExitConfirmation {
         if (buttons.size() >= 2) {
             if (buttons.get(buttons.size() - 2) instanceof Button widget) {
                 widget.onPress = (button) -> {
-                    boolean flag = MinecraftForge.EVENT_BUS.post(new WindowCloseEvent(WindowCloseEvent.Source.QUIT_BUTTON));
+                    boolean flag = MinecraftForge.EVENT_BUS.post(new WindowCloseEvent(null, WindowCloseEvent.Source.QUIT_BUTTON));
                     if (!flag) {
                         mc.stop();
                     }
                 };
             }
-        }
-    }
-
-    @SuppressWarnings("resource")
-    private static void setupGLFWCallback(Minecraft mc) {
-        if (!callbackSetup) {
-            long handle = mc.getWindow().getWindow();
-            GLFW.glfwSetWindowCloseCallback(handle, window -> {
-                boolean flag = MinecraftForge.EVENT_BUS.post(new WindowCloseEvent(WindowCloseEvent.Source.GENERIC));
-                if (flag) {
-                    GLFW.glfwSetWindowShouldClose(window, false);
-                }
-            });
-            callbackSetup = true;
         }
     }
 }
