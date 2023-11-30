@@ -23,6 +23,7 @@
       "com.ultreon.mods.exitconfirmation.ExitConfirmation"
     ]
   },
+  "accessWidener": "exit-confirmation.accesswidener",
   "mixins": [
     "exit-confirmation.mixins.json"
   ],
