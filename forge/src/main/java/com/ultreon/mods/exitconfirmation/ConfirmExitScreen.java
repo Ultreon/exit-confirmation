@@ -28,6 +28,8 @@ public class ConfirmExitScreen extends Screen {
     private final MultiLineLabel label = MultiLineLabel.EMPTY;
     private final Component yesButtonText;
     private final Component noButtonText;
+    private Button button;
+    private int ticksUntilEnable;
 
     public ConfirmExitScreen() {
         super(TITLE);
@@ -46,13 +48,15 @@ public class ConfirmExitScreen extends Screen {
 
         this.clearWidgets();
 
-        this.addRenderableWidget(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
+        this.button = this.addRenderableWidget(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 if (this.minecraft.level != null && this.minecraft.isLocalServer()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;
                 }
+
+                ExitConfirmation.didAccept = true;
 
                 this.minecraft.stop();
             }
@@ -82,11 +86,15 @@ public class ConfirmExitScreen extends Screen {
      * Sets the number of ticks to wait before enabling the buttons.
      */
     public void setButtonDelay(int ticksUntilEnableIn) {
-
+        this.button.active = false;
+        this.ticksUntilEnable = ticksUntilEnableIn;
     }
 
     public void tick() {
-
+        if (this.ticksUntilEnable-- <= 0) {
+            this.button.active = true;
+            this.ticksUntilEnable = 0;
+        }
     }
 
     public void back() {

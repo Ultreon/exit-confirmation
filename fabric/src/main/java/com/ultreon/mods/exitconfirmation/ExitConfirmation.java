@@ -26,13 +26,19 @@ public class ExitConfirmation implements ClientModInitializer {
     // Directly reference a log4j logger.
     @SuppressWarnings("unused")
     static final Logger LOGGER = LogManager.getLogger();
-    private boolean callbackSetUp = false;
+    static boolean didAccept;
 
     public ExitConfirmation() {
     }
 
+    public static boolean didAccept() {
+        return didAccept;
+    }
+
     public ActionResult onWindowClose(Window window, WindowCloseEvent.Source source) {
         Minecraft mc = Minecraft.getInstance();
+
+        if (didAccept) return ActionResult.PASS;
 
         // Check close source.
         if (source == WindowCloseEvent.Source.GENERIC) {
@@ -98,7 +104,6 @@ public class ExitConfirmation implements ClientModInitializer {
         // Only if it's the title screen.
         if (screen instanceof TitleScreen titleScreen) {
             // Set everything up.
-            setupGLFWCallback(client);
             overrideQuitButton(client, titleScreen);
         }
     }
@@ -120,33 +125,11 @@ public class ExitConfirmation implements ClientModInitializer {
         quitButton.ifPresent(widget -> {
             // Override on press field. (Requires access widener)
             widget.onPress = (button) -> {
-                ActionResult result = WindowCloseEvent.EVENT.invoker().closing(client.getWindow(), WindowCloseEvent.Source.GENERIC);
+                ActionResult result = WindowCloseEvent.EVENT.invoker().closing(null, WindowCloseEvent.Source.GENERIC);
                 if (result != ActionResult.CANCEL) {
                     client.stop();
                 }
             };
         });
-    }
-
-    /**
-     * Sets up the {@link GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI) window close callback using GLFW}.
-     * @param client the minecraft client.
-     * @see GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)
-     */
-    @SuppressWarnings("resource")
-    private void setupGLFWCallback(Minecraft client) {
-        if (!callbackSetUp) {
-            // Intercepting close button / ALT+F4 (on Windows and Ubuntu)
-            long handle = client.getWindow().getWindow();
-
-            // Set the callback.
-            GLFW.glfwSetWindowCloseCallback(handle, window -> {
-                ActionResult result = WindowCloseEvent.EVENT.invoker().closing(client.getWindow(), WindowCloseEvent.Source.GENERIC);
-                if (result == ActionResult.CANCEL) {
-                    GLFW.glfwSetWindowShouldClose(window, false);
-                }
-            });
-            callbackSetUp = true;
-        }
     }
 }

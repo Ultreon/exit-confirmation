@@ -1,8 +1,8 @@
-version = "0.1.0+mc.$minecraft_version"
+version = "1.0.2+mc.$minecraft_version"
 group = 'com.ultreon.mods'
 
 subprojects {
-	version = "0.1.0+mc.$minecraft_version"
+	version = "1.0.2+mc.$minecraft_version"
 	group = 'com.ultreon.mods'
 
 	repositories {
