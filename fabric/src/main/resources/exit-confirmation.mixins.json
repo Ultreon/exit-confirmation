@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.ultreon.mods.exitconfirmation.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "exit-confirmation.refmap.json",
+  "refmap": "exitconfirmation-fabric-refmap.json",
   "mixins": [
   ],
   "client": [
