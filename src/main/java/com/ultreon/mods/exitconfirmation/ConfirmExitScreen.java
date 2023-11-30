@@ -9,10 +9,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 @SideOnly(Side.CLIENT)
 public class ConfirmExitScreen extends GuiScreen {
-    private final String description = I18n.format("screen.exit_confirm.description");
-    private final String title = I18n.format("screen.exit_confirm.title");
+    private final String description = "Are you sure you want to exit Minecraft?";
+    private final String title = "Exit Confirmation";
     private GuiScreen previousScreen;
     private int ticksUntilEnableIn;
+    private GuiButton yesButton;
 
     public ConfirmExitScreen(GuiScreen previousScreen) {
         super();
@@ -24,9 +25,8 @@ public class ConfirmExitScreen extends GuiScreen {
 
         this.buttonList.clear();
 
-        GuiButton yesButton;
-        this.buttonList.add(yesButton = new GuiButton(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, I18n.format("misc.yes")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, I18n.format("misc.no")));
+        this.buttonList.add(yesButton = new GuiButton(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, I18n.format("gui.yes")));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, I18n.format("gui.no")));
 
         yesButton.enabled = false;
 
@@ -71,20 +71,15 @@ public class ConfirmExitScreen extends GuiScreen {
         this.ticksUntilEnableIn = ticksUntilEnable;
     }
 
-    public void tick() {
-        if (--this.ticksUntilEnableIn == 0) {
-            for (GuiButton guiButton : this.buttonList) {
-                guiButton.enabled = true;
-            }
+    @Override
+    public void updateScreen() {
+        if (this.ticksUntilEnableIn-- <= 0) {
+            yesButton.enabled = true;
         }
     }
 
     public void back() {
         this.mc.displayGuiScreen(this.previousScreen);
-    }
-
-    public boolean shouldCloseOnEsc() {
-        return false;
     }
 
     @Override

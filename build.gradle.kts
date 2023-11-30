@@ -43,7 +43,7 @@ loom {
 }
 
 sourceSets.main {
-    output.setResourcesDir(file("$buildDir/classes/java/main"))
+    output.setResourcesDir(file("$buildDir/resources/java/main"))
 }
 
 // Dependencies:
@@ -133,4 +133,10 @@ tasks.shadowJar {
 }
 
 tasks.assemble.get().dependsOn(tasks.remapJar)
+
+sourceSets {
+    main {
+        resources.srcDirs += file("src/main/resources")
+    }
+}
 
