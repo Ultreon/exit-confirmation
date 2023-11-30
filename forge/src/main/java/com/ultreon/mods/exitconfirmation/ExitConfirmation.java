@@ -1,11 +1,11 @@
 package com.ultreon.mods.exitconfirmation;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.LevelLoadingScreen;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.WorldLoadProgressScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -47,7 +47,7 @@ public class ExitConfirmation {
             if (event.getKey() == 256 && Config.closePrompt.get() && Config.quitOnEscInTitle.get()) {
                 if (!escPress) {
                     escPress = true;
-                    if (mc.screen instanceof TitleScreen) {
+                    if (mc.screen instanceof MainMenuScreen) {
                         mc.pushGuiLayer(new ConfirmExitScreen());
                     }
                 }
@@ -72,7 +72,7 @@ public class ExitConfirmation {
                 return;
             }
 
-            if (mc.screen instanceof LevelLoadingScreen) {
+            if (mc.screen instanceof WorldLoadProgressScreen) {
                 event.setCanceled(true);
                 return;
             }
@@ -97,15 +97,17 @@ public class ExitConfirmation {
     public static void onTitleScreenInit(GuiScreenEvent.InitGuiEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         Screen screen = event.getGui();
-        if (screen instanceof TitleScreen titleScreen) {
+        if (screen instanceof MainMenuScreen) {
+            MainMenuScreen titleScreen = (MainMenuScreen) screen;
             overrideQuitButton(mc, titleScreen);
         }
     }
 
-    private static void overrideQuitButton(Minecraft mc, TitleScreen titleScreen) {
-        List<? extends GuiEventListener> buttons = titleScreen.children();
+    private static void overrideQuitButton(Minecraft mc, MainMenuScreen titleScreen) {
+        List<? extends IGuiEventListener> buttons = titleScreen.children();
         if (buttons.size() >= 2) {
-            if (buttons.get(buttons.size() - 2) instanceof Button widget) {
+            if (buttons.get(buttons.size() - 2) instanceof Button) {
+                Button widget = (Button) buttons.get(buttons.size() - 2);
                 widget.onPress = (button) -> {
                     boolean flag = MinecraftForge.EVENT_BUS.post(new WindowCloseEvent(null, WindowCloseEvent.Source.QUIT_BUTTON));
                     if (!flag) {

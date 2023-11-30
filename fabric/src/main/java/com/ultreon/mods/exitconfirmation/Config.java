@@ -1,14 +1,10 @@
 package com.ultreon.mods.exitconfirmation;
 
-import net.minecraft.FieldsAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 
-@MethodsReturnNonnullByDefault
-@FieldsAreNonnullByDefault
 public final class Config {
     public static final ForgeConfigSpec.BooleanValue closePrompt;
     public static final ForgeConfigSpec.BooleanValue closePromptInGame;

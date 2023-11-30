@@ -1,19 +1,14 @@
 package com.ultreon.mods.exitconfirmation;
 
-import net.minecraft.FieldsAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-@FieldsAreNonnullByDefault
 @Mod.EventBusSubscriber(modid = ExitConfirmation.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class Config {
     public static final ForgeConfigSpec.BooleanValue closePrompt;
@@ -55,12 +50,12 @@ public final class Config {
     }
 
     @SubscribeEvent
-    public static void sync(ModConfigEvent.Loading event) {
+    public static void sync(ModConfig.Loading event) {
         sync();
     }
 
     @SubscribeEvent
-    public static void sync(ModConfigEvent.Reloading event) {
+    public static void sync(ModConfig.Reloading event) {
         sync();
     }
 

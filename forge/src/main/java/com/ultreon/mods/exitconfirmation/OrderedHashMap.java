@@ -99,7 +99,6 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
 
     // add a serial version uid, so that if we change things in the future
     // without changing the format, we can still deserialize properly.
-    @Serial
     private static final long serialVersionUID = 3380552487888102930L;
 
     /**
@@ -498,7 +497,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
      * Implements {@link Map#keySet()}.
      */
     public @NotNull Set<K> keySet() {
-        return new AbstractSet<>() {
+        return new AbstractSet<K>() {
             // required impls
             public @NotNull Iterator<K> iterator() {
                 return new OrderedIterator<>(KEY);
@@ -533,7 +532,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
      * Implements {@link Map#values()}.
      */
     public @NotNull Collection<V> values() {
-        return new AbstractCollection<>() {
+        return new AbstractCollection<V>() {
             // required impl
             public @NotNull Iterator<V> iterator() {
                 return new OrderedIterator<>(VALUE);
@@ -586,7 +585,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
      * @return
      */
     public @NotNull Set<Map.Entry<K, V>> entrySet() {
-        return new AbstractSet<>() {
+        return new AbstractSet<Map.Entry<K, V>>() {
             // helper
             private Entry<K, V> findEntry(Map.Entry<K, V> o) {
                 if (o == null) {
@@ -964,12 +963,16 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
             returnType = returnType & ~REMOVED_MASK;
             pos = pos.next;
             // should never happen
-            return switch (returnType) {
-                case KEY -> (T) pos.getKey();
-                case VALUE -> (T) pos.getValue();
-                case ENTRY -> (T) pos;
-                default -> throw new Error("bad iterator type: " + returnType);
-            };
+            switch (returnType) {
+                case KEY:
+                    return (T) pos.getKey();
+                case VALUE:
+                    return (T) pos.getValue();
+                case ENTRY:
+                    return (T) pos;
+                default:
+                    throw new Error("bad iterator type: " + returnType);
+            }
         }
 
         /**

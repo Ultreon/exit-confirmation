@@ -102,7 +102,8 @@ public class ExitConfirmation implements ClientModInitializer {
      */
     private void onTitleScreenInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
         // Only if it's the title screen.
-        if (screen instanceof TitleScreen titleScreen) {
+        if (screen instanceof TitleScreen) {
+            TitleScreen titleScreen = (TitleScreen) screen;
             // Set everything up.
             overrideQuitButton(client, titleScreen);
         }
@@ -119,7 +120,7 @@ public class ExitConfirmation implements ClientModInitializer {
         List<? extends GuiEventListener> buttons = titleScreen.children();
 
         // Intercepting close button.
-        Optional<? extends Button> quitButton = buttons.stream().filter(listener -> listener instanceof Button button && button.getMessage().equals(new TranslatableComponent("menu.quit"))).map(listener -> (Button) listener).findFirst();
+        Optional<? extends Button> quitButton = buttons.stream().filter(listener -> listener instanceof Button && ((Button) listener).getMessage().equals(new TranslatableComponent("menu.quit"))).map(listener -> (Button) listener).findFirst();
 
         // Only override if the quit button is found.
         quitButton.ifPresent(widget -> {

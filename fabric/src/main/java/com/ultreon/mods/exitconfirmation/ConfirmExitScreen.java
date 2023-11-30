@@ -42,9 +42,9 @@ public class ConfirmExitScreen extends Screen {
             Narrator.getNarrator().say("Are you sure you want to exit Minecraft?", true);
         }
 
-        this.clearWidgets();
+        this.children.clear();
 
-        this.button = this.addRenderableWidget(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
+        this.button = this.addButton(new Button(this.width / 2 - 105, this.height / 6 + 96, 100, 20, this.yesButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 if (this.minecraft.level != null && this.minecraft.isLocalServer()) {
@@ -57,7 +57,7 @@ public class ConfirmExitScreen extends Screen {
                 this.minecraft.stop();
             }
         }));
-        this.addRenderableWidget(new Button(this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText, (btn) -> {
+        this.addButton(new Button(this.width / 2 + 5, this.height / 6 + 96, 100, 20, this.noButtonText, (btn) -> {
             if (this.minecraft != null) {
                 btn.active = false;
                 this.minecraft.setScreen(background);

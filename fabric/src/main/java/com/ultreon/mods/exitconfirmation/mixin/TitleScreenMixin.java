@@ -29,7 +29,7 @@ public abstract class TitleScreenMixin extends Screen {
         if (keyCode == 256 && Config.closePrompt.get() && Config.quitOnEscInTitle.get()) {
             if (!exitConfirmation$escPress) {
                 exitConfirmation$escPress = true;
-                var minecraft = Minecraft.getInstance();
+                Minecraft minecraft = Minecraft.getInstance();
                 if (minecraft.screen == this) {
                     minecraft.setScreen(new ConfirmExitScreen(minecraft.screen));
                     return true;
@@ -41,7 +41,7 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        var minecraft = Minecraft.getInstance();
+        Minecraft minecraft = Minecraft.getInstance();
         if (keyCode == 256 && exitConfirmation$escPress && Config.closePrompt.get() && Config.quitOnEscInTitle.get() && minecraft.screen == this) {
             exitConfirmation$escPress = false;
             return true;

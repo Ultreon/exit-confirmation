@@ -1,20 +1,16 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = "$rootProject.name-$project.name"
 
-loom {
-	accessWidenerPath = file("$projectDir/src/main/resources/exit-confirmation.accesswidener")
-}
-
 dependencies {
 	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	minecraft "net.minecraft:minecraft:${project.minecraft_version}"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 //	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -29,6 +25,10 @@ dependencies {
 	}
 }
 
+loom {
+	accessWidener = file("$projectDir/src/main/resources/exit-confirmation.accesswidener")
+}
+
 processResources {
 	inputs.property "version", project.version
 
@@ -38,8 +38,8 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.17.x uses Java 16.
-	it.options.release = 16
+	// Minecraft 1.16.x uses Java 1.8.
+//	it.options.release = 1.8
 }
 
 java {
