@@ -9,8 +9,8 @@ import net.minecraft.client.resource.language.I18n;
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 @Environment(EnvType.CLIENT)
 public class ConfirmExitScreen extends Screen {
-    private final String description = I18n.translate("screen.exit_confirm.description");
-    private final String title = I18n.translate("screen.exit_confirm.title");
+    private final String description = "Are you sure you want to exit Minecraft?";
+    private final String title = "Exit Confirmation";
     private Screen previousScreen;
     private int ticksUntilEnableIn;
 

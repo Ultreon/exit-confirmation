@@ -17,7 +17,6 @@ public class ExitConfirmation implements ClientModInitializer {
     static final Logger LOGGER = LogManager.getLogger();
     public static final Config CONFIG = new Config();
     public static boolean allowExit;
-    private boolean callbackSetUp = false;
 
     public ExitConfirmation() {
     }
