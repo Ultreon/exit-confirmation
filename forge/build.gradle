@@ -35,10 +35,6 @@ loom {
     }
 }
 
-repositories {
-    maven { "https://maven.neoforged.net/" }
-}
-
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
@@ -48,7 +44,7 @@ configurations {
 }
 
 dependencies {
-    forge "net.neoforged:forge:$minecraft_version-$forge_version"
+    forge "net.minecraftforge:forge:$minecraft_version-$forge_version"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
