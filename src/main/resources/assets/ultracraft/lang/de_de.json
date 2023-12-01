@@ -1,0 +1,16 @@
+{
+  "exit_confirm.screen.exit.title": "Ultracraft schließen",
+  "exit_confirm.screen.exit.description": "Bist du dir sicher, dass du Ultracraft verlassen willst?",
+  "exit_confirm.screen.config": "Bestätigungsdialog Schließen",
+  "exit_confirm.config.prompt.enable": "Schließbestätigung einschalten",
+  "exit_confirm.config.prompt.inGame": "Schließbestätigung im Spiel",
+  "exit_confirm.config.prompt.quitButton": "Schließbestätigung bei \"Spiel Beenden\" Knopf",
+  "exit_confirm.config.prompt.escInTitle": "Schließbestätigung bei drücken der ESC-Taste im Hauptmenü",
+  "exit_confirm.config.screen.forceDirtBackground": "Erdiger Hintergrund in der Schließbestätigung",
+  "exit_confirm.config.screen.forceTransparentBackground": "Erzwinge durchsichtigen Hintergrund in der Schließbestätigung",
+  "exit_confirm.config.screen.allowNarrator": "Sprachausgabe in der Schließbestätigung",
+  "exit_confirm.config.screen.confirmDelay": "Freigabe bis zur Bestätigung in Ticks",
+  "exit_confirm.config.prompt.disconnect": "Bestätigung bei verlassen einer Welt",
+  "exit_confirm.screen.disconnect.title": "Welt verlassen",
+  "exit_confirm.screen.disconnect.description": "Bist du dir sicher, dass du die Welt verlassen willst?"
+}

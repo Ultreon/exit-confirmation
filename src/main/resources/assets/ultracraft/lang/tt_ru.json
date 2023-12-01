@@ -1,0 +1,18 @@
+{
+  "exit_confirm.screen.exit.title": "Exit Confirmation",
+  "exit_confirm.screen.exit.description": "Сез чыннан да Ultracraft-тан чыгарга телисезме?",
+  "exit_confirm.screen.config": "Exit Confirmation көйләүләре",
+  "exit_confirm.config.prompt.enable": "Ябу сорауны кушу",
+  "exit_confirm.config.prompt.inGame": "Уен вакытында ябуны сорау",
+  "exit_confirm.config.prompt.quitButton": "Чыгу төймәсе басылганда ябуны сорау",
+  "exit_confirm.config.prompt.escInTitle": "Төп менюсында «Esc» төймәсе ябу сорауны күрсәтә",
+  "exit_confirm.config.screen.forceDirtBackground": "Җир фонын ябу соравында һәрвакыт күрсәтү",
+  "exit_confirm.config.screen.forceTransparentBackground": "Үтә күренмәле фонны ябу соравында һәрвакыт күрсәтү",
+  "exit_confirm.config.screen.allowNarrator": "Сөйләүче ябу соравында рөхсәт итү",
+  "exit_confirm.config.screen.confirmDelay": "Ябуны раслау өчен тоткарлану (тактларда)",
+  "exit_confirm.config.prompt.disconnect": "Өзүне раслау",
+  "exit_confirm.screen.disconnect.title": "Өзүне раслау",
+  "exit_confirm.screen.disconnect.description": "Сез чыннан да өзергә телисезме?",
+  "modmenu.summaryTranslation.exit_confirm": "Ultracraft-тан чыкканда раслауны сорау.",
+  "modmenu.descriptionTranslation.exit_confirm": "Ultracraft-ны ябарга омтылганда экранны гамәл раслау белән күрсәтеләчәк."
+}

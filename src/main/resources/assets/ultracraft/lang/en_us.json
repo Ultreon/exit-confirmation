@@ -1,0 +1,16 @@
+{
+  "exit_confirm.screen.exit.title": "Exit Confirmation",
+  "exit_confirm.screen.exit.description": "Are you sure you want to exit Ultracraft?",
+  "exit_confirm.screen.config": "Exit Confirmation Config",
+  "exit_confirm.config.prompt.enable": "Enable Close Prompt",
+  "exit_confirm.config.prompt.inGame": "In-Game Close Prompt",
+  "exit_confirm.config.prompt.quitButton": "Quit Button Close Prompt",
+  "exit_confirm.config.prompt.escInTitle": "Escape in Title Screen Shows Close Prompt",
+  "exit_confirm.config.screen.forceDirtBackground": "Force Dirt Background in Close Prompt",
+  "exit_confirm.config.screen.forceTransparentBackground": "Force Transparent Background in Close Prompt",
+  "exit_confirm.config.screen.allowNarrator": "Allow Narrator in Close Prompt",
+  "exit_confirm.config.screen.confirmDelay": "Close Confirmation Delay in Ticks",
+  "exit_confirm.config.prompt.disconnect": "Disconnect Confirmation",
+  "exit_confirm.screen.disconnect.title": "Disconnect Confirmation",
+  "exit_confirm.screen.disconnect.description": "Are you sure you want to disconnect?"
+}

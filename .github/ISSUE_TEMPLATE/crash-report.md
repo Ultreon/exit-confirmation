@@ -22,7 +22,7 @@ Add a crash report to the issue, this is essential for developers to know what w
 
 **Please complete the following information:**
  - OS: [e.g. Windows]
- - Minecraft version [example 1.18.2]
+ - Ultracraft version [example 1.18.2]
  - Devices Mod Version: [example: 0.5.0+64]
 
 **FOR FABRIC:**

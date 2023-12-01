@@ -8,4 +8,4 @@ assignees: ''
 ---
 
 **Modloader:** [example: forge]
-**Minecraft Version:** [example: 1.8.9]
+**Ultracraft Version:** [example: 1.8.9]
