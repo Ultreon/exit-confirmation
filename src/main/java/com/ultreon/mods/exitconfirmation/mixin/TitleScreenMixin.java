@@ -45,7 +45,6 @@ public abstract class TitleScreenMixin extends Screen {
                 this.exitConfirmation$escPress = true;
                 var client = UltracraftClient.get();
                 if (client.screen == this) {
-                    System.out.println("keyCode = " + keyCode);
                     client.showScreen(new ConfirmExitScreen(client.screen));
                     return true;
                 }
