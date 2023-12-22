@@ -17,9 +17,9 @@ public class Config {
     public final ConfigEntry<Boolean> closePromptInGame;
     public final ConfigEntry<Boolean> closePromptQuitButton;
     public final ConfigEntry<Boolean> quitOnEscInTitle;
-    public final ConfigEntry<Boolean> dirtBackground;
-    public final ConfigEntry<Boolean> allowNarrator;
+    public final ConfigEntry<Boolean> forceDirtBackground;
     public final ConfigEntry<Boolean> forceTransparentBackground;
+    public final ConfigEntry<Boolean> allowNarrator;
     public final ConfigEntry<Integer> confirmDelay;
     public final ConfigEntry<Boolean> disconnectPrompt;
 
@@ -28,7 +28,7 @@ public class Config {
         this.closePromptInGame = this.add("prompt.inGame", true, "Show the close prompt when in-game.");
         this.closePromptQuitButton = this.add("prompt.quitButton", true, "Show the close prompt when clicking the quit button.");
         this.quitOnEscInTitle = this.add("prompt.escInTitle", true, "Show the close prompt when pressing escape in the title screen.");
-        this.dirtBackground = this.add("screen.forceDirtBackground", false, "Make the background of the close prompt always dirt.");
+        this.forceDirtBackground = this.add("screen.forceDirtBackground", false, "Make the background of the close prompt always dirt.");
         this.forceTransparentBackground = this.add("screen.forceTransparentBackground", true, "Make the background of the close prompt always transparent.");
         this.allowNarrator = this.add("screen.allowNarrator", false, "Enable the narrator in the close prompt.");
         this.confirmDelay = this.add("screen.confirmDelay", 40, 5, 100, "Confirmation delay in ticks.");

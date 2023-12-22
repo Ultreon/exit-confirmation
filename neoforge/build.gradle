@@ -1,0 +1,128 @@
+//file:noinspection GrDeprecatedAPIUsage
+//file:noinspection GroovyAssignabilityCheck
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+version rootProject.version
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+def generatedResources = file("src/generated")
+
+sourceSets {
+    main {
+        resources.srcDir generatedResources
+    }
+}
+
+repositories {
+    maven { url = "https://maven.neoforged.net/releases/" }
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    neoForge {
+
+    }
+
+    runs {
+        data {
+            data()
+            programArgs "--all", "--mod", "tuem", "--output", generatedResources.absolutePath, "--existing", project(":common").file("src/main/resources").absolutePath
+        }
+    }
+}
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:$neoforge_version"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+}
+
+processResources {
+    inputs.property "version", rootProject.version
+    inputs.property "description", rootProject.getModDescription()
+    System.out.println(inputs.getProperties())
+
+    filesMatching("META-INF/mods.toml") {
+        HashMap<String, ?> p = new HashMap<>()
+        p.put("version", rootProject.version)
+        p.put("description", rootProject.getModDescription())
+        p.put("loaderVersion", rootProject.neoforge_version.split("\\.")[0])
+        p.put("neoForgeVersion", rootProject.neoforge_version)
+        p.put("minecraftVersion", rootProject.architectury.minecraft)
+        expand(p)
+    }
+
+    from "$rootProject.projectDir/LICENSE"
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier.set( "dev-shadow" )
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier.set(null)
+}
+
+jar {
+    archiveClassifier.set("dev")
+    manifest {
+        attributes([
+                "Specification-Title"     : "Ultreon Modding Lib",
+                "Specification-Vendor"    : "Ultreon Team",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "Ultreon Team",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"           : "exit-confirmation-common.mixins.json"
+        ])
+    }
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenNeoForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
+}

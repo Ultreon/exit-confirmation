@@ -1,21 +1,20 @@
-package com.ultreon.mods.exitconfirmation.forge;
+package com.ultreon.mods.exitconfirmation.neoforge;
 
 import com.ultreon.mods.exitconfirmation.CloseSource;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.fml.common.Mod;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings("unused")
-@Cancelable
 @OnlyIn(Dist.CLIENT)
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class WindowCloseEvent extends Event {
+public class WindowCloseEvent extends Event implements ICancellableEvent {
     private static boolean initialized;
     private final CloseSource source;
 
