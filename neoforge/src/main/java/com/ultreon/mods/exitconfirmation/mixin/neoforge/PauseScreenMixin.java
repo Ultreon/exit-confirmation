@@ -1,4 +1,4 @@
-package com.ultreon.mods.exitconfirmation.mixin;
+package com.ultreon.mods.exitconfirmation.mixin.neoforge;
 
 import com.ultreon.mods.exitconfirmation.ConfirmDisconnectScreen;
 import com.ultreon.mods.exitconfirmation.ExitConfirmation;
@@ -21,7 +21,7 @@ public abstract class PauseScreenMixin extends Screen {
         super(component);
     }
 
-    @Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1))
+    @Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 2))
     private Button.Builder exitConfirmation$createPauseMenu(Component message, Button.OnPress onPress) {
         return Button.builder(message, button -> {
             button.active = false;

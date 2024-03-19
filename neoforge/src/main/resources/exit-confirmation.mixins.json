@@ -1,12 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.ultreon.mods.exitconfirmation.mixin",
+  "package": "com.ultreon.mods.exitconfirmation.mixin.neoforge",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],
   "client": [
-    "TitleScreenMixin"
+    "PauseScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

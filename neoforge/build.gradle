@@ -89,14 +89,14 @@ jar {
     archiveClassifier.set("dev")
     manifest {
         attributes([
-                "Specification-Title"     : "Ultreon Modding Lib",
+                "Specification-Title"     : "Exit Confirmation",
                 "Specification-Vendor"    : "Ultreon Team",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Ultreon Team",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"           : "exit-confirmation-common.mixins.json"
+                "MixinConfigs"           : "exit-confirmation-common.mixins.json,exit-confirmation.mixins.json"
         ])
     }
 }

@@ -23,6 +23,9 @@ description = "Shows an exit confirmation screen when trying to close Minecraft.
 [[mixins]]
 config = "exit-confirmation-common.mixins.json"
 
+[[mixins]]
+config = "exit-confirmation.mixins.json"
+
 [[dependencies.exit_confirm]]
 modId = "neoforge"
 mandatory = true
