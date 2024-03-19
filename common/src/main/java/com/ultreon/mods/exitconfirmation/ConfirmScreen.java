@@ -70,7 +70,7 @@ public abstract class ConfirmScreen extends Screen {
         } else if (ExitConfirmation.CONFIG.forceTransparentBackground.get()) {
             if (this.background != null) {
                 gfx.pose().pushPose();
-                gfx.pose().translate(0f, 0f, -10f);
+                gfx.pose().translate(0f, 0f, -1000f);
                 this.background.render(gfx, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
                 gfx.pose().popPose();
             }

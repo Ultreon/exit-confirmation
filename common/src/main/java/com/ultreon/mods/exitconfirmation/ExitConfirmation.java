@@ -1,6 +1,7 @@
 package com.ultreon.mods.exitconfirmation;
 
 import com.ultreon.mods.exitconfirmation.config.Config;
+import com.ultreon.mods.exitconfirmation.mixin.accessor.ButtonAccessor;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -106,7 +107,7 @@ public class ExitConfirmation {
         // Only override if the quit button is found.
         quitButton.ifPresent(widget -> {
             // Override on press field. (Requires access widener)
-            widget.onPress = (button) -> ExitConfirmation.onQuitButtonClick(client, titleScreen, widget);
+            ((ButtonAccessor) widget).setOnPress((button) -> ExitConfirmation.onQuitButtonClick(client, titleScreen, widget));
         });
     }
 
