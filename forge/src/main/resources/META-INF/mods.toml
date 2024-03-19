@@ -30,6 +30,6 @@ side = "CLIENT"
 [[dependencies.exit_confirm]]
 modId = "minecraft"
 mandatory = true
-versionRange = "1.20.2"
+versionRange = "1.20.4"
 ordering = "NONE"
 side = "CLIENT"

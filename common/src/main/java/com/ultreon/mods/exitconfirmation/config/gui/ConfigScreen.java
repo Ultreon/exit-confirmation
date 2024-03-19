@@ -23,7 +23,7 @@ public class ConfigScreen extends Screen {
         this.clearWidgets();
         super.init();
 
-        this.list = new ConfigList(this.minecraft, this.width, this.height, 32, this.height - 32);
+        this.list = new ConfigList(this.minecraft, this.width, this.height - 64, 32);
         this.list.addEntries(Config.values());
         this.addRenderableWidget(this.list);
 

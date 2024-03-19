@@ -5,20 +5,21 @@ import com.ultreon.mods.exitconfirmation.ExitConfirmation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ConfigList extends ContainerObjectSelectionList<ConfigList.ListEntry> {
+public class ConfigList extends ObjectSelectionList<ConfigList.ListEntry> {
     private final List<ListEntry> entries = new ArrayList<>();
 
-    public ConfigList(Minecraft minecraft, int width, int height, int i, int i1) {
-        super(minecraft, width, height, i, i1, 28);
+    public ConfigList(Minecraft minecraft, int width, int height, int y) {
+        super(minecraft, width, height, y, 28);
         this.centerListVertically = false;
     }
 
@@ -51,7 +52,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.ListEntr
         Config.save();
     }
 
-    protected static class ListEntry extends ContainerObjectSelectionList.Entry<ListEntry> {
+    protected static class ListEntry extends ObjectSelectionList.Entry<ListEntry> {
         private final ConfigList list;
         final ConfigEntry<?> configEntry;
         final AbstractWidget widget;
@@ -86,6 +87,11 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.ListEntr
         @NotNull
         public List<? extends NarratableEntry> narratables() {
             return Collections.singletonList(this.widget);
+        }
+
+        @Override
+        public Component getNarration() {
+            return this.configEntry.getDescription();
         }
     }
 }
