@@ -9,8 +9,6 @@ import org.apache.logging.log4j.Logger;
 public class ExitConfirmation {
 
     public static final String MOD_ID = "exit_confirm";
-    private static boolean callbackSetup;
-    private boolean escPress = false;
 
     // Directly reference a log4j logger.
     @SuppressWarnings("unused")
