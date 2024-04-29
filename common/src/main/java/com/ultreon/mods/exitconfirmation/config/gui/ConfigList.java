@@ -90,7 +90,7 @@ public class ConfigList extends ObjectSelectionList<ConfigList.ListEntry> {
         }
 
         @Override
-        public Component getNarration() {
+        public @NotNull Component getNarration() {
             return this.configEntry.getDescription();
         }
     }

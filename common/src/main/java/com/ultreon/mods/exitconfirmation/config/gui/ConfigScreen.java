@@ -59,4 +59,8 @@ public class ConfigScreen extends Screen {
     public Button getDoneButton() {
         return this.doneButton;
     }
+
+    public Button getCancelButton() {
+        return this.cancelButton;
+    }
 }

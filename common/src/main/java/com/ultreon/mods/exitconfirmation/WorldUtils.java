@@ -2,7 +2,7 @@ package com.ultreon.mods.exitconfirmation;
 
 import com.mojang.realmsclient.RealmsMainScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
+import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
@@ -19,7 +19,7 @@ public final class WorldUtils {
             ServerData serverData = mc.getCurrentServer();
             mc.level.disconnect();
             if (bl) {
-                mc.disconnect(new GenericDirtMessageScreen(SAVING_LEVEL));
+                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL));
             } else {
                 mc.disconnect();
             }
@@ -41,7 +41,7 @@ public final class WorldUtils {
             boolean bl = mc.isLocalServer();
             mc.level.disconnect();
             if (bl) {
-                mc.disconnect(new GenericDirtMessageScreen(SAVING_LEVEL));
+                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL));
             } else {
                 mc.disconnect();
             }

@@ -2,7 +2,7 @@
 //file:noinspection GroovyAccessibility
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.5-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.6-SNAPSHOT" apply false
 }
 repositories {
     gradlePluginPortal()
@@ -69,7 +69,7 @@ allprojects {
     tasks.withType(JavaCompile).tap {
         configureEach {
             options.encoding = "UTF-8"
-            options.release = 17
+            options.release = 21
         }
     }
 

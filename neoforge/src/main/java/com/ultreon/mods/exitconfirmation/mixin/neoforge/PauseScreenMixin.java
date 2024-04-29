@@ -30,6 +30,7 @@ public abstract class PauseScreenMixin extends Screen {
                 if(ExitConfirmation.CONFIG.disconnectPrompt.get()) {
                     minecraft.setScreen(new ConfirmDisconnectScreen(minecraft.screen));
                 } else {
+                    assert this.minecraft != null;
                     minecraft.getReportingContext().draftReportHandled(this.minecraft, this, this::onDisconnect, true);
                 }
             }

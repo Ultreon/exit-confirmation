@@ -1,5 +1,6 @@
 package com.ultreon.mods.exitconfirmation.config;
 
+import com.ultreon.mods.exitconfirmation.ExitConfirmation;
 import com.ultreon.mods.exitconfirmation.OrderedHashMap;
 import com.ultreon.mods.exitconfirmation.config.entries.*;
 import com.ultreon.mods.exitconfirmation.config.gui.ConfigEntry;
@@ -102,7 +103,7 @@ public class Config {
         } catch (FileNotFoundException ignored) {
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExitConfirmation.LOGGER.error("Error loading config", e);
         }
     }
 
@@ -126,7 +127,7 @@ public class Config {
         } catch (FileNotFoundException ignored) {
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExitConfirmation.LOGGER.error("Error saving config", e);
         }
     }
 

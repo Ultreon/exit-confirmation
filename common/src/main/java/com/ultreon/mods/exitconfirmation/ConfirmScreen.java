@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public abstract class ConfirmScreen extends Screen {
     private final Component title;
     private final Component description;

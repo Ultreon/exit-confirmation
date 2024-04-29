@@ -13,12 +13,15 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 public class ExitConfirmation {
     public static final Config CONFIG = new Config();
+    public static final Logger LOGGER = LoggerFactory.getLogger("ExitConfirmation");
     private boolean callbackSetUp;
 
     @ApiStatus.Internal
@@ -37,7 +40,7 @@ public class ExitConfirmation {
 
         // Check close source.
         if (source == CloseSource.GENERIC) {
-            // Always cancel if the world isn't loaded but also being ingame. (Fixes bug)
+            // Always cancel if the world isn't loaded but also being in-game. (Fixes bug)
             if (mc.level == null && screen == null) {
                 return ActionResult.CANCEL;
             }
@@ -49,7 +52,7 @@ public class ExitConfirmation {
 
             // Otherwise only cancel when the close prompt is enabled. TODO Add config support back again.
             if (CONFIG.closePrompt.get()) {
-                // Allow closing ingame if enabled in config. TODO Add config support back again.
+                // Allow closing in-game if enabled in config. TODO Add config support back again.
                 if (mc.level != null && !CONFIG.closePromptInGame.get()) {
                     return ActionResult.PASS;
                 }
