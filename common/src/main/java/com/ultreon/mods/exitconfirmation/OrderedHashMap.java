@@ -905,7 +905,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
         private int returnType;
 
         /**
-         * Holds the "current" position in the iterator. When pos.next is the sentinel, we've reached the end of the
+         * Holds the "current" position in the iterator. When pos. Next is the sentinel, we've reached the end of the
          * list.
          */
         private Entry<K, V> pos = OrderedHashMap.this.sentinel;
