@@ -6,7 +6,7 @@
   "exit_confirm.config.prompt.inGame": "Запрос подтверждения во время игры",
   "exit_confirm.config.prompt.quitButton": "Запрос подтверждения по кнопке выхода",
   "exit_confirm.config.prompt.escInTitle": "Выход в главном меню по нажатию «Esc»",
-  "exit_confirm.config.screen.forceDirtBackground": "Всегда показывать сплошной фон",
+  "exit_confirm.config.screen.forceEmptyBackground": "Всегда показывать сплошной фон",
   "exit_confirm.config.screen.forceTransparentBackground": "Всегда показывать прозрачный фон",
   "exit_confirm.config.screen.allowNarrator": "Диктор на экране подтверждения",
   "exit_confirm.config.screen.confirmDelay": "Задержка безопасного закрытия (в тактах)",

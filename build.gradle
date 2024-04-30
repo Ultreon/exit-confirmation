@@ -45,7 +45,7 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
-    version = "$mod_version-mc.$minecraft_version"
+    version = "$mod_version+mc.$minecraft_version"
     group = maven_group
 
     repositories {

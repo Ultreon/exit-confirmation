@@ -64,8 +64,14 @@ public abstract class ConfirmScreen extends Screen {
 
     @Override
     public void renderBackground(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        if (ExitConfirmation.CONFIG.forceDirtBackground.get()) {
-            this.renderDirtBackground(gfx);
+        if (ExitConfirmation.CONFIG.forceEmptyBackground.get()) {
+            assert this.minecraft != null;
+            if (this.minecraft.level == null) {
+                this.renderPanorama(gfx, partialTicks);
+            }
+
+            this.renderBlurredBackground(partialTicks);
+            this.renderMenuBackground(gfx);
         } else if (ExitConfirmation.CONFIG.forceTransparentBackground.get()) {
             if (this.background != null) {
                 gfx.pose().pushPose();
@@ -74,8 +80,8 @@ public abstract class ConfirmScreen extends Screen {
                 gfx.pose().popPose();
             }
 
-            gfx.pose().pushPose();
-            gfx.fillGradient(0, 0, this.width, this.height, -1072689136, -804253680);
+            this.renderBlurredBackground(partialTicks);
+            this.renderMenuBackground(gfx);
         } else {
             super.renderBackground(gfx, mouseX, mouseX, partialTicks);
         }
@@ -83,11 +89,11 @@ public abstract class ConfirmScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        super.render(gfx, mouseX, mouseY, partialTicks);
+
         gfx.drawCenteredString(this.font, this.title, this.width / 2, 70, 0xffffff);
         gfx.drawCenteredString(this.font, this.description, this.width / 2, 90, 0xbfbfbf);
         this.label.renderCentered(gfx, this.width / 2, 90);
-        super.render(gfx, mouseX, mouseY, partialTicks);
-        gfx.pose().popPose();
     }
 
     /**

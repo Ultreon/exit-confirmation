@@ -58,7 +58,7 @@ processResources {
     inputs.property "description", rootProject.getModDescription()
     System.out.println(inputs.getProperties())
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching("META-INF/neoforge.mods.toml") {
         HashMap<String, ?> p = new HashMap<>()
         p.put("version", rootProject.version)
         p.put("description", rootProject.getModDescription())
