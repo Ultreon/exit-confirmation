@@ -28,18 +28,6 @@ tasks.named('compileJava', JavaCompile) {
     source(configurations.commonJava)
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir '../common/src/main/java'
-            srcDir '../common/src/main/kotlin'
-        }
-        resources {
-            srcDir '../common/src/main/resources'
-        }
-    }
-}
-
 processResources {
     dependsOn(configurations.commonResources)
     from(configurations.commonResources)
