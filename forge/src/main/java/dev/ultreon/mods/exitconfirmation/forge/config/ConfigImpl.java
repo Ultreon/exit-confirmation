@@ -1,0 +1,11 @@
+package dev.ultreon.mods.exitconfirmation.forge.config;
+
+import net.minecraftforge.fml.loading.FMLPaths;
+
+import java.nio.file.Path;
+
+public class ConfigImpl {
+    public static Path getConfigDir() {
+        return FMLPaths.CONFIGDIR.get();
+    }
+}

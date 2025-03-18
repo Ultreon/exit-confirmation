@@ -5,7 +5,7 @@
 # Find more information on toml format here:  https://github.com/toml-lang/toml
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "[52,)"
 license = "All Rights Reserved"
 issueTrackerURL="https://github.com/Ultreon/exit-confirmation/issues" #optional
 
@@ -13,23 +13,30 @@ issueTrackerURL="https://github.com/Ultreon/exit-confirmation/issues" #optional
 modId = "exit_confirm"
 version = "${version}"
 displayName = "Exit Confirmation"
-#updateJSONURL="http://myurl.me/"
-displayURL="http://ultreon.github.io/"
-logoFile="exit-confirmation.png"
+#updateJSONURL="https://myurl.me/"
+displayURL="https://ultreon.dev/?id=exit-confirmation#project"
+logoFile= "../exit-confirm.png"
 credits="Qboi123"
-authors = "Ultreon Team"
+authors = "Ultreon Studios"
 description = "Shows an exit confirmation screen when trying to close Minecraft."
 
 [[dependencies.exit_confirm]]
 modId = "forge"
 mandatory = true
-versionRange = "[45,)"
+versionRange = "[52,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.exit_confirm]]
+modId = "xinexlib"
+mandatory = true
+versionRange = "(,0.2)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.exit_confirm]]
 modId = "minecraft"
 mandatory = true
-versionRange = "1.20.4"
+versionRange = "[1.21,1.21.1]"
 ordering = "NONE"
 side = "CLIENT"

@@ -1,47 +1,95 @@
-//file:noinspection GradlePackageUpdate
-architectury {
-    common("fabric", "forge", "neoforge")
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/exit-confirmation.accesswidener")
+neoForge {
+    neoFormVersion = neo_form_version
+    // Automatically enable AccessTransformers if the file exists
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers = [at.absolutePath]
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
 }
 
 repositories {
-    maven { url = "https://cursemaven.com" }
+    maven {
+        name "ultreonMavenSnapshots"
+        url "https://maven.ultreon.dev/snapshots"
+    }
+    maven {
+        name "ultreonMavenReleases"
+        url "https://maven.ultreon.dev/releases"
+    }
 }
 
 dependencies {
-    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
-    // Do NOT use other classes from fabric loader
-    modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
+    compileOnlyApi("org.spongepowered:mixin:0.8.5")
+    // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
+    compileOnlyApi("io.github.llamalad7:mixinextras-common:0.4.1")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")
 
-//    modCompileOnly "curse.maven:forgeapiportfabric-547434:3671141"
-//    modCompileOnly 'com.electronwill.night-config:core:3.6.3'
-//    modCompileOnly 'com.electronwill.night-config:toml:3.6.3'
+    // Extra dependencies
+    library("io.projectreactor:reactor-core:3.5.5")
+    library("org.hjson:hjson:3.1.0")
+
+    compileOnly("dev.ultreon.mods:xinexlib-common-1.21.1:0.1.0-SNAPSHOT")
+
+    compileOnly("com.electronwill.night-config:core:3.6.3")
+    compileOnly("com.electronwill.night-config:toml:3.6.3")
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs += [
-                    "src/main/generated/resources"
-            ]
-            System.out.println(srcDirs)
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+}
+
+kotlin {
+    jvmToolchain 21
+}
+
+compileKotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_21
+    }
+}
+
+classes {
+    finalizedBy("copyKotlinClasses")
+}
+
+tasks.register("copyKotlinClasses") {
+    doLast {
+        copy {
+            from fileTree("$projectDir/build/classes/kotlin/main")
+            into file("$projectDir/build/classes/java/main")
         }
     }
 }
 
-publishing {
-    publications {
-        mavenCommon(MavenPublication) {
-            artifactId = rootProject.archives_base_name
-            from components.java
-        }
-    }
+jar.mustRunAfter("copyKotlinClasses")
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
+jar {
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+}
+
+compileKotlin {
+    outputs.dir("$projectDir/build/classes/java/main")
 }

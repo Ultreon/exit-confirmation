@@ -1,6 +1,3 @@
-> [!IMPORTANT]
-> We are moving to GitLab [[link]](https://gitlab.com/ultreon/mods/exit-confirmation)
-
 # Exit Confirmation
 Exit Confirmation mod for Minecraft (NeoForged / Fabric).
 

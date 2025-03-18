@@ -1,79 +1,45 @@
-//file:noinspection GroovyAssignabilityCheck
-//file:noinspection GroovyAccessibility
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.6-SNAPSHOT" apply false
-}
-repositories {
-    gradlePluginPortal()
-}
-
-architectury {
-    minecraft = minecraft_version
+    // see https://fabricmc.net/develop/ for new versions
+    id 'fabric-loom' version '1.7-SNAPSHOT' apply false
+    // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
+    id 'net.neoforged.moddev' version '2.0.78' apply false
 }
 
-version = mod_version
+mkdir file("build/tmp/javadoc/collect")
+mkdir file("build/docs/javadoc")
 
-@SuppressWarnings('unused')
-Object getModDescription() {
-    return "${mod_description}"
+evaluationDependsOn(":common")
+
+tasks.register("javadoc", Copy) {
+    dependsOn "common:javadoc"
+
+    doFirst {
+        mkdir file("build/docs/javadoc")
+    }
+
+    from(project(":common").javadoc.outputs)
+    into(file("build/docs/javadoc"))
 }
 
-subprojects {
-    apply plugin: "dev.architectury.loom"
+tasks.register("jar", Copy) {
+    dependsOn "common:build"
+    dependsOn "forge:build"
+    dependsOn "neoforge:build"
+    dependsOn "fabric:build"
 
-    base {
-        archivesName = archives_base_name + "-" + project.name
+    doFirst {
+        mkdir file("build/libs")
     }
 
-    loom {
-        silentMojangMappingsLicense()
-    }
-
-    dependencies {
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // The following line declares the mojmap mappings, you may use other mappings as well
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-1.19.3:2023.03.12@zip")
-        }
-    }
+    from(project(":common").jar.outputs)
+    from(project(":forge").jar.outputs)
+    from(project(":neoforge").jar.outputs)
+    from(project(":fabric").jar.outputs)
+    into(file("build/libs"))
 }
 
-allprojects {
-    apply plugin: "java"
-    apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
-
-    version = "$mod_version+mc.$minecraft_version"
-    group = maven_group
-
-    repositories {
-        // Add repositories to retrieve artifacts from in here.
-        // You should only use this when depending on other mods because
-        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-        // for more information about repositories.
-        maven { url = "https://maven.parchmentmc.org" }
-
-        maven {
-            name "Fuzs Mod Resources"
-            url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-        }
-
-        flatDir {
-            dir "${rootProject.projectDir}/libs"
-        }
-    }
-
-    tasks.withType(JavaCompile).tap {
-        configureEach {
-            options.encoding = "UTF-8"
-            options.release = 21
-        }
-    }
-
-    java {
-        withSourcesJar()
-    }
+tasks.register("build") {
+    dependsOn "javadoc"
+    dependsOn "jar"
 }
+
