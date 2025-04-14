@@ -23,7 +23,6 @@ tasks.register("javadoc", Copy) {
 
 tasks.register("jar", Copy) {
     dependsOn "common:build"
-    dependsOn "forge:build"
     dependsOn "neoforge:build"
     dependsOn "fabric:build"
 
@@ -32,7 +31,6 @@ tasks.register("jar", Copy) {
     }
 
     from(project(":common").jar.outputs)
-    from(project(":forge").jar.outputs)
     from(project(":neoforge").jar.outputs)
     from(project(":fabric").jar.outputs)
     into(file("build/libs"))

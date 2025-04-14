@@ -21,10 +21,10 @@ authors = "Ultreon Studios"
 description = "Shows an exit confirmation screen when trying to close Minecraft."
 
 [[mixins]]
-config = "exit-confirmation-common.mixins.json"
+config = "exit_confirm.mixins.json"
 
 [[mixins]]
-config = "exit-confirmation.mixins.json"
+config = "exit_confirm.neoforge.mixins.json"
 
 [[dependencies.exit_confirm]]
 modId = "neoforge"

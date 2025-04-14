@@ -47,7 +47,7 @@ configurations {
 }
 
 dependencies {
-    implementation "dev.ultreon.mods:xinexlib-neoforge-1.21.1:0.1.0-SNAPSHOT"
+    implementation "dev.ultreon.mods:xinexlib-neoforge-1.21.1:0.1.0"
 
     api group: "io.github.llamalad7", name: 'mixinextras-neoforge', version: '0.4.1'
     annotationProcessor group: "io.github.llamalad7", name: 'mixinextras-neoforge', version: '0.4.1'
