@@ -2,12 +2,11 @@ package com.ultreon.mods.exitconfirmation;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
 
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 public class WindowCloseEvent {
+    /*
     public static final Event<WindowClosing> EVENT = EventFactory.createArrayBacked(WindowClosing.class, callbacks -> source -> {
         for (WindowClosing callback : callbacks) {
             ActionResult closing = callback.closing(source);
@@ -20,6 +19,7 @@ public class WindowCloseEvent {
 
         return ActionResult.PASS;
     });
+    */
 
     @FunctionalInterface
     public interface WindowClosing {

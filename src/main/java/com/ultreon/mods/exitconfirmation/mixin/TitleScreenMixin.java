@@ -18,20 +18,20 @@ public abstract class TitleScreenMixin extends Screen {
     @Inject(method = "buttonClicked", at = @At("HEAD"), cancellable = true)
     public void exitConfirm$injectButtonClick(ButtonWidget button, CallbackInfo ci) {
         if (button.id == 4) {
-            if (WindowCloseEvent.EVENT.invoker().closing(WindowCloseEvent.Source.QUIT_BUTTON) == ActionResult.CANCEL) {
+            if (ExitConfirmation.getInstance().onWindowClose(WindowCloseEvent.Source.QUIT_BUTTON) == ActionResult.CANCEL) {
                 ci.cancel();
                 return;
             }
             ExitConfirmation.allowExit = true;
-            client.scheduleStop();
+            mc.scheduleStop();
         }
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     public void exitConfirm$injectEscapePrompt(char id, int code, CallbackInfo ci) {
         if (code == Keyboard.KEY_ESCAPE && ExitConfirmation.CONFIG.closePrompt.get() && ExitConfirmation.CONFIG.quitOnEscInTitle.get()) {
-            if (this.client.currentScreen == this) {
-                this.client.setScreen(new ConfirmExitScreen(this.client.currentScreen));
+            if (this.mc.currentScreen == this) {
+                this.mc.openScreen(new ConfirmExitScreen(this.mc.currentScreen));
                 ci.cancel();
             }
         }

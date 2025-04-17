@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.Language;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 @Environment(EnvType.CLIENT)
@@ -25,8 +25,8 @@ public class ConfirmExitScreen extends Screen {
 
         this.buttons.clear();
 
-        this.buttons.add(yesButton = new ButtonWidget(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, I18n.translate("gui.yes")));
-        this.buttons.add(new ButtonWidget(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, I18n.translate("gui.no")));
+        this.buttons.add(yesButton = new ButtonWidget(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, Language.getInstance().translate("gui.yes")));
+        this.buttons.add(new ButtonWidget(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, Language.getInstance().translate("gui.no")));
 
         yesButton.active = false;
 
@@ -36,19 +36,19 @@ public class ConfirmExitScreen extends Screen {
     @Override
     protected void buttonClicked(ButtonWidget button) {
         if (button.id == 0) {
-            if (this.client != null) {
+            if (this.mc != null) {
                 button.active = false;
-                if (this.client.world != null && this.client.isIntegratedServerRunning()) {
+                if (this.mc.world != null && this.mc.isIntegratedServerRunning()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;
                 }
 
-                this.client.scheduleStop();
+                this.mc.scheduleStop();
             }
         } else if (button.id == 1) {
-            if (this.client != null) {
+            if (this.mc != null) {
                 button.active = false;
-                this.client.setScreen(this.previousScreen);
+                this.mc.openScreen(this.previousScreen);
             }
         }
     }
@@ -79,7 +79,7 @@ public class ConfirmExitScreen extends Screen {
     }
 
     public void back() {
-        this.client.setScreen(this.previousScreen);
+        this.mc.openScreen(this.previousScreen);
     }
 
     @Override

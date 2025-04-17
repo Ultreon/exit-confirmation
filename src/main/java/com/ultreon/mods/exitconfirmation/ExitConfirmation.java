@@ -2,9 +2,11 @@ package com.ultreon.mods.exitconfirmation;
 
 import com.ultreon.mods.exitconfirmation.config.Config;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.MinecraftClient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.fabricmc.loader.impl.util.log.Log;
+import net.minecraft.client.Minecraft;
+
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class ExitConfirmation implements ClientModInitializer {
 
@@ -14,18 +16,23 @@ public class ExitConfirmation implements ClientModInitializer {
 
     // Directly reference a log4j logger.
     @SuppressWarnings("unused")
-    static final Logger LOGGER = LogManager.getLogger();
+    static final Logger LOGGER = LogManager.getLogManager().getLogger("ExitConfirmation");
+    private static ExitConfirmation instance;
+
+    public static ExitConfirmation getInstance() {
+        return ExitConfirmation.instance;
+    }
 
     @Override
     public void onInitializeClient() {
+        ExitConfirmation.instance = this;
+
         Config.load();
         Config.save();
-
-        WindowCloseEvent.EVENT.register(this::onWindowClose);
     }
 
     public ActionResult onWindowClose(WindowCloseEvent.Source source) {
-        MinecraftClient mc = MinecraftClient.getInstance();
+        Minecraft mc = Minecraft.getMinecraft();
 
         // Check close source.
         if (source == WindowCloseEvent.Source.GENERIC) {
@@ -44,7 +51,7 @@ public class ExitConfirmation implements ClientModInitializer {
                 // Only show screen, when the screen isn't the confirmation screen yet.
                 if (!(mc.currentScreen instanceof ConfirmExitScreen)) {
                     // Set the screen.
-                    mc.setScreen(new ConfirmExitScreen(mc.currentScreen));
+                    mc.openScreen(new ConfirmExitScreen(mc.currentScreen));
                 }
 
                 // Cancel the event.
@@ -53,7 +60,7 @@ public class ExitConfirmation implements ClientModInitializer {
         } else if (source == WindowCloseEvent.Source.QUIT_BUTTON) {
             // Cancel quit button when set in config, and the screen isn't currently the confirmation screen already.
             if (ExitConfirmation.CONFIG.closePrompt.get() && ExitConfirmation.CONFIG.closePromptQuitButton.get() && !(mc.currentScreen instanceof ConfirmExitScreen)) {
-                mc.setScreen(new ConfirmExitScreen(mc.currentScreen));
+                mc.openScreen(new ConfirmExitScreen(mc.currentScreen));
                 return ActionResult.CANCEL;
             }
         }
