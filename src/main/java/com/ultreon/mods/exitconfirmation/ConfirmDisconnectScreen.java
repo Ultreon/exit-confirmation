@@ -1,8 +1,8 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.ultreon.craft.client.gui.screens.Screen;
-import com.ultreon.craft.client.gui.widget.TextButton;
-import com.ultreon.craft.text.TextObject;
+import dev.ultreon.quantum.client.gui.Screen;
+import dev.ultreon.quantum.client.gui.widget.TextButton;
+import dev.ultreon.quantum.text.TextObject;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class ConfirmDisconnectScreen extends ConfirmScreen {

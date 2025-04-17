@@ -19,10 +19,16 @@ plugins {
 
 apply(plugin = "org.jetbrains.gradle.plugin.idea-ext")
 
-group = "com.ultreon.craftmods"
+group = "com.ultreon.quantum"
 version = "0.1.0"
 
-val ultracraftVersion = "dev-SNAPSHOT"
+val quantumVoxelVersion = "0.2.0-SNAPSHOT"
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
 
 repositories {
     mavenCentral()
@@ -30,14 +36,18 @@ repositories {
     maven("https://maven.fabricmc.net/")
     maven("https://github.com/Ultreon/ultreon-data/raw/main/.mvnrepo/")
     maven("https://github.com/Ultreon/corelibs/raw/main/.mvnrepo/")
+    maven("https://maven.ultreon.dev/releases")
+    maven("https://maven.ultreon.dev/snapshots")
+    maven("https://maven.atlassian.com/3rdparty/")
+    maven("https://repo.glaremasters.me/repository/public/")
     maven("https://jitpack.io")
 }
 
 dependencies {
-    implementation("com.github.Ultreon.ultracraft:client:$ultracraftVersion")
-    implementation("com.github.Ultreon.ultracraft:desktop:$ultracraftVersion")
-    implementation("com.github.Ultreon.ultracraft:server:$ultracraftVersion")
-    implementation("com.github.Ultreon.ultracraft:gameprovider:$ultracraftVersion")
+    implementation("dev.ultreon.quantum:quantum-client:$quantumVoxelVersion")
+    implementation("dev.ultreon.quantum:quantum-desktop:$quantumVoxelVersion")
+    implementation("dev.ultreon.quantum:quantum-server:$quantumVoxelVersion")
+    implementation("dev.ultreon.quantum:quantum-gameprovider:$quantumVoxelVersion")
 
     implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.12.0")
     implementation("com.badlogicgames.gdx:gdx-platform:1.12.0:natives-desktop")

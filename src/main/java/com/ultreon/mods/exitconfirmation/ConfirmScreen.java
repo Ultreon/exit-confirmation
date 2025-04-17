@@ -1,13 +1,11 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.ultreon.craft.client.gui.GuiBuilder;
-import com.ultreon.craft.client.gui.Position;
-import com.ultreon.craft.client.gui.Renderer;
-import com.ultreon.craft.client.gui.screens.Screen;
-import com.ultreon.craft.client.gui.widget.TextButton;
-import com.ultreon.craft.client.gui.widget.TextButton;
-import com.ultreon.craft.text.TextObject;
-import com.ultreon.craft.util.Color;
+import dev.ultreon.quantum.client.gui.Position;
+import dev.ultreon.quantum.client.gui.Renderer;
+import dev.ultreon.quantum.client.gui.Screen;
+import dev.ultreon.quantum.client.gui.widget.TextButton;
+import dev.ultreon.quantum.text.TextObject;
+import dev.ultreon.quantum.util.RgbColor;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
@@ -23,8 +21,8 @@ public abstract class ConfirmScreen extends Screen {
 
     protected ConfirmScreen(Screen background, TextObject title, TextObject description) {
         super(title);
-        this.yesButtonText = TextObject.translation("ultracraft.ui.yes");
-        this.noButtonText = TextObject.translation("ultracraft.ui.no");
+        this.yesButtonText = TextObject.translation("quantum.ui.yes");
+        this.noButtonText = TextObject.translation("quantum.ui.no");
 
         this.title = title;
         this.description = description;
@@ -34,34 +32,33 @@ public abstract class ConfirmScreen extends Screen {
 
     public abstract void yesButtonCallback(TextButton btn);
 
-    public void build(GuiBuilder builder) {
+    @Override
+    protected void init() {
         this.yesButton = this.add(TextButton.of(this.yesButtonText, 100, 20)
-                .callback(this::yesButtonCallback)
+                .setCallback(this::yesButtonCallback)
                 .position(() -> new Position(this.getWidth() / 2 - 105, this.getHeight() / 6 + 96)));
 
         this.add(TextButton.of(this.noButtonText, 100, 20)
-                .callback((btn) -> {
+                .setCallback((btn) -> {
                     if (this.client != null) {
                         btn.enabled = false;
                         this.client.showScreen(this.background);
                     }
                 }).position(() -> new Position(this.getWidth() / 2 + 5, this.getHeight() / 6 + 96)));
 
-//        this.yesButton.enabled = false;
-
-        this.setButtonDelay(ExitConfirmation.CONFIG.confirmDelay.get());
+        this.setButtonDelay(ExitConfig.confirmDelay);
     }
 
     @Override
-    public void renderWidget(@NotNull Renderer renderer, int mouseX, int mouseY, float deltaTime) {
+    public void renderWidget(@NotNull Renderer renderer, float deltaTime) {
         renderer.pushMatrix();
-        if (ExitConfirmation.CONFIG.solidBackgroumd.get()) {
+        if (ExitConfig.solidBackground) {
             this.renderSolidBackground(renderer);
-        } else if (ExitConfirmation.CONFIG.forceTransparentBackground.get()) {
+        } else if (ExitConfig.forceTransparentBackground) {
             if (this.background != null) {
                 renderer.pushMatrix();
                 renderer.translate(0f, 0f, -1000f);
-                this.background.render(renderer, Integer.MAX_VALUE, Integer.MAX_VALUE, deltaTime);
+                this.background.render(renderer, deltaTime);
                 renderer.popMatrix();
             }
 
@@ -71,10 +68,10 @@ public abstract class ConfirmScreen extends Screen {
         }
         renderer.popMatrix();
 
-        renderer.textCenter(this.title, this.getWidth() / 2, 70, Color.rgb(0xffffff));
-        renderer.textCenter(this.description, this.getWidth() / 2, 90, Color.rgb(0xbfbfbf));
+        renderer.textCenter(this.title, this.getWidth() / 2, 70, RgbColor.rgb(0xffffff));
+        renderer.textCenter(this.description, this.getWidth() / 2, 90, RgbColor.rgb(0xbfbfbf));
         renderer.textCenter(this.label, this.getWidth() / 2, 90);
-        super.renderWidget(renderer, mouseX, mouseY, deltaTime);
+        super.render(renderer, deltaTime);
     }
 
     /**

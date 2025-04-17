@@ -1,21 +1,23 @@
 package com.ultreon.mods.exitconfirmation.mixin;
 
 import com.badlogic.gdx.Input;
-import com.ultreon.craft.client.UltracraftClient;
-import com.ultreon.craft.client.gui.screens.Screen;
-import com.ultreon.craft.client.gui.screens.TitleScreen;
-import com.ultreon.craft.client.gui.widget.TextButton;
-import com.ultreon.craft.text.TextObject;
 import com.ultreon.mods.exitconfirmation.ConfirmExitScreen;
+import com.ultreon.mods.exitconfirmation.ExitConfig;
 import com.ultreon.mods.exitconfirmation.ExitConfirmation;
+import dev.ultreon.quantum.client.QuantumClient;
+import dev.ultreon.quantum.client.gui.Screen;
+import dev.ultreon.quantum.client.gui.screens.TitleScreen;
+import dev.ultreon.quantum.client.gui.widget.TitleButton;
+import dev.ultreon.quantum.text.TextObject;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen {
+    @Unique
     private boolean exitConfirmation$escPress;
 
     protected TitleScreenMixin(TextObject component) {
@@ -28,9 +30,8 @@ public abstract class TitleScreenMixin extends Screen {
     }
 
     @Inject(at = @At("HEAD"), method = "quitGame", cancellable = true)
-    public void exitConfirmation$quitGame(TextButton caller, CallbackInfo ci) {
+    public void exitConfirmation$quitGame(TitleButton caller, CallbackInfo ci) {
         ci.cancel();
-        ExitConfirmation.onQuitButtonClick();
     }
 
     @Override
@@ -40,10 +41,10 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Override
     public boolean keyRelease(int keyCode) {
-        if (keyCode == Input.Keys.ESCAPE && ExitConfirmation.CONFIG.closePrompt.get() && ExitConfirmation.CONFIG.quitOnEscInTitle.get()) {
+        if (keyCode == Input.Keys.ESCAPE && ExitConfig.closePrompt && ExitConfig.quitOnEscInTitle) {
             if (!this.exitConfirmation$escPress) {
                 this.exitConfirmation$escPress = true;
-                var client = UltracraftClient.get();
+                var client = QuantumClient.get();
                 if (client.screen == this) {
                     client.showScreen(new ConfirmExitScreen(client.screen));
                     return true;
