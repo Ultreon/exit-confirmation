@@ -1,66 +1,66 @@
 package com.ultreon.mods.exitconfirmation;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
-@SideOnly(Side.CLIENT)
-public class ConfirmExitScreen extends GuiScreen {
+@Environment(EnvType.CLIENT)
+public class ConfirmExitScreen extends Screen {
     private final String description = "Are you sure you want to exit Minecraft?";
     private final String title = "Exit Confirmation";
-    private GuiScreen previousScreen;
+    private Screen previousScreen;
     private int ticksUntilEnableIn;
-    private GuiButton yesButton;
+    private ButtonWidget yesButton;
 
-    public ConfirmExitScreen(GuiScreen previousScreen) {
+    public ConfirmExitScreen(Screen previousScreen) {
         super();
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
 
-        this.buttonList.clear();
+        this.buttons.clear();
 
-        this.buttonList.add(yesButton = new GuiButton(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, I18n.format("gui.yes")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, I18n.format("gui.no")));
+        this.buttons.add(yesButton = new ButtonWidget(0, this.width / 2 - 105, this.height / 6 + 96, 100, 20, I18n.translate("gui.yes")));
+        this.buttons.add(new ButtonWidget(1, this.width / 2 + 5, this.height / 6 + 96, 100, 20, I18n.translate("gui.no")));
 
-        yesButton.enabled = false;
+        yesButton.active = false;
 
         this.setButtonDelay(10);
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected void buttonClicked(ButtonWidget button) {
         if (button.id == 0) {
-            if (this.mc != null) {
-                button.enabled = false;
-                if (this.mc.theWorld != null && this.mc.isIntegratedServerRunning()) {
+            if (this.client != null) {
+                button.active = false;
+                if (this.client.world != null && this.client.isIntegratedServerRunning()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;
                 }
 
-                this.mc.shutdown();
+                this.client.scheduleStop();
             }
         } else if (button.id == 1) {
-            if (this.mc != null) {
-                button.enabled = false;
-                this.mc.displayGuiScreen(this.previousScreen);
+            if (this.client != null) {
+                button.active = false;
+                this.client.setScreen(this.previousScreen);
             }
         }
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground();
 
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 70, 0xffffff);
-        this.drawCenteredString(this.fontRendererObj, this.description, this.width / 2, 90, 0xbfbfbf);
+        this.drawCenteredString(this.textRenderer, this.title, this.width / 2, 70, 0xffffff);
+        this.drawCenteredString(this.textRenderer, this.description, this.width / 2, 90, 0xbfbfbf);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
 
     }
 
@@ -72,18 +72,18 @@ public class ConfirmExitScreen extends GuiScreen {
     }
 
     @Override
-    public void updateScreen() {
+    public void tick() {
         if (this.ticksUntilEnableIn-- <= 0) {
-            yesButton.enabled = true;
+            yesButton.active = true;
         }
     }
 
     public void back() {
-        this.mc.displayGuiScreen(this.previousScreen);
+        this.client.setScreen(this.previousScreen);
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) {
+    protected void keyPressed(char id, int code) {
         // Don't allow closing the GUI
     }
 }
