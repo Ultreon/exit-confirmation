@@ -1,11 +1,12 @@
 package com.ultreon.mods.exitconfirmation;
 
 import com.ultreon.mods.exitconfirmation.config.Config;
+import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ExitConfirmation {
+public class ExitConfirmation implements ClientModInitializer {
 
     public static final String MOD_ID = "exit_confirm";
     public static boolean allowExit;
@@ -15,7 +16,8 @@ public class ExitConfirmation {
     @SuppressWarnings("unused")
     static final Logger LOGGER = LogManager.getLogger();
 
-    public ExitConfirmation() {
+    @Override
+    public void onInitializeClient() {
         Config.load();
         Config.save();
 
