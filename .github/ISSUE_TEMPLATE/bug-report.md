@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Please complete the following information:**
  - OS: [e.g. Windows]
- - Ultracraft version [example 1.18.2]
+ - Quantum Voxel version [example 1.18.2]
  - Devices Mod Version: [example: 0.5.0+64]
 
 **FOR FABRIC:**

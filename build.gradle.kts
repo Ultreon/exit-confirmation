@@ -110,29 +110,29 @@ commonProperties
 
                 runConfigurations {
                     create(
-                        "Ultracraft Client",
+                        "Quantum Voxel Client",
                         Application::class.java
                     ) {                       // Create new run configuration "MyApp" that will run class foo.App
                         jvmArgs =
-                            "-Xmx2g -Dfabric.dli.config=${launchFile.path} -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
+                            "-Xmx2g${if (System.getProperty("os.name").startsWith("Mac")) " -XstartOnFirstThread" else ""} -Dfabric.dli.config=${launchFile.path} -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
                         mainClass = "net.fabricmc.devlaunchinjector.Main"
                         moduleName = idea.module.name + ".main"
                         workingDirectory = "$projectDir/run/client/main/"
                         programParameters = "--gameDir=."
                     }
                     create(
-                        "Ultracraft Client Alt",
+                        "Quantum Voxel Client Alt",
                         Application::class.java
                     ) {                       // Create new run configuration "MyApp" that will run class foo.App
                         jvmArgs =
-                            "-Xmx2g -Dfabric.dli.config=${launchFile.path} -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
+                            "-Xmx2g${if (System.getProperty("os.name").startsWith("Mac")) " -XstartOnFirstThread" else ""} -Dfabric.dli.config=${launchFile.path} -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
                         mainClass = "net.fabricmc.devlaunchinjector.Main"
                         moduleName = idea.module.name + ".main"
                         workingDirectory = "$projectDir/run/client/alt/"
                         programParameters = "--gameDir=."
                     }
                     create(
-                        "Ultracraft Server",
+                        "Quantum Voxel Server",
                         Application::class.java
                     ) {                       // Create new run configuration "MyApp" that will run class foo.App
                         jvmArgs =

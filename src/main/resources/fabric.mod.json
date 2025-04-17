@@ -3,7 +3,7 @@
   "id": "exit_confirm",
   "version": "0.1.0",
   "name": "Exit Confirmation",
-  "description": "Shows an exit confirmation screen when trying to close Ultracraft.",
+  "description": "Shows an exit confirmation screen when trying to close Quantum Voxel.",
   "authors": [
     "Ultreon Team"
   ],
@@ -28,7 +28,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.14.21",
-    "ultracraft": ">=0.1 <0.2",
+    "quantum": ">=0.2 <0.3",
     "java": ">=17"
   },
   "breaks": {

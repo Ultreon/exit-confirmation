@@ -8,4 +8,4 @@ assignees: ''
 ---
 
 **Modloader:** [example: forge]
-**Ultracraft Version:** [example: 1.8.9]
+**Quantum Voxel Version:** [example: 1.8.9]

@@ -1,5 +1,5 @@
 # Exit Confirmation
-Exit Confirmation mod for Ultracraft (NeoForged / Fabric).
+Exit Confirmation mod for Quantum Voxel (NeoForged / Fabric).
 
 ## Links
 Curseforge: https://curseforge.com/minecraft/mc-mods/exit-confirmation  
