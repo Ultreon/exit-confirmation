@@ -1,30 +1,24 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.ultreon.craft.client.gui.GuiBuilder;
-import com.ultreon.craft.client.gui.Position;
-import com.ultreon.craft.client.gui.Renderer;
-import com.ultreon.craft.client.gui.screens.Screen;
-import com.ultreon.craft.client.gui.widget.TextButton;
-import com.ultreon.craft.client.gui.widget.TextButton;
-import com.ultreon.craft.text.TextObject;
-import com.ultreon.craft.util.Color;
-import org.jetbrains.annotations.NotNull;
+import dev.ultreon.quantum.client.gui.screens.Screen;
+import dev.ultreon.quantum.client.gui.widget.button.ButtonType;
+import dev.ultreon.quantum.client.gui.widget.button.TextButton;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public abstract class ConfirmScreen extends Screen {
-    private final TextObject title;
-    private final TextObject description;
-    private TextObject label = TextObject.empty();
-    protected final TextObject yesButtonText;
-    protected final TextObject noButtonText;
+    private final String title;
+    private final String description;
+    private String label = "";
+    protected final String yesButtonText;
+    protected final String noButtonText;
     protected final Screen background;
     protected TextButton yesButton;
     private int activateDelay;
 
-    protected ConfirmScreen(Screen background, TextObject title, TextObject description) {
-        super(title);
-        this.yesButtonText = TextObject.translation("ultracraft.ui.yes");
-        this.noButtonText = TextObject.translation("ultracraft.ui.no");
+    protected ConfirmScreen(Screen background, String title, String description) {
+        super(background);
+        this.yesButtonText = "Yes";
+        this.noButtonText = "No";
 
         this.title = title;
         this.description = description;
@@ -34,8 +28,9 @@ public abstract class ConfirmScreen extends Screen {
 
     public abstract void yesButtonCallback(TextButton btn);
 
-    public void build(GuiBuilder builder) {
-        this.yesButton = this.add(TextButton.of(this.yesButtonText, 100, 20)
+    @Override
+    public void setup() {
+        this.yesButton = this.add(new TextButton(this, ButtonType.Normal)
                 .callback(this::yesButtonCallback)
                 .position(() -> new Position(this.getWidth() / 2 - 105, this.getHeight() / 6 + 96)));
 

@@ -1,16 +1,11 @@
 package com.ultreon.mods.exitconfirmation;
 
-import com.ultreon.craft.client.gui.screens.Screen;
-import com.ultreon.craft.client.gui.widget.TextButton;
-import com.ultreon.craft.text.TextObject;
+import dev.ultreon.quantum.client.gui.screens.Screen;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class ConfirmDisconnectScreen extends ConfirmScreen {
-    private static final TextObject DESCRIPTION = TextObject.translation("exit_confirm.screen.disconnect.description");
-    private static final TextObject TITLE = TextObject.translation("exit_confirm.screen.disconnect.title");
-
     public ConfirmDisconnectScreen(Screen background) {
-        super(background, TITLE, DESCRIPTION);
+        super(background, "Confirm Disconnect", "Are you sure you want to disconnect?");
     }
 
     @Override

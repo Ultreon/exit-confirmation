@@ -1,0 +1,52 @@
+{
+  title: Disconnect Confirmation
+
+  widgets: [
+    {
+      type: text,
+      id: title,
+      text: Confirm Disconnect,
+
+      appearance: {
+        color: #ffffff
+      }
+
+      position: {
+        type: relative
+        relative-to: {
+          type: screen-center
+        }
+        y: 100
+      }
+    }
+
+    {
+      type: button,
+      id: yes,
+      text: Yes,
+
+      position: {
+        type: relative
+        relative-to: {
+          type: widget
+          id: title
+        }
+        x: -105
+        y: -100
+      }
+
+      size: {
+        x: 100
+        y: 50
+      }
+
+      interaction: {
+        on-click: {
+          action: {
+            type:
+          }
+        }
+      }
+    }
+  ]
+}
