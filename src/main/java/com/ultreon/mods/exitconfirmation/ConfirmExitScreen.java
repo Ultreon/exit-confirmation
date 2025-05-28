@@ -38,6 +38,7 @@ public class ConfirmExitScreen extends Screen {
         if (button.id == 0) {
             if (this.client != null) {
                 button.active = false;
+                ExitConfirmation.allowExit = true;
                 if (this.client.world != null && this.client.isIntegratedServerRunning()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;
