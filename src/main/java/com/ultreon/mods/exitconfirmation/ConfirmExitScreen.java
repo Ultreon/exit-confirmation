@@ -38,7 +38,7 @@ public class ConfirmExitScreen extends GuiScreen {
         if (button.id == 0) {
             if (this.mc != null) {
                 button.enabled = false;
-                if (this.mc.theWorld != null && this.mc.isIntegratedServerRunning()) {
+                if (this.mc.world != null && this.mc.isIntegratedServerRunning()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;
                 }
@@ -57,8 +57,8 @@ public class ConfirmExitScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
 
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 70, 0xffffff);
-        this.drawCenteredString(this.fontRendererObj, this.description, this.width / 2, 90, 0xbfbfbf);
+        this.drawCenteredString(this.fontRenderer, this.title, this.width / 2, 70, 0xffffff);
+        this.drawCenteredString(this.fontRenderer, this.description, this.width / 2, 90, 0xbfbfbf);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 

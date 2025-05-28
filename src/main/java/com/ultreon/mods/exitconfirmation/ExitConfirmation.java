@@ -35,7 +35,7 @@ public class ExitConfirmation {
         // Check close source.
         if (source == WindowCloseEvent.Source.GENERIC) {
             // Always cancel if the world isn't loaded but also being ingame. (Fixes bug)
-            if (mc.theWorld == null && mc.currentScreen == null) {
+            if (mc.world == null && mc.currentScreen == null) {
                 event.setCanceled(true);
                 return;
             }
@@ -43,7 +43,7 @@ public class ExitConfirmation {
             // Otherwise only cancel when the close prompt is enabled.
             if (ExitConfirmation.CONFIG.closePrompt.get()) {
                 // Allow closing ingame if enabled in config.
-                if (mc.theWorld != null && !ExitConfirmation.CONFIG.closePromptInGame.get()) {
+                if (mc.world != null && !ExitConfirmation.CONFIG.closePromptInGame.get()) {
                     return;
                 }
 
