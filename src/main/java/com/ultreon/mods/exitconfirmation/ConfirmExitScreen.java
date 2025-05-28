@@ -38,6 +38,7 @@ public class ConfirmExitScreen extends Screen {
         if (button.id == 0) {
             if (this.mc != null) {
                 button.active = false;
+                ExitConfirmation.allowExit = true;
                 if (this.mc.world != null && this.mc.isIntegratedServerRunning()) {
                     WorldUtils.saveWorldThenQuitGame();
                     return;

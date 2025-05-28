@@ -28,8 +28,7 @@
   ],
   "accessWidener": "exit-confirmation.accesswidener",
   "depends": {
-    "fabricloader": ">=0.16.14",
-    "legacy-fabric-api": "*",
+    "fabricloader": ">=0.14.6",
     "minecraft": ">1.4 <=1.4.7",
     "java": ">=8"
   }
