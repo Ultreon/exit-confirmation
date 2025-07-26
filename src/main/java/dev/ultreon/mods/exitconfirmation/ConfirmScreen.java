@@ -1,6 +1,5 @@
-package com.ultreon.mods.exitconfirmation;
+package dev.ultreon.mods.exitconfirmation;
 
-import dev.ultreon.quantum.client.gui.Position;
 import dev.ultreon.quantum.client.gui.Renderer;
 import dev.ultreon.quantum.client.gui.Screen;
 import dev.ultreon.quantum.client.gui.widget.TextButton;
@@ -17,6 +16,7 @@ public abstract class ConfirmScreen extends Screen {
     protected final TextObject noButtonText;
     protected final Screen background;
     protected TextButton yesButton;
+    protected TextButton noButton;
     private int activateDelay;
 
     protected ConfirmScreen(Screen background, TextObject title, TextObject description) {
@@ -35,18 +35,20 @@ public abstract class ConfirmScreen extends Screen {
     @Override
     protected void init() {
         this.yesButton = this.add(TextButton.of(this.yesButtonText, 100, 20)
-                .setCallback(this::yesButtonCallback)
-                .position(() -> new Position(this.getWidth() / 2 - 105, this.getHeight() / 6 + 96)));
+                .withCallback(this::yesButtonCallback));
 
-        this.add(TextButton.of(this.noButtonText, 100, 20)
-                .setCallback((btn) -> {
-                    if (this.client != null) {
-                        btn.enabled = false;
-                        this.client.showScreen(this.background);
-                    }
-                }).position(() -> new Position(this.getWidth() / 2 + 5, this.getHeight() / 6 + 96)));
+        this.noButton = this.add(TextButton.of(this.noButtonText, 100, 20)
+                .withCallback(this::noButtonCallback));
 
         this.setButtonDelay(ExitConfig.confirmDelay);
+    }
+
+    @Override
+    public void resized(int width, int height) {
+        super.resized(width, height);
+
+        this.yesButton.setPos(this.size.width / 2 - 105, this.size.height / 6 + 96);
+        this.noButton.setPos(this.size.width / 2 + 5, this.size.height / 6 + 96);
     }
 
     @Override
@@ -95,5 +97,12 @@ public abstract class ConfirmScreen extends Screen {
 
     public boolean canCloseWithEsc() {
         return false;
+    }
+
+    private void noButtonCallback(TextButton btn) {
+        if (this.client != null) {
+            btn.enabled = false;
+            this.client.showScreen(this.background);
+        }
     }
 }

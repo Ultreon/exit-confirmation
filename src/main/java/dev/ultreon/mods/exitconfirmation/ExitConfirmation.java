@@ -1,18 +1,18 @@
-package com.ultreon.mods.exitconfirmation;
+package dev.ultreon.mods.exitconfirmation;
 
 import dev.ultreon.quantum.GameWindow;
-import dev.ultreon.quantum.client.ClientModInit;
 import dev.ultreon.quantum.client.QuantumClient;
 import dev.ultreon.quantum.client.api.events.ClientLifecycleEvents;
 import dev.ultreon.quantum.client.api.events.WindowEvents;
 import dev.ultreon.quantum.client.gui.Screen;
-import dev.ultreon.quantum.client.gui.screens.WorldLoadScreen;
+import dev.ultreon.quantum.client.gui.screens.world.WorldLoadScreen;
+import dev.ultreon.quantum.desktop.ClientModInitializer;
 import dev.ultreon.quantum.events.api.EventResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
-public class ExitConfirmation implements ClientModInit {
+public class ExitConfirmation implements ClientModInitializer {
     public static final ExitConfig CONFIG = new ExitConfig();
 
     public static final String MOD_ID = "exit_confirm";

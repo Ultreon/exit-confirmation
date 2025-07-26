@@ -1,4 +1,4 @@
-package com.ultreon.mods.exitconfirmation;
+package dev.ultreon.mods.exitconfirmation;
 
 public enum CloseSource {
     GENERIC,

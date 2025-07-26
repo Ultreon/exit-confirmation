@@ -1,8 +1,7 @@
-package com.ultreon.mods.exitconfirmation.mixin;
+package dev.ultreon.mods.exitconfirmation.mixin;
 
-import com.ultreon.mods.exitconfirmation.ConfirmDisconnectScreen;
-import com.ultreon.mods.exitconfirmation.ExitConfig;
-import com.ultreon.mods.exitconfirmation.ExitConfirmation;
+import dev.ultreon.mods.exitconfirmation.ConfirmDisconnectScreen;
+import dev.ultreon.mods.exitconfirmation.ExitConfig;
 import dev.ultreon.quantum.client.QuantumClient;
 import dev.ultreon.quantum.client.gui.Screen;
 import dev.ultreon.quantum.client.gui.screens.PauseScreen;

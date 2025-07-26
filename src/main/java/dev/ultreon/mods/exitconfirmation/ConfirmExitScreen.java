@@ -1,4 +1,4 @@
-package com.ultreon.mods.exitconfirmation;
+package dev.ultreon.mods.exitconfirmation;
 
 import com.badlogic.gdx.Gdx;
 import dev.ultreon.quantum.client.QuantumClient;

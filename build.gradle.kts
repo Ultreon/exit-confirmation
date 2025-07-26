@@ -48,6 +48,7 @@ dependencies {
     implementation("dev.ultreon.quantum:quantum-desktop:$quantumVoxelVersion")
     implementation("dev.ultreon.quantum:quantum-server:$quantumVoxelVersion")
     implementation("dev.ultreon.quantum:quantum-gameprovider:$quantumVoxelVersion")
+    implementation("dev.ultreon.quantum:quantum-xeox-loader:$quantumVoxelVersion")
 
     implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.12.0")
     implementation("com.badlogicgames.gdx:gdx-platform:1.12.0:natives-desktop")
@@ -114,8 +115,8 @@ commonProperties
                         Application::class.java
                     ) {                       // Create new run configuration "MyApp" that will run class foo.App
                         jvmArgs =
-                            "-Xmx2g${if (System.getProperty("os.name").startsWith("Mac")) " -XstartOnFirstThread" else ""} -Dfabric.dli.config=${launchFile.path} -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
-                        mainClass = "net.fabricmc.devlaunchinjector.Main"
+                            "-Xmx2g${if (System.getProperty("os.name").startsWith("Mac")) " -XstartOnFirstThread" else ""} -Dxeox.devEnv=false"
+                        mainClass = "dev.ultreon.xeox.impl.main.Main"
                         moduleName = idea.module.name + ".main"
                         workingDirectory = "$projectDir/run/client/main/"
                         programParameters = "--gameDir=."
@@ -125,8 +126,8 @@ commonProperties
                         Application::class.java
                     ) {                       // Create new run configuration "MyApp" that will run class foo.App
                         jvmArgs =
-                            "-Xmx2g${if (System.getProperty("os.name").startsWith("Mac")) " -XstartOnFirstThread" else ""} -Dfabric.dli.config=${launchFile.path} -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
-                        mainClass = "net.fabricmc.devlaunchinjector.Main"
+                            "-Xmx2g${if (System.getProperty("os.name").startsWith("Mac")) " -XstartOnFirstThread" else ""} -Dxeox.devEnv=false"
+                        mainClass = "dev.ultreon.xeox.impl.main.Main"
                         moduleName = idea.module.name + ".main"
                         workingDirectory = "$projectDir/run/client/alt/"
                         programParameters = "--gameDir=."
@@ -136,8 +137,8 @@ commonProperties
                         Application::class.java
                     ) {                       // Create new run configuration "MyApp" that will run class foo.App
                         jvmArgs =
-                            "-Xmx2g -Dfabric.dli.config=${launchFile.path} -Dfabric.dli.env=SERVER -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
-                        mainClass = "net.fabricmc.devlaunchinjector.Main"
+                            "-Xmx2g -Dfabric.dli.config=${launchFile.path} -Dxeox.devEnv=false"
+                        mainClass = "dev.ultreon.xeox.impl.main.Main"
                         moduleName = idea.module.name + ".main"
                         workingDirectory = "$projectDir/run/server/"
                         programParameters = "--gameDir=."
@@ -154,4 +155,4 @@ commonProperties
     }
 }
 
-this.setupIdea()
+setupIdea()

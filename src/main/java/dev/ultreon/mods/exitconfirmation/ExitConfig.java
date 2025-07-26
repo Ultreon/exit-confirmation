@@ -1,4 +1,4 @@
-package com.ultreon.mods.exitconfirmation;
+package dev.ultreon.mods.exitconfirmation;
 
 import dev.ultreon.quantum.config.crafty.ConfigEntry;
 import dev.ultreon.quantum.config.crafty.ConfigInfo;

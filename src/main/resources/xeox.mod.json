@@ -1,37 +1,32 @@
 {
   "schemaVersion": 1,
   "id": "exit_confirm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "Exit Confirmation",
   "description": "Shows an exit confirmation screen when trying to close Quantum Voxel.",
   "authors": [
-    "Ultreon Team"
+    "Ultreon Studios"
   ],
   "contributors": [
-    "XyperCode"
+    "Qubilux (Qubix)"
   ],
   "contact": {
-    "homepage": "https://ultreon.github.io",
+    "homepage": "https://ultreon.dev",
     "sources": "https://github.com/Ultreon/exit-confirmation",
     "issues": "https://github.com/Ultreon/exit-confirmation/issues"
   },
   "license": "All Rights Reserved",
-  "icon": "assets/exit_confirm/icon.png",
-  "environment": "client",
-  "entrypoints": {
-    "client-init": [
-      "com.ultreon.mods.exitconfirmation.ExitConfirmation"
-    ]
-  },
+  "entrypoints": [
+    "client:dev.ultreon.mods.exitconfirmation.ExitConfirmation"
+  ],
   "mixins": [
     "exit-confirmation-common.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.21",
-    "quantum": ">=0.2 <0.3",
-    "java": ">=17"
+    "xeoxloader": ">=0.1.0",
+    "quantum": ">=0.2 <0.3"
   },
-  "breaks": {
-    "minecraft": "*"
-  }
+  "permissions": [
+    "classpath:mixin"
+  ]
 }
