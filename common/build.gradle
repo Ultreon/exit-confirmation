@@ -18,17 +18,6 @@ neoForge {
     }
 }
 
-repositories {
-    maven {
-        name "ultreonMavenSnapshots"
-        url "https://maven.ultreon.dev/snapshots"
-    }
-    maven {
-        name "ultreonMavenReleases"
-        url "https://maven.ultreon.dev/releases"
-    }
-}
-
 dependencies {
     compileOnlyApi("org.spongepowered:mixin:0.8.5")
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
@@ -38,8 +27,6 @@ dependencies {
     // Extra dependencies
     library("io.projectreactor:reactor-core:3.5.5")
     library("org.hjson:hjson:3.1.0")
-
-    compileOnly("dev.ultreon.mods:xinexlib-common-1.21.1:0.1.0-SNAPSHOT")
 
     compileOnly("com.electronwill.night-config:core:3.6.3")
     compileOnly("com.electronwill.night-config:toml:3.6.3")

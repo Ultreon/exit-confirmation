@@ -34,13 +34,6 @@ ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.exit_confirm]]
-modId = "xinexlib"
-type = "required"
-versionRange = "(,0.2)"
-ordering = "NONE"
-side = "CLIENT"
-
-[[dependencies.exit_confirm]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21,1.21.1]"

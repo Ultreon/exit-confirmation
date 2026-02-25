@@ -4,9 +4,9 @@ import dev.ultreon.mods.exitconfirmation.ExitConfirmation;
 import dev.ultreon.mods.exitconfirmation.OrderedHashMap;
 import dev.ultreon.mods.exitconfirmation.config.entries.*;
 import dev.ultreon.mods.exitconfirmation.config.gui.ConfigEntry;
-import dev.ultreon.mods.xinexlib.platform.XinexPlatform;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -133,7 +133,15 @@ public class Config {
     }
 
     private static Path getConfigDir() {
-        return XinexPlatform.getConfigDir();
+        Path path = Path.of("config", "exit-confirmation");
+        if (Files.notExists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                ExitConfirmation.LOGGER.error("Error creating config directory", e);
+            }
+        }
+        return path;
     }
 
     public static ConfigEntry<?>[] values() {

@@ -1,6 +1,5 @@
 package dev.ultreon.mods.exitconfirmation;
 
-import dev.ultreon.mods.xinexlib.event.system.EventSystem;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -23,12 +22,6 @@ public class ConfirmExitScreen extends ConfirmScreen {
                 return;
             }
 
-            EventSystem.MAIN.publish(new GameExitEvent(ExitSource.confirmScreen(this), this.minecraft) {
-                @Override
-                public boolean canBeCanceled() {
-                    return false;
-                }
-            });
             this.minecraft.stop();
         }
     }
