@@ -32,14 +32,6 @@ java {
 repositories {
 
     maven {
-        name = "UltreonMavenSnapshots"
-        url = "https://maven.ultreon.dev/snapshots"
-    }
-    maven {
-        name = "UltreonMavenReleases"
-        url = "https://maven.ultreon.dev/releases"
-    }
-    maven {
         name = "JitPack"
         url = "https://jitpack.io"
     }
@@ -166,28 +158,6 @@ publishing {
         }
     }
     repositories {
-        maven {
-            name = "UltreonMavenReleases"
-            url = "https://maven.ultreon.dev/releases"
-            credentials(PasswordCredentials) {
-                username = findProperty("ultreonmvn.name") ?: System.getenv("ULTREON_MVN_NAME")
-                password = findProperty("ultreonmvn.secret") ?: System.getenv("ULTREON_MVN_SEC")
-            }
-            authentication {
-                basic(BasicAuthentication)
-            }
-        }
 
-        maven {
-            name = "UltreonMavenSnapshots"
-            url = "https://maven.ultreon.dev/snapshots"
-            credentials(PasswordCredentials) {
-                username = findProperty("ultreonmvn.name") ?: System.getenv("ULTREON_MVN_NAME")
-                password = findProperty("ultreonmvn.secret") ?: System.getenv("ULTREON_MVN_SEC")
-            }
-            authentication {
-                basic(BasicAuthentication)
-            }
-        }
     }
 }

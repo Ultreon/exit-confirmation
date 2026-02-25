@@ -1,8 +1,6 @@
 package dev.ultreon.mods.exitconfirmation;
 
 import com.mojang.blaze3d.platform.Window;
-import dev.ultreon.mods.xinexlib.client.event.ClientScreenEvent;
-import dev.ultreon.mods.xinexlib.client.event.WindowEvent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 
@@ -33,20 +31,19 @@ public class ExitSource {
         return GENERIC;
     }
 
-    public static class WindowExitSource extends ExitSource implements WindowEvent {
+    public static class WindowExitSource extends ExitSource {
         private final Window window;
 
         protected WindowExitSource(Window window) {
             this.window = window;
         }
 
-        @Override
         public Window getWindow() {
             return this.window;
         }
     }
 
-    public static class ButtonWidgetExitSource extends ExitSource implements ClientScreenEvent {
+    public static class ButtonWidgetExitSource extends ExitSource {
         private final Screen screen;
         private final Button button;
 
@@ -55,7 +52,6 @@ public class ExitSource {
             this.button = button;
         }
 
-        @Override
         public Screen getScreen() {
             return this.screen;
         }
@@ -78,7 +74,7 @@ public class ExitSource {
         }
     }
 
-    public static class KeyboardInScreenExitSource extends KeyboardExitSource implements ClientScreenEvent {
+    public static class KeyboardInScreenExitSource extends KeyboardExitSource {
         private final Screen screen;
 
         protected KeyboardInScreenExitSource(Screen screen, int keyCode) {
@@ -86,7 +82,6 @@ public class ExitSource {
             this.screen = screen;
         }
 
-        @Override
         public Screen getScreen() {
             return this.screen;
         }
@@ -96,14 +91,13 @@ public class ExitSource {
 
     }
 
-    public static class ConfirmExitScreenExitSource extends ExitSource implements ClientScreenEvent {
+    public static class ConfirmExitScreenExitSource extends ExitSource {
         private final ConfirmExitScreen screen;
 
         protected ConfirmExitScreenExitSource(ConfirmExitScreen screen) {
             this.screen = screen;
         }
 
-        @Override
         public ConfirmExitScreen getScreen() {
             return this.screen;
         }

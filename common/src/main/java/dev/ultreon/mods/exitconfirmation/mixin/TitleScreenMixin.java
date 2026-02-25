@@ -1,9 +1,6 @@
 package dev.ultreon.mods.exitconfirmation.mixin;
 
 import dev.ultreon.mods.exitconfirmation.ExitConfirmation;
-import dev.ultreon.mods.exitconfirmation.ExitSource;
-import dev.ultreon.mods.exitconfirmation.GameExitEvent;
-import dev.ultreon.mods.xinexlib.event.system.EventSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -21,7 +18,6 @@ public abstract class TitleScreenMixin extends Screen {
         if (keyCode == 256 && ExitConfirmation.CONFIG.closePrompt.get() && ExitConfirmation.CONFIG.quitOnEscInTitle.get()) {
             var minecraft = Minecraft.getInstance();
             if (minecraft.screen == this) {
-                EventSystem.MAIN.publish(new GameExitEvent(ExitSource.keyboardInScreen(this, keyCode), minecraft));
                 return true;
             }
         }

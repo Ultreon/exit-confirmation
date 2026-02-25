@@ -2,11 +2,9 @@ package dev.ultreon.mods.exitconfirmation;
 
 import dev.ultreon.mods.exitconfirmation.config.Config;
 import dev.ultreon.mods.exitconfirmation.mixin.accessor.ButtonAccessor;
-import dev.ultreon.mods.xinexlib.event.system.EventSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
@@ -27,74 +25,6 @@ public class ExitConfirmation {
     @ApiStatus.Internal
     public ExitConfirmation() {
         // Register ourselves for server and other game events we are interested in
-        EventSystem.MAIN.on(GameExitEvent.class, (event) -> {
-            ActionResult actionResult = this.onGameExit(event);
-            if (actionResult == ActionResult.CANCEL) {
-                event.cancel();
-            }
-        });
-    }
-
-    @ApiStatus.Internal
-    public ActionResult onGameExit(GameExitEvent event) {
-        final Minecraft mc = Minecraft.getInstance();
-        final ExitSource source = event.getSource();
-
-        final Screen screen = mc.screen;
-        if (screen instanceof ConfirmExitScreen) {
-            return ActionResult.CANCEL;
-        }
-
-        // Check the close source.
-        if (source instanceof ExitSource.WindowExitSource) {
-            // Always cancel if the world isn't loaded but also being in-game. (Fixes bug)
-            if (mc.level == null && screen == null) {
-                return ActionResult.CANCEL;
-            }
-
-            // Always cancel when loading the world.
-            if (screen instanceof LevelLoadingScreen) {
-                return ActionResult.CANCEL;
-            }
-
-            // Otherwise only cancel when the close prompt is enabled. TODO Add config support back again.
-            if (CONFIG.closePrompt.get()) {
-                // Allow closing in-game if enabled in config. TODO Add config support back again.
-                if (mc.level != null && !CONFIG.closePromptInGame.get()) {
-                    return ActionResult.PASS;
-                }
-
-                // Only show screen, when the screen isn't the confirmation screen already.
-                if (!(screen instanceof ConfirmExitScreen)) {
-                    // Set the screen.
-                    mc.setScreen(new ConfirmExitScreen(screen));
-                }
-
-                // Cancel the event.
-                return ActionResult.CANCEL;
-            }
-        } else if (source instanceof ExitSource.ButtonWidgetExitSource) {
-            // Cancel quit button when set in config, and screen isn't currently the confirmation screen already. TODO Add config support back again.
-            if (CONFIG.closePrompt.get() && CONFIG.closePromptQuitButton.get() && !(screen instanceof ConfirmExitScreen)) {
-                mc.setScreen(new ConfirmExitScreen(screen));
-                return ActionResult.CANCEL;
-            }
-        } else if (source instanceof ExitSource.KeyboardInScreenExitSource) {
-            // Cancel quit button when set in config, and screen isn't currently the confirmation screen already. TODO Add config support back again.
-            if (CONFIG.closePrompt.get() && CONFIG.closePromptQuitButton.get() && !(screen instanceof ConfirmExitScreen)) {
-                mc.setScreen(new ConfirmExitScreen(screen));
-                return ActionResult.CANCEL;
-            }
-        } else if (source instanceof ExitSource.KeyboardExitSource) {
-            // Cancel quit button when set in config, and screen isn't currently the confirmation screen already. TODO Add config support back again.
-            if (CONFIG.closePrompt.get() && CONFIG.closePromptQuitButton.get() && !(screen instanceof ConfirmExitScreen)) {
-                mc.setScreen(new ConfirmExitScreen(screen));
-                return ActionResult.CANCEL;
-            }
-        }
-
-        // Pass, it's not a valid close source.
-        return ActionResult.PASS;
     }
 
     /**
@@ -116,7 +46,7 @@ public class ExitConfirmation {
     /**
      * Overrides the quit button action.
      *
-     * @param client the minecraft client.
+     * @param client      the minecraft client.
      * @param titleScreen the title screen.
      */
     private void overrideQuitButton(Minecraft client, TitleScreen titleScreen) {
@@ -134,14 +64,12 @@ public class ExitConfirmation {
     }
 
     public final void onQuitButtonClick(Minecraft client, TitleScreen titleScreen, Button quitButton) {
-        GameExitEvent publish = EventSystem.MAIN.publish(new GameExitEvent(ExitSource.buttonWidget(titleScreen, quitButton), client));
-        if (!publish.isCanceled()) {
-            client.stop();
-        }
+        this.onCloseCallback(client, client.getWindow().getWindow());
     }
 
     /**
      * Sets up the {@link GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI) window close callback using GLFW}.
+     *
      * @param client the minecraft client.
      * @see GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)
      */
@@ -158,9 +86,12 @@ public class ExitConfirmation {
     }
 
     public void onCloseCallback(Minecraft client, long window) {
-        GameExitEvent publish = EventSystem.MAIN.publish(new GameExitEvent(ExitSource.window(client.getWindow()), client));
-        if (publish.isCanceled()) {
-            GLFW.glfwSetWindowShouldClose(window, false);
+        GLFW.glfwSetWindowShouldClose(window, false);
+        Minecraft instance = Minecraft.getInstance();
+        if (instance.screen instanceof ConfirmExitScreen) {
+            return;
         }
+
+        instance.setScreen(new ConfirmExitScreen(instance.screen));
     }
 }
