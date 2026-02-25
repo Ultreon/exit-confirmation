@@ -1,7 +1,6 @@
 package dev.ultreon.mods.exitconfirmation.config.entries;
 
 import dev.ultreon.mods.exitconfirmation.config.gui.ConfigEntry;
-import net.minecraft.client.gui.components.AbstractWidget;
 
 import java.util.UUID;
 
@@ -15,8 +14,4 @@ public class UUIDEntry extends ConfigEntry<UUID> {
         return UUID.fromString(text);
     }
 
-    @Override
-    public void setFromWidget(AbstractWidget widget) {
-
-    }
 }

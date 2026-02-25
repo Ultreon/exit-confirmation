@@ -21,9 +21,6 @@
   "entrypoints": {
     "client": [
       "dev.ultreon.mods.exitconfirmation.fabric.ExitConfirmationFabric"
-    ],
-    "modmenu": [
-      "dev.ultreon.mods.exitconfirmation.fabric.ExitConfirmationModMenu"
     ]
   },
   "mixins": [

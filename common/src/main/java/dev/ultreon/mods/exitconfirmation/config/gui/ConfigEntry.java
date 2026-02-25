@@ -1,11 +1,6 @@
 package dev.ultreon.mods.exitconfirmation.config.gui;
 
 import com.google.common.base.Preconditions;
-import dev.ultreon.mods.exitconfirmation.config.Config;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
@@ -60,19 +55,4 @@ public abstract class ConfigEntry<T> {
         return Component.translatable("exit_confirm.config." + this.key);
     }
 
-    public AbstractWidget createButton(Config options, int x, int y, int width) {
-        return new AbstractWidget(x, y, width, 20, this.getDescription()) {
-            @Override
-            public void renderWidget(GuiGraphics gfx, int i, int j, float f) {
-                gfx.drawCenteredString(Minecraft.getInstance().font, ConfigEntry.this.getDescription().append(": N/A"), this.getX() + this.width / 2, this.getY() + (this.height / 2 - 5), 0xffffffff);
-            }
-
-            @Override
-            protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
-
-            }
-        };
-    }
-
-    public abstract void setFromWidget(AbstractWidget widget);
 }

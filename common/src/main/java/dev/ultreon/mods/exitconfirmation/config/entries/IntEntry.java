@@ -1,10 +1,6 @@
 package dev.ultreon.mods.exitconfirmation.config.entries;
 
-import dev.ultreon.mods.exitconfirmation.config.Config;
 import dev.ultreon.mods.exitconfirmation.config.gui.ConfigEntry;
-import dev.ultreon.mods.exitconfirmation.config.gui.ValueSliderButton;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.network.chat.Component;
 
 public class IntEntry extends ConfigEntry<Integer> {
     private final int min;
@@ -29,20 +25,4 @@ public class IntEntry extends ConfigEntry<Integer> {
         return this.max;
     }
 
-    @Override
-    public AbstractWidget createButton(Config options, int x, int y, int width) {
-        return new ValueSliderButton(x, y, width, 20, Component.literal(String.valueOf((int) this.get())), this.get(), this.min, this.max) {
-            @Override
-            protected void updateMessage() {
-                this.setMessage(Component.literal(String.valueOf((int) this.getValue())));
-            }
-        };
-    }
-
-    @Override
-    public void setFromWidget(AbstractWidget widget) {
-        ValueSliderButton cycleButton = (ValueSliderButton) widget;
-        int value = (int) cycleButton.getValue();
-        this.set(value);
-    }
 }

@@ -2,7 +2,6 @@ package dev.ultreon.mods.exitconfirmation.neoforge;
 
 import dev.ultreon.mods.exitconfirmation.config.Config;
 import dev.ultreon.mods.exitconfirmation.ExitConfirmation;
-import dev.ultreon.mods.exitconfirmation.config.gui.ConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -31,8 +30,6 @@ public class ExitConfirmationNeoForge {
 
         Config.load();
         Config.save();
-
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (minecraft, screen) -> new ConfigScreen(screen));
     }
 
     @SubscribeEvent
