@@ -29,7 +29,7 @@ config = "exit_confirm.neoforge.mixins.json"
 [[dependencies.exit_confirm]]
 modId = "neoforge"
 type = "required"
-versionRange = "21.2]"
+versionRange = "[21.3,21.4)"
 ordering = "NONE"
 side = "CLIENT"
 
