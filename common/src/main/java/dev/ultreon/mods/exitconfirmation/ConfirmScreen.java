@@ -70,7 +70,7 @@ public abstract class ConfirmScreen extends Screen {
                 this.renderPanorama(gfx, partialTicks);
             }
 
-            this.renderBlurredBackground();
+            this.renderBlurredBackground(partialTicks);
             this.renderMenuBackground(gfx);
         } else if (ExitConfirmation.CONFIG.forceTransparentBackground.get()) {
             if (this.background != null) {
@@ -80,7 +80,7 @@ public abstract class ConfirmScreen extends Screen {
                 gfx.pose().popPose();
             }
 
-            this.renderBlurredBackground();
+            this.renderBlurredBackground(partialTicks);
             this.renderMenuBackground(gfx);
         } else {
             super.renderBackground(gfx, mouseX, mouseX, partialTicks);
