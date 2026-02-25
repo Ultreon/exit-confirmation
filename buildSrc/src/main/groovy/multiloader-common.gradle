@@ -37,12 +37,12 @@ repositories {
     }
 
     maven {
-        name = 'ForgeMaven'
-        url = 'https://maven.minecraftforge.net'
-    }
-    maven {
         name = 'NeoForge'
         url = 'https://maven.neoforged.net/releases'
+    }
+    maven {
+        name = 'ForgeMaven'
+        url = 'https://maven.minecraftforge.net'
     }
     // Add KFF Maven repository
     maven {

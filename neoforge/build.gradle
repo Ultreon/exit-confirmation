@@ -1,55 +1,57 @@
 plugins {
-    id 'multiloader-loader'
-    id 'net.neoforged.moddev'
+    id 'com.github.johnrengelman.shadow'
 }
 
-neoForge {
-    version = neoforge_version
-    // Automatically enable neoforge AccessTransformers if the file exists
-    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers = [at.absolutePath]
-    }
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
-    runs {
-        configureEach {
-            systemProperty "neoforge.enabledGameTestNamespaces", mod_id.toString()
-            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
-        }
-        client {
-            client()
-        }
-        clientData {
-            clientData()
-        }
-        serverData {
-            serverData()
-        }
-        server {
-            server()
-        }
-    }
-    mods {
-        "${mod_id}" {
-            sourceSet sourceSets.main
-        }
-    }
+architectury {
+    platformSetupLoomIde()
+    neoForge()
 }
 
 configurations {
-    additionalClasspath {
-        extendsFrom api
+    common {
+        canBeResolved = true
+        canBeConsumed = false
     }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
 
-    clientAdditionalRuntimeClasspath.extendsFrom additionalClasspath
-    serverAdditionalRuntimeClasspath.extendsFrom additionalClasspath
-    dataAdditionalRuntimeClasspath.extendsFrom additionalClasspath
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+repositories {
+    maven {
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases'
+    }
 }
 
 dependencies {
+    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand version: project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+}
