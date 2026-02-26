@@ -41,7 +41,7 @@ public final class WorldUtils {
             boolean bl = mc.isLocalServer();
             mc.level.disconnect();
             if (bl) {
-                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL));
+                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL), bl);
             } else {
                 mc.disconnect();
             }
