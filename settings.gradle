@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'untitled3'
+rootProject.name = 'exit-confirm'
 
 include 'common'
 include 'fabric'

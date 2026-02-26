@@ -41,7 +41,7 @@ public abstract class ConfirmScreen extends Screen {
             NarratorStatus narratorStatus = Objects.requireNonNull(this.minecraft).options.narrator().get();
 
             if (narratorStatus == NarratorStatus.SYSTEM || narratorStatus == NarratorStatus.ALL) {
-                Narrator.getNarrator().say(this.description.getString(), true);
+                Narrator.getNarrator().say(this.description.getString(), true, 0.5f);
             }
         }
 
