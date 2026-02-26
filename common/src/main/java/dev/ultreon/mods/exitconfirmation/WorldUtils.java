@@ -19,9 +19,9 @@ public final class WorldUtils {
             ServerData serverData = mc.getCurrentServer();
             mc.level.disconnect();
             if (bl) {
-                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL));
+                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL), bl);
             } else {
-                mc.disconnect();
+                mc.disconnect(new TitleScreen(), bl);
             }
 
             TitleScreen titleScreen = new TitleScreen();
