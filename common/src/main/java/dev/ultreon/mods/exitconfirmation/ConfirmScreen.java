@@ -66,7 +66,6 @@ public abstract class ConfirmScreen extends Screen {
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         gfx.drawCenteredString(this.font, this.title, this.width / 2, 70, 0xffffffff);
         gfx.drawCenteredString(this.font, this.description, this.width / 2, 90, 0xffbfbfbf);
-        this.label.renderCentered(gfx, this.width / 2, 90);
 
         super.render(gfx, mouseX, mouseY, partialTicks);
     }

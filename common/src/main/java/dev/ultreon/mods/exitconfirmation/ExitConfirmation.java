@@ -64,7 +64,7 @@ public class ExitConfirmation {
     }
 
     public final void onQuitButtonClick(Minecraft client, TitleScreen titleScreen, Button quitButton) {
-        this.onCloseCallback(client, client.getWindow().getWindow());
+        this.onCloseCallback(client, client.getWindow().handle());
     }
 
     /**
@@ -77,7 +77,7 @@ public class ExitConfirmation {
     private void setupGLFWCallback(Minecraft client) {
         if (!this.callbackSetUp) {
             // Intercepting close button / ALT+F4 (on Windows and Ubuntu)
-            long handle = client.getWindow().getWindow();
+            long handle = client.getWindow().handle();
 
             // Set the callback.
             GLFW.glfwSetWindowCloseCallback(handle, window -> this.onCloseCallback(client, window));

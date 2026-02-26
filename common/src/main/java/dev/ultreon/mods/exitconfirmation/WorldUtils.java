@@ -2,19 +2,14 @@ package dev.ultreon.mods.exitconfirmation;
 
 import com.mojang.realmsclient.RealmsMainScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
-import static net.minecraft.client.gui.screens.PauseScreen.disconnectFromWorld;
-
 public final class WorldUtils {
-    private static final Component SAVING_LEVEL = Component.translatable("menu.savingLevel");
 
     public static void saveWorldThenOpenTitle() {
         Minecraft minecraft = Minecraft.getInstance();

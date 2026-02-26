@@ -29,13 +29,13 @@ config = "exit_confirm.neoforge.mixins.json"
 [[dependencies.exit_confirm]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.7,21.8)"
+versionRange = "[21.9,21.10)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.exit_confirm]]
 modId = "minecraft"
 type = "required"
-versionRange = "1.21.7"
+versionRange = "1.21.9"
 ordering = "NONE"
 side = "CLIENT"
