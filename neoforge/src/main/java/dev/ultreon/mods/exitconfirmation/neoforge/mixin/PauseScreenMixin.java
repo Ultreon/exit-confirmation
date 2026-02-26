@@ -6,34 +6,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import static net.minecraft.client.gui.screens.PauseScreen.disconnectFromWorld;
+
 @Mixin(PauseScreen.class)
 public abstract class PauseScreenMixin extends Screen {
-    @Shadow
-    protected abstract void onDisconnect();
-
     protected PauseScreenMixin(Component component) {
         super(component);
     }
 
-    @Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 2))
+    @Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1))
     private Button.Builder exitConfirmation$createPauseMenu(Component message, Button.OnPress onPress) {
         return Button.builder(message, button -> {
             button.active = false;
-            var minecraft = Minecraft.getInstance();
-            if (minecraft.screen == this) {
-                if(ExitConfirmation.CONFIG.disconnectPrompt.get()) {
-                    minecraft.setScreen(new ConfirmDisconnectScreen(minecraft.screen));
-                } else {
-                    assert this.minecraft != null;
-                    minecraft.getReportingContext().draftReportHandled(this.minecraft, this, this::onDisconnect, true);
-                }
-            }
+            this.minecraft.getReportingContext().draftReportHandled(this.minecraft, this, () -> disconnectFromWorld(this.minecraft, ClientLevel.DEFAULT_QUIT_MESSAGE), true);
         });
     }
 }

@@ -6,48 +6,56 @@ import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+
+import static net.minecraft.client.gui.screens.PauseScreen.disconnectFromWorld;
 
 public final class WorldUtils {
     private static final Component SAVING_LEVEL = Component.translatable("menu.savingLevel");
 
     public static void saveWorldThenOpenTitle() {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.level != null) {
-            boolean bl = mc.isLocalServer();
-            ServerData serverData = mc.getCurrentServer();
-            mc.level.disconnect();
-            if (bl) {
-                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL), bl);
-            } else {
-                mc.disconnect(new TitleScreen(), bl);
-            }
+        Minecraft minecraft = Minecraft.getInstance();
 
-            TitleScreen titleScreen = new TitleScreen();
-            if (bl) {
-                mc.setScreen(titleScreen);
-            } else if (serverData != null && serverData.isRealm()) {
-                mc.setScreen(new RealmsMainScreen(titleScreen));
-            } else {
-                mc.setScreen(new JoinMultiplayerScreen(titleScreen));
-            }
+        boolean bl = minecraft.isLocalServer();
+        ServerData serverData = minecraft.getCurrentServer();
+        if (minecraft.level != null) {
+            minecraft.level.disconnect(ClientLevel.DEFAULT_QUIT_MESSAGE);
+        }
+
+        if (bl) {
+            minecraft.disconnectWithSavingScreen();
+        } else {
+            minecraft.disconnectWithProgressScreen();
+        }
+
+        TitleScreen titleScreen = new TitleScreen();
+        if (bl) {
+            minecraft.setScreen(titleScreen);
+        } else if (serverData != null && serverData.isRealm()) {
+            minecraft.setScreen(new RealmsMainScreen(titleScreen));
+        } else {
+            minecraft.setScreen(new JoinMultiplayerScreen(titleScreen));
         }
     }
 
     public static void saveWorldThen(Runnable runnable) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.level != null) {
-            boolean bl = mc.isLocalServer();
-            mc.level.disconnect();
-            if (bl) {
-                mc.disconnect(new GenericMessageScreen(SAVING_LEVEL), bl);
-            } else {
-                mc.disconnect();
-            }
+        Minecraft minecraft = Minecraft.getInstance();
 
-            runnable.run();
+        boolean bl = minecraft.isLocalServer();
+        if (minecraft.level != null) {
+            minecraft.level.disconnect(ClientLevel.DEFAULT_QUIT_MESSAGE);
         }
+
+        if (bl) {
+            minecraft.disconnectWithSavingScreen();
+        } else {
+            minecraft.disconnectWithProgressScreen();
+        }
+
+        runnable.run();
     }
 
     public static void saveWorldThenOpen(Screen screen) {
