@@ -43,6 +43,7 @@ processResources {
 }
 
 shadowJar {
+    dependsOn(jar, sourcesJar)
     configurations = [project.configurations.shadowBundle]
     archiveClassifier = 'dev-shadow'
 }
