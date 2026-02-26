@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import static net.minecraft.client.gui.screens.PauseScreen.disconnectFromWorld;
-
 @Mixin(PauseScreen.class)
 public abstract class PauseScreenMixin extends Screen {
     protected PauseScreenMixin(Component component) {
@@ -25,7 +23,7 @@ public abstract class PauseScreenMixin extends Screen {
     private Button.Builder exitConfirmation$createPauseMenu(Component message, Button.OnPress onPress) {
         return Button.builder(message, button -> {
             button.active = false;
-            this.minecraft.getReportingContext().draftReportHandled(this.minecraft, this, () -> disconnectFromWorld(this.minecraft, ClientLevel.DEFAULT_QUIT_MESSAGE), true);
+            this.minecraft.getReportingContext().draftReportHandled(this.minecraft, this, () -> this.minecraft.disconnectFromWorld(ClientLevel.DEFAULT_QUIT_MESSAGE), true);
         });
     }
 }
