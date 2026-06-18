@@ -1,0 +1,19 @@
+{
+  "package": "dev.ultreon.mods.exitconfirm.mixin",
+  "refmap": "exitconfirm.mixins.refmap.json",
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "${java}",
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+  ],
+  "client": [
+    "PauseScreenMixin",
+    "TitleScreenMixin",
+    "accessor.ButtonAccessor",
+    "MinecraftMixin"
+  ]
+}

@@ -1,0 +1,124 @@
+mod.id = "exitconfirm"
+mod.name = "Exit Confirmation"
+mod.group = "dev.ultreon.mods"
+mod.version = "4.0.0"
+mod.channel_tag = ""
+mod.description = "Shows an exit confirmation screen when trying to close Minecraft."
+mod.authors = ["Omnixerio Studios"]
+mod.contributors = ["QboiDev", "JustALittleWolf", "Amirhan-Taipovjan-Greatest-I", "Felix14-v2", "LittleChest"]
+mod.inception_year = "2022"
+mod.license.name = "ARR"
+mod.license.url = "https://github.com/omnixerio/exit-confirmation/blob/1.21.1/LICENSE"
+mod.license.dist = "repo"
+mod.sources_url = "https://github.com/omnixerio/exit-confirmation"
+mod.homepage_url = "https://github.com/omnixerio/exit-confirmation"
+mod.issues_url = "https://github.com/omnixerio/exit-confirmation/issues"
+mod.discord_url = "https://discord.gg/dtdc46g6ry"
+[[mod.pom.developers]]
+id = "QboiDev"
+name = "Qboi"
+url = "https://github.com/QboiDev"
+[[mod.pom.developers]]
+id = "JustALittleWolf"
+name = "JustALittleWolf"
+url = "https://github.com/JustAlittleWolf"
+[[mod.pom.developers]]
+id = "Amirhan-Taipovjan-Greatest-I"
+name = "Amirhan-Taipovjan-Greatest-I"
+url = "https://github.com/Amirhan-Taipovjan-Greatest-I"
+[[mod.pom.developers]]
+id = "Felix14-v2"
+name = "Felix14-v2"
+url = "https://github.com/Felix14-v2"
+[[mod.pom.developers]]
+id = "LittleChest"
+name = "LittleChest"
+url = "https://github.com/LittleChest"
+
+[fabric]
+deps.fabric-loader = "0.19.2"
+
+[fabric."1.18.2"]
+deps.minecraft = "1.18.2"
+deps.fabric-api = "0.77.0+1.18.2"
+deps.modmenu = "3.2.5"
+
+[fabric."1.19.2"]
+deps.minecraft = "1.19.2"
+deps.fabric-api = "0.77.0+1.19.2"
+deps.modmenu = "6.3.1"
+
+[fabric."1.19.4"]
+deps.minecraft = "1.19.4"
+deps.fabric-api = "0.87.2+1.19.4"
+deps.modmenu = "9.0.0"
+
+[fabric."1.20.1"]
+deps.minecraft = "1.20.1"
+deps.fabric-api = "0.92.9+1.20.1"
+deps.modmenu = "7.2.2"
+
+[fabric."1.20.4"]
+deps.minecraft = "1.20.4"
+deps.fabric-api = "0.97.3+1.20.4"
+deps.modmenu = "11.0.0-beta.1"
+
+[fabric."1.21.1"]
+deps.minecraft = "1.21.1"
+deps.fabric-api = "0.116.12+1.21.1"
+deps.modmenu = "14.0.0-rc.2"
+
+[fabric."1.21.7"]
+deps.minecraft = "1.21.7"
+deps.fabric-api = "0.128.1+1.21.7"
+deps.modmenu = "15.0.2"
+
+[fabric."26.1.2"]
+deps.minecraft = "26.1.2"
+deps.fabric-api = "0.152.1+26.1.2"
+deps.modmenu = "18.0.0-alpha.8"
+
+[fabric."26.2"]
+deps.minecraft = "26.2"
+deps.fabric-api = "0.152.1+26.2"
+deps.modmenu = "20.0.0-beta.2"
+
+[forge]
+
+[forge."1.18.2"]
+deps.minecraft = "1.18.2"
+deps.forge = "40.3.11"
+
+[forge."1.19.2"]
+deps.minecraft = "1.19.2"
+deps.forge = "43.5.1"
+
+[forge."1.19.4"]
+deps.minecraft = "1.19.4"
+deps.forge = "45.4.1"
+
+[forge."1.20.1"]
+deps.minecraft = "1.20.1"
+deps.forge = "47.4.5"
+
+[neoforge]
+
+[neoforge."1.20.4"]
+deps.minecraft = "1.20.4"
+deps.neoforge = "20.4.251"
+
+[neoforge."1.21.1"]
+deps.minecraft = "1.21.1"
+deps.neoforge = "21.1.213"
+
+[neoforge."1.21.7"]
+deps.minecraft = "1.21.7"
+deps.neoforge = "21.7.25-beta"
+
+[neoforge."26.1.2"]
+deps.minecraft = "26.1.2"
+deps.neoforge = "26.1.2.76"
+
+[neoforge."26.2"]
+deps.minecraft = "26.2"
+deps.neoforge = "26.2.0.1-beta"
