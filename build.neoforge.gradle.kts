@@ -1,5 +1,8 @@
+import java.lang.System.getenv
+
 plugins {
 	id("mod-platform")
+	id("maven-publish")
 	id("net.neoforged.moddev")
 }
 
@@ -85,4 +88,40 @@ tasks.register("copyJar") {
 
 tasks.named("build") {
 	dependsOn("copyJar")
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("mavenJava") {
+			from(components["java"])
+			artifactId = prop("mod.id")
+			groupId = "dev.ultreon.mods"
+		}
+	}
+
+	repositories {
+		maven {
+			name = "UltreonMavenReleases"
+			url = uri("https://maven.ultreon.dev/releases")
+			credentials {
+				username = findProperty("ultreonmvn.name") as? String ?: getenv("ULTREON_MVN_NAME")
+				password = findProperty("ultreonmvn.secret") as? String ?: getenv("ULTREON_MVN_SEC")
+			}
+			authentication {
+				create("basic", BasicAuthentication::class.java )
+			}
+		}
+
+		maven {
+			name = "UltreonMavenSnapshots"
+			url = uri("https://maven.ultreon.dev/snapshots")
+			credentials {
+				username = findProperty("ultreonmvn.name") as? String ?: getenv("ULTREON_MVN_NAME")
+				password = findProperty("ultreonmvn.secret") as? String ?: getenv("ULTREON_MVN_SEC")
+			}
+			authentication {
+				create("basic", BasicAuthentication::class.java)
+			}
+		}
+	}
 }

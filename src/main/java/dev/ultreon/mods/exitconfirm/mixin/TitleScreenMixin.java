@@ -22,7 +22,7 @@ public abstract class TitleScreenMixin extends Screen {
 
 	@Inject(method = "init", at = @At("TAIL"))
 	private void exitConfirmation$init(CallbackInfo ci) {
-		ExitConfirmation.onTitleScreenInit(this.minecraft, this);
+		ExitConfirmation.onTitleScreenInit(Minecraft.getInstance(), this);
 	}
 
 	//? < 26.1 {

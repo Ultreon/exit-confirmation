@@ -42,6 +42,9 @@ public class ExitConfirmation {
 	}
 
 	public static void onInitializeClient() {
+		Config.load();
+		Config.save();
+
 		LOGGER.info("Initializing {} Client on {}", MOD_ID, ExitConfirmation.xplat().loader());
 		LOGGER.debug("{}: { version: {}; friendly_name: {} }", MOD_ID, MOD_VERSION, MOD_FRIENDLY_NAME);
 	}

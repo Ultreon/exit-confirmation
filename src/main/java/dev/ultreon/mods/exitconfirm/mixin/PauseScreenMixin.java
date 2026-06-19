@@ -24,8 +24,23 @@ public abstract class PauseScreenMixin extends Screen {
 		super(component);
 	}
 
-	//? < 1.19.4 && forge {
-	/*@Redirect(method = "createPauseMenu", at = @At(value = "NEW", target = "(IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button;", ordinal = 8))
+	//? < 1.19.2 && forge {
+	/*@Redirect(method = "createPauseMenu", at = @At(value = "NEW", target = "(IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button;", ordinal = 7))
+	private Button exitConfirmation$createPauseMenu(int x, int y, int w, int h, Component message, Button.OnPress onPress) {
+		return new Button(x, y, w, h, message, button -> {
+			button.active = false;
+			var minecraft = Minecraft.getInstance();
+			if (minecraft.screen == this) {
+				if (ExitConfirmation.CONFIG.disconnectPrompt.get()) {
+					minecraft.setScreen(new ConfirmDisconnectScreen(minecraft.screen));
+				} else {
+					WorldUtils.saveWorldThenOpenTitle();
+				}
+			}
+		});
+	}
+	*///? } else < 1.19.4 && forge {
+	/*@Redirect(method = "createPauseMenu", at = @At(value = "NEW", target = "(IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button;", ordinal = 9))
 	private Button exitConfirmation$createPauseMenu(int x, int y, int w, int h, Component message, Button.OnPress onPress) {
 		return new Button(x, y, w, h, message, button -> {
 			button.active = false;
@@ -43,7 +58,7 @@ public abstract class PauseScreenMixin extends Screen {
 	/*@Shadow
     protected abstract void onDisconnect();
 
-	@Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1))
+	@Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 2))
 	private Button.Builder exitConfirmation$createPauseMenu(Component message, Button.OnPress onPress) {
 		return Button.builder(message, button -> {
 			button.active = false;
@@ -52,7 +67,7 @@ public abstract class PauseScreenMixin extends Screen {
 				if(ExitConfirmation.CONFIG.disconnectPrompt.get()) {
 					minecraft.setScreen(new ConfirmDisconnectScreen(minecraft.screen));
 				} else {
-					minecraft.getReportingContext().draftReportHandled(this.minecraft, this, this::onDisconnect, true);
+					minecraft.getReportingContext().draftReportHandled(this.minecraft, this, WorldUtils::saveWorldThenOpenTitle, true);
 				}
 			}
 		});
@@ -71,7 +86,7 @@ public abstract class PauseScreenMixin extends Screen {
 	}
 	^///?}
 
-	@Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1))
+	@Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 2))
 	private Button.Builder exitConfirmation$createPauseMenu(Component message, Button.OnPress onPress) {
 		return Button.builder(message, button -> {
 			button.active = false;
@@ -109,8 +124,23 @@ public abstract class PauseScreenMixin extends Screen {
 			}
 		});
 	}
-	*///? } else < 1.19.4 && fabric {
+	*///? } else < 1.19.2 && fabric {
 	/*@Redirect(method = "createPauseMenu", at = @At(value = "NEW", target = "(IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button;", ordinal = 7))
+	private Button exitConfirmation$createPauseMenu(int x, int y, int w, int h, Component message, Button.OnPress onPress) {
+		return new Button(x, y, w, h, message, button -> {
+			button.active = false;
+			var minecraft = Minecraft.getInstance();
+			if (minecraft.screen == this) {
+				if (ExitConfirmation.CONFIG.disconnectPrompt.get()) {
+					minecraft.setScreen(new ConfirmDisconnectScreen(minecraft.screen));
+				} else {
+					WorldUtils.saveWorldThenOpenTitle();
+				}
+			}
+		});
+	}
+	*///? } else < 1.19.4 && fabric {
+	/*@Redirect(method = "createPauseMenu", at = @At(value = "NEW", target = "(IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button;", ordinal = 8))
 	private Button exitConfirmation$createPauseMenu(int x, int y, int w, int h, Component message, Button.OnPress onPress) {
 		return new Button(x, y, w, h, message, button -> {
 			button.active = false;
@@ -138,6 +168,7 @@ public abstract class PauseScreenMixin extends Screen {
 	}
 	//?}
 
+	//? < 26.2 {
 	@Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1))
 	private Button.Builder exitConfirmation$createPauseMenu(Component message, Button.OnPress onPress) {
 		return Button.builder(message, button -> {
@@ -145,20 +176,20 @@ public abstract class PauseScreenMixin extends Screen {
 			var minecraft = Minecraft.getInstance();
 			//? >= 26.2 {
 			/*if (minecraft.gui.screen() == this) {
-			*///? } else {
-			if (minecraft.screen == this) {
-			//? }
-				if(ExitConfirmation.CONFIG.disconnectPrompt.get()) {
+				*///? } else {
+				if (minecraft.screen == this) {
+				 //? }
+				if (ExitConfirmation.CONFIG.disconnectPrompt.get()) {
 					//? >= 26.2 {
 					/*minecraft.gui.setScreen(new ConfirmDisconnectScreen(minecraft.gui.screen()));
 					*///? } else {
 					minecraft.setScreen(new ConfirmDisconnectScreen(minecraft.screen));
-					//? }
+					 //? }
 				} else {
 					//? >= 26.1 {
 					/*this.minecraft
-						.getReportingContext()
-						.draftReportHandled(this.minecraft, this, () -> this.minecraft.disconnectFromWorld(ClientLevel.DEFAULT_QUIT_MESSAGE), true);
+							.getReportingContext()
+							.draftReportHandled(this.minecraft, this, () -> this.minecraft.disconnectFromWorld(ClientLevel.DEFAULT_QUIT_MESSAGE), true);
 					*///? } else >= 1.21.7 {
 					this.minecraft
 							.getReportingContext()
@@ -176,6 +207,46 @@ public abstract class PauseScreenMixin extends Screen {
 			}
 		});
 	}
+	//? } else {
+	/*@Redirect(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button;builder(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 2))
+	private Button.Builder exitConfirmation$createPauseMenu(Component message, Button.OnPress onPress) {
+		return Button.builder(message, button -> {
+			button.active = false;
+			var minecraft = Minecraft.getInstance();
+			//? >= 26.2 {
+			/^if (minecraft.gui.screen() == this) {
+			^///? } else {
+			if (minecraft.screen == this) {
+			//? }
+				if(ExitConfirmation.CONFIG.disconnectPrompt.get()) {
+					//? >= 26.2 {
+					/^minecraft.gui.setScreen(new ConfirmDisconnectScreen(minecraft.gui.screen()));
+					^///? } else {
+					minecraft.setScreen(new ConfirmDisconnectScreen(minecraft.screen));
+					//? }
+				} else {
+					//? >= 26.1 {
+					/^this.minecraft
+						.getReportingContext()
+						.draftReportHandled(this.minecraft, this, () -> this.minecraft.disconnectFromWorld(ClientLevel.DEFAULT_QUIT_MESSAGE), true);
+					^///? } else >= 1.21.7 {
+					/^this.minecraft
+							.getReportingContext()
+							.draftReportHandled(this.minecraft, this, () -> disconnectFromWorld(this.minecraft, ClientLevel.DEFAULT_QUIT_MESSAGE), true);
+					^///? } else >= 1.20.1 {
+					this.minecraft
+							.getReportingContext()
+							.draftReportHandled(this.minecraft, this, this::onDisconnect, true);
+					//? } else {
+					/^this.minecraft
+							.getReportingContext()
+							.draftReportHandled(this.minecraft, this, () -> WorldUtils.saveWorldThenOpenTitle(), true);
+					^///? }
+				}
+			}
+		});
+	}
+	*///? }
 	//? }
 }
 

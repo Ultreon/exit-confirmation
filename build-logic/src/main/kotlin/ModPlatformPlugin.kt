@@ -138,6 +138,11 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			dependsOn(tasks.named("stonecutterGenerate"), "kspKotlin")
 			filesMatching("*.mixins.json") {
 				expand("java" to "JAVA_${ctx.javaVersion.majorVersion}")
+				if (ctx.loader.id == "neoforge") {
+					filter { line: String ->
+						if ("\"refmap\"" in line) "" else line
+					}
+				}
 			}
 			exclude(ctx.loader.excludedResources)
 		}

@@ -32,7 +32,7 @@ public final class WorldUtils {
 			//? if < 1.20.4 {
 			/*boolean realms = mc.isConnectedToRealms();
 			*///? } else {
-			boolean realms = serverData.isRealm();
+			boolean realms = serverData != null && serverData.isRealm();
 			//? }
 			//? >=1.21.7 {
 			mc.level.disconnect(Component.translatable("disconnect.disconnected"));
